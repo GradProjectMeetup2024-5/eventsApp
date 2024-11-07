@@ -1,38 +1,35 @@
 import React from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  ScrollView,
-} from "react-native";
+import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
+import PlaceHolderIcon from "../../components/ui/PlaceHolderIcon";
+
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const Bookmark = () => {
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>My Trips</Text>
-      </View>
-
-      <ScrollView contentContainerStyle={styles.content}>
-        <View style={styles.emptyState}>
-          <View style={styles.emptyStateIcon}>
-            {/* You might want to replace this with an actual icon or image */}
-            <View style={styles.placeholderIcon} />
-          </View>
-          <Text style={styles.emptyStateTitle}>No Trips Scheduled</Text>
-          <Text style={styles.emptyStateDescription}>
-            You have no upcoming Events. Add a trip or browse events.
-          </Text>
+    <SafeAreaView style={{ flex: 1 }}>
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <Text style={styles.headerTitle}>My Trips</Text>
         </View>
-      </ScrollView>
 
-      <View style={styles.footer}>
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>Browse</Text>
-        </TouchableOpacity>
+        <ScrollView contentContainerStyle={styles.content}>
+          <View style={styles.emptyState}>
+            {/* You might want to replace this with an actual icon or image */}
+            <PlaceHolderIcon />
+            <Text style={styles.emptyStateTitle}>No Trips Scheduled</Text>
+            <Text style={styles.emptyStateDescription}>
+              You have no upcoming Events. Add a trip or browse events.
+            </Text>
+          </View>
+        </ScrollView>
+
+        <View style={styles.footer}>
+          <Pressable style={styles.button}>
+            <Text style={styles.buttonText}>Browse</Text>
+          </Pressable>
+        </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -40,6 +37,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#FFFFFF",
+    paddingBottom: 80,
   },
   header: {
     flexDirection: "row",
@@ -65,17 +63,6 @@ const styles = StyleSheet.create({
   emptyState: {
     alignItems: "center",
     gap: 8,
-  },
-  emptyStateIcon: {
-    width: 124,
-    height: 124,
-    marginBottom: 32,
-  },
-  placeholderIcon: {
-    width: "100%",
-    height: "100%",
-    backgroundColor: "#F1F5F9",
-    borderRadius: 62,
   },
   emptyStateTitle: {
     fontFamily: "Roboto",

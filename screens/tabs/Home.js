@@ -5,7 +5,7 @@ import {
   ScrollView,
   StyleSheet,
   Image,
-  TouchableOpacity,
+  Pressable,
   TextInput,
 } from "react-native";
 import { createShimmerPlaceholder } from "react-native-shimmer-placeholder";
@@ -18,6 +18,8 @@ import {
   getHeaderTitle,
   useHeaderHeight,
 } from "@react-navigation/elements";
+
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const ShimmerPlaceholder = createShimmerPlaceholder(LinearGradient);
 
@@ -115,88 +117,90 @@ export default function Home() {
   );
 
   return (
-    <View style={styles.container}>
-      <View>
-        <BlurView
-          intensity={60}
-          tint="light"
-          style={[
-            StyleSheet.absoluteFill,
-            { backgroundColor: "rgba(255,255,255,0.5)" },
-          ]}
-        />
-        <TouchableOpacity
-          style={{ marginRight: 16 }}
-          onPress={() => setSearchVisible((prev) => !prev)}
-        >
-          <Ionicons name="search" size={24} color="#666" />
-        </TouchableOpacity>
-        <Header title="Explore" />
-        {searchVisible && (
-          <View style={styles.searchContainer}>
-            <TextInput
-              style={styles.searchInput}
-              placeholder="Search..."
-              value={searchQuery}
-              onChangeText={setSearchQuery}
-            />
-          </View>
-        )}
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.sectionsContainer}
-        >
-          {sections.map((section, index) => (
-            <TouchableOpacity
-              key={index}
-              onPress={() => setSelected(section)}
-              style={
-                selected === section
-                  ? styles.sectionBtnSelected
-                  : styles.sectionBtn
-              }
-            >
-              <Text
+    <SafeAreaView style={{ flex: 1 }}>
+      <View style={styles.container}>
+        <View>
+          <BlurView
+            intensity={60}
+            tint="light"
+            style={[
+              StyleSheet.absoluteFill,
+              { backgroundColor: "rgba(255,255,255,0.5)" },
+            ]}
+          />
+          <Pressable
+            style={{ marginRight: 16 }}
+            onPress={() => setSearchVisible((prev) => !prev)}
+          >
+            <Ionicons name="search" size={24} color="#666" />
+          </Pressable>
+          <Header title="Explore" />
+          {searchVisible && (
+            <View style={styles.searchContainer}>
+              <TextInput
+                style={styles.searchInput}
+                placeholder="Search..."
+                value={searchQuery}
+                onChangeText={setSearchQuery}
+              />
+            </View>
+          )}
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.sectionsContainer}
+          >
+            {sections.map((section, index) => (
+              <Pressable
+                key={index}
+                onPress={() => setSelected(section)}
                 style={
                   selected === section
-                    ? styles.sectionBtnTextSelected
-                    : styles.sectionBtnText
+                    ? styles.sectionBtnSelected
+                    : styles.sectionBtn
                 }
               >
-                {section.title}
-              </Text>
-            </TouchableOpacity>
-          ))}
+                <Text
+                  style={
+                    selected === section
+                      ? styles.sectionBtnTextSelected
+                      : styles.sectionBtnText
+                  }
+                >
+                  {section.title}
+                </Text>
+              </Pressable>
+            ))}
+          </ScrollView>
+        </View>
+        <ScrollView
+          contentContainerStyle={[
+            styles.scrollContainer,
+            { paddingTop: headerHeight },
+          ]}
+        >
+          <Animated.View
+            style={styles.section}
+            entering={FadeIn.duration(600).delay(400)}
+            exiting={FadeOut.duration(400)}
+          >
+            <ShimmerPlaceholder width={160} height={20} visible={!loading}>
+              <Text style={styles.title}>{selected.title}</Text>
+            </ShimmerPlaceholder>
+            <ShimmerPlaceholder
+              width={280}
+              height={50}
+              visible={!loading}
+              shimmerStyle={{ marginVertical: 10 }}
+            >
+              <Text style={styles.label}>{selected.label}</Text>
+            </ShimmerPlaceholder>
+
+            {filteredApps.map(renderExploreItem)}
+          </Animated.View>
         </ScrollView>
       </View>
-      <ScrollView
-        contentContainerStyle={[
-          styles.scrollContainer,
-          { paddingTop: headerHeight },
-        ]}
-      >
-        <Animated.View
-          style={styles.section}
-          entering={FadeIn.duration(600).delay(400)}
-          exiting={FadeOut.duration(400)}
-        >
-          <ShimmerPlaceholder width={160} height={20} visible={!loading}>
-            <Text style={styles.title}>{selected.title}</Text>
-          </ShimmerPlaceholder>
-          <ShimmerPlaceholder
-            width={280}
-            height={50}
-            visible={!loading}
-            shimmerStyle={{ marginVertical: 10 }}
-          >
-            <Text style={styles.label}>{selected.label}</Text>
-          </ShimmerPlaceholder>
-
-          {filteredApps.map(renderExploreItem)}
-        </Animated.View>
-      </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -215,13 +219,13 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
     marginBottom: 8,
-    fontFamily: "Work Sans",
+    // fontFamily: "Work Sans",
   },
   label: {
     fontSize: 16,
     color: "#666",
     marginBottom: 16,
-    fontFamily: "Work Sans",
+    // fontFamily: "Work Sans",
   },
   sectionsContainer: {
     gap: 8,
@@ -243,12 +247,12 @@ const styles = StyleSheet.create({
   sectionBtnText: {
     color: "#000",
     fontWeight: "500",
-    fontFamily: "Work Sans",
+    // fontFamily: "Work Sans",
   },
   sectionBtnTextSelected: {
     color: "#fff",
     fontWeight: "500",
-    fontFamily: "Work Sans",
+    // fontFamily: "Work Sans",
   },
   card: {
     borderRadius: 8,
@@ -270,19 +274,19 @@ const styles = StyleSheet.create({
   cardTitle: {
     fontSize: 16,
     fontWeight: "600",
-    fontFamily: "Work Sans",
+    // fontFamily: "Work Sans",
   },
   cardDesc: {
     fontSize: 14,
     color: "#000",
     marginTop: 4,
-    fontFamily: "Work Sans",
+    // fontFamily: "Work Sans",
   },
   cardAuthor: {
     fontSize: 14,
     color: "#666",
     marginTop: 4,
-    fontFamily: "Work Sans",
+    // fontFamily: "Work Sans",
   },
   searchContainer: {
     padding: 16,
@@ -297,6 +301,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 8,
     paddingHorizontal: 8,
-    fontFamily: "Work Sans",
+    // fontFamily: "Work Sans",
   },
 });

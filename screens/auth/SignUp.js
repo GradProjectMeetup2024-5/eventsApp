@@ -1,6 +1,6 @@
 import { StyleSheet, View } from "react-native";
 
-import PlaceHolderIcon from "../../components/ui/AuthUi/PlaceholderIcon";
+import PlaceHolderIcon from "../../components/ui/PlaceHolderIcon";
 import AuthTitle from "../../components/ui/AuthUi/AuthTitle";
 import AuthTextInput from "../../components/ui/AuthUi/AuthTextInput";
 import AuthButton from "../../components/ui/AuthUi/AuthButton";

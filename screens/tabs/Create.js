@@ -3,7 +3,7 @@ import {
   View,
   Text,
   TextInput,
-  TouchableOpacity,
+  Pressable,
   StyleSheet,
   ScrollView,
 } from "react-native";
@@ -30,8 +30,8 @@ export default function Create() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollContent}>
+    <SafeAreaView style={{ flex: 1 }}>
+      <View style={styles.container}>
         <Text style={styles.title}>Create New Event</Text>
 
         <View style={styles.inputContainer}>
@@ -86,10 +86,10 @@ export default function Create() {
           />
         </View>
 
-        <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+        <Pressable style={styles.button} onPress={handleSubmit}>
           <Text style={styles.buttonText}>Create Event</Text>
-        </TouchableOpacity>
-      </ScrollView>
+        </Pressable>
+      </View>
     </SafeAreaView>
   );
 }
@@ -98,9 +98,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#f5f5f5",
-  },
-  scrollContent: {
-    padding: 20,
+    paddingHorizontal: 20,
+    justifyContent: "center",
   },
   title: {
     fontSize: 24,

@@ -6,7 +6,7 @@ import {
   ScrollView,
   StyleSheet,
   Switch,
-  TouchableOpacity,
+  Pressable,
 } from "react-native";
 import {
   Pencil,
@@ -16,93 +16,100 @@ import {
   Moon,
 } from "lucide-react-native";
 
-const Profile = () => {
+import { SafeAreaView } from "react-native-safe-area-context";
+
+export default function Profile() {
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.profileCard}>
-        <View style={styles.profileInfo}>
-          <Image
-            source={{ uri: "https://example.com/profile-image.jpg" }}
-            style={styles.profileImage}
-          />
-          <View style={styles.profileDetails}>
-            <Text style={styles.profileName}>Sameer</Text>
-            <Text style={styles.profileEmail}>sameer@gmail.com</Text>
-            <Text style={styles.profilePhone}>01228547392</Text>
-            <Text style={styles.profileLocation}>Amman, Jordan</Text>
+    <SafeAreaView style={{ flex: 1 }}>
+      <View style={styles.container}>
+        <ScrollView>
+          <View style={styles.profileCard}>
+            <View style={styles.profileInfo}>
+              <Image
+                source={{ uri: "https://example.com/profile-image.jpg" }}
+                style={styles.profileImage}
+              />
+              <View style={styles.profileDetails}>
+                <Text style={styles.profileName}>Sameer</Text>
+                <Text style={styles.profileEmail}>sameer@gmail.com</Text>
+                <Text style={styles.profilePhone}>01228547392</Text>
+                <Text style={styles.profileLocation}>Amman, Jordan</Text>
+              </View>
+            </View>
           </View>
-        </View>
+
+          <View style={styles.settingsSection}>
+            <Pressable style={styles.settingItem}>
+              <View style={styles.settingIcon}>
+                <Pencil size={16} color="#000000" />
+              </View>
+              <Text style={styles.settingText}>Profile details</Text>
+              <View style={styles.chevron} />
+            </Pressable>
+
+            <Pressable style={styles.settingItem}>
+              <View style={styles.settingIcon}>
+                <CheckCircle2 size={16} color="#000000" />
+              </View>
+              <Text style={styles.settingText}>Approval Requests</Text>
+              <View style={styles.chevron} />
+            </Pressable>
+
+            <Pressable style={styles.settingItem}>
+              <View style={styles.settingIcon}>
+                <Pencil size={16} color="#000000" />
+              </View>
+              <Text style={styles.settingText}>History</Text>
+              <View style={styles.chevron} />
+            </Pressable>
+
+            <Pressable style={styles.settingItem}>
+              <View style={styles.settingIcon}>
+                <CheckCircle2 size={16} color="#000000" />
+              </View>
+              <Text style={styles.settingText}>Bookmarked</Text>
+              <View style={styles.chevron} />
+            </Pressable>
+          </View>
+
+          <Text style={styles.sectionTitle}>App Settings</Text>
+
+          <View style={styles.settingsSection}>
+            <Pressable style={styles.settingItem}>
+              <View style={styles.settingIcon}>
+                <Languages size={16} color="#000000" />
+              </View>
+              <Text style={styles.settingText}>Language</Text>
+              <View style={styles.chevron} />
+            </Pressable>
+
+            <Pressable style={styles.settingItem}>
+              <View style={styles.settingIcon}>
+                <Bell size={16} color="#000000" />
+              </View>
+              <Text style={styles.settingText}>Notifications Management</Text>
+              <View style={styles.chevron} />
+            </Pressable>
+
+            <View style={styles.settingItem}>
+              <View style={styles.settingIcon}>
+                <Moon size={16} color="#000000" />
+              </View>
+              <Text style={styles.settingText}>Dark mode</Text>
+              <Switch />
+            </View>
+          </View>
+        </ScrollView>
       </View>
-
-      <View style={styles.settingsSection}>
-        <TouchableOpacity style={styles.settingItem}>
-          <View style={styles.settingIcon}>
-            <Pencil size={16} color="#000000" />
-          </View>
-          <Text style={styles.settingText}>Profile details</Text>
-          <View style={styles.chevron} />
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.settingItem}>
-          <View style={styles.settingIcon}>
-            <CheckCircle2 size={16} color="#000000" />
-          </View>
-          <Text style={styles.settingText}>Approval Requests</Text>
-          <View style={styles.chevron} />
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.settingItem}>
-          <View style={styles.settingIcon}>
-            <Pencil size={16} color="#000000" />
-          </View>
-          <Text style={styles.settingText}>History</Text>
-          <View style={styles.chevron} />
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.settingItem}>
-          <View style={styles.settingIcon}>
-            <CheckCircle2 size={16} color="#000000" />
-          </View>
-          <Text style={styles.settingText}>Bookmarked</Text>
-          <View style={styles.chevron} />
-        </TouchableOpacity>
-      </View>
-
-      <Text style={styles.sectionTitle}>App Settings</Text>
-
-      <View style={styles.settingsSection}>
-        <TouchableOpacity style={styles.settingItem}>
-          <View style={styles.settingIcon}>
-            <Languages size={16} color="#000000" />
-          </View>
-          <Text style={styles.settingText}>Language</Text>
-          <View style={styles.chevron} />
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.settingItem}>
-          <View style={styles.settingIcon}>
-            <Bell size={16} color="#000000" />
-          </View>
-          <Text style={styles.settingText}>Notifications Management</Text>
-          <View style={styles.chevron} />
-        </TouchableOpacity>
-
-        <View style={styles.settingItem}>
-          <View style={styles.settingIcon}>
-            <Moon size={16} color="#000000" />
-          </View>
-          <Text style={styles.settingText}>Dark mode</Text>
-          <Switch />
-        </View>
-      </View>
-    </ScrollView>
+    </SafeAreaView>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#f0f0f0",
+    paddingBottom: 80,
   },
   profileCard: {
     backgroundColor: "#FFFFFF",
@@ -197,5 +204,3 @@ const styles = StyleSheet.create({
     transform: [{ rotate: "45deg" }],
   },
 });
-
-export default Profile;
