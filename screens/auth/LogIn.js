@@ -7,7 +7,7 @@ import AuthButton from "../../components/ui/AuthUi/AuthButton";
 import AuthRedirectButton from "../../components/ui/AuthUi/AuthRedirectButton";
 import BoldText from "../../components/ui/BoldText";
 
-function LogIn() {
+function LogIn({ onLogIn }) {
   return (
     <View style={styles.container}>
       <PlaceHolderIcon />
@@ -17,7 +17,7 @@ function LogIn() {
       <AuthTextInput placeholder="Email" />
       <AuthTextInput placeholder="Password" secureTextEntry />
 
-      <AuthButton>Log In</AuthButton>
+      <AuthButton onPress={onLogIn}>Log In</AuthButton>
 
       <AuthRedirectButton>
         Don't have an account? {<BoldText>Sign Up</BoldText>}

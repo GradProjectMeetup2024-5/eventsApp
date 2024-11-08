@@ -1,24 +1,38 @@
+import { useState } from "react";
 import { StyleSheet } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
+import { StatusBar } from "expo-status-bar";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
-import TabsComponent from "./components/ui/TabsComponent.js";
 import Tabs from "./navigators/Tabs.js";
 
 import LogIn from "./screens/auth/LogIn.js";
 import SignUp from "./screens/auth/SignUp.js";
 import ForgotPass from "./screens/auth/ForgotPass.js";
-import Bookmarks from "./screens/tabs/Bookmarks.js";
-import Profile from "./screens/tabs/Profile.js";
 
 export default function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  function handleLogin() {
+    setIsLoggedIn(true);
+  }
+
+  let screen = <LogIn onLogIn={handleLogin} />;
+
+  if (isLoggedIn) {
+    screen = <Tabs />;
+  }
+
   return (
     // <SafeAreaProvider>
-    <NavigationContainer>
-      {/* <Profile /> */}
-      <Tabs />
-      {/* <TabsComponent /> */}
-    </NavigationContainer>
+    <>
+      <StatusBar style="dark" />
+      <NavigationContainer>
+        {/* <Profile /> */}
+        {screen}
+        {/* <TabsComponent /> */}
+      </NavigationContainer>
+    </>
     // </SafeAreaProvider>
   );
 }

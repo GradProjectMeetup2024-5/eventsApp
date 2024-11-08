@@ -11,9 +11,10 @@ import {
 import {
   Pencil,
   CheckCircle2,
-  Languages,
+  History,
   Bell,
   Moon,
+  LogOut,
 } from "lucide-react-native";
 
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -51,23 +52,15 @@ export default function Profile() {
               <View style={styles.settingIcon}>
                 <CheckCircle2 size={16} color="#000000" />
               </View>
-              <Text style={styles.settingText}>Approval Requests</Text>
+              <Text style={styles.settingText}>Approved Requests</Text>
               <View style={styles.chevron} />
             </Pressable>
 
             <Pressable style={styles.settingItem}>
               <View style={styles.settingIcon}>
-                <Pencil size={16} color="#000000" />
+                <History size={16} color="#000000" />
               </View>
               <Text style={styles.settingText}>History</Text>
-              <View style={styles.chevron} />
-            </Pressable>
-
-            <Pressable style={styles.settingItem}>
-              <View style={styles.settingIcon}>
-                <CheckCircle2 size={16} color="#000000" />
-              </View>
-              <Text style={styles.settingText}>Bookmarked</Text>
               <View style={styles.chevron} />
             </Pressable>
           </View>
@@ -75,14 +68,6 @@ export default function Profile() {
           <Text style={styles.sectionTitle}>App Settings</Text>
 
           <View style={styles.settingsSection}>
-            <Pressable style={styles.settingItem}>
-              <View style={styles.settingIcon}>
-                <Languages size={16} color="#000000" />
-              </View>
-              <Text style={styles.settingText}>Language</Text>
-              <View style={styles.chevron} />
-            </Pressable>
-
             <Pressable style={styles.settingItem}>
               <View style={styles.settingIcon}>
                 <Bell size={16} color="#000000" />
@@ -98,6 +83,13 @@ export default function Profile() {
               <Text style={styles.settingText}>Dark mode</Text>
               <Switch />
             </View>
+            <Pressable style={styles.settingItem}>
+              <View style={styles.settingIcon}>
+                <LogOut size={16} color="#000000" />
+              </View>
+              <Text style={styles.settingText}>Log Out</Text>
+              <View style={[styles.chevron]} />
+            </Pressable>
           </View>
         </ScrollView>
       </View>

@@ -4,7 +4,13 @@ const { width } = Dimensions.get("window");
 
 function AuthButton({ children, onPress }) {
   return (
-    <Pressable style={styles.authButton} onPress={onPress}>
+    <Pressable
+      onPress={onPress}
+      style={({ pressed }) => [
+        styles.button,
+        pressed ? [styles.authButton, styles.buttonPressed] : styles.authButton,
+      ]}
+    >
       <Text style={styles.buttonText}>{children}</Text>
     </Pressable>
   );
@@ -26,5 +32,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginTop: 10,
+  },
+  buttonPressed: {
+    opacity: 0.5, // should add some animation here
   },
 });
