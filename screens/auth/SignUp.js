@@ -7,7 +7,10 @@ import AuthButton from "../../components/ui/AuthUi/AuthButton";
 import AuthRedirectButton from "../../components/ui/AuthUi/AuthRedirectButton";
 import BoldText from "../../components/ui/BoldText";
 
-function SignUp() {
+function SignUp({ navigation }) {
+  function handleBackToLogin() {
+    navigation.goBack("SignUp");
+  }
   return (
     <View style={styles.container}>
       <PlaceHolderIcon />
@@ -20,7 +23,7 @@ function SignUp() {
 
       <AuthButton>Sign Up</AuthButton>
 
-      <AuthRedirectButton>
+      <AuthRedirectButton onPress={handleBackToLogin}>
         Already have an account? {<BoldText>Log In</BoldText>}
       </AuthRedirectButton>
     </View>

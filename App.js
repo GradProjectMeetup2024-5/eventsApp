@@ -3,6 +3,7 @@ import { StyleSheet } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { StatusBar } from "expo-status-bar";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import Tabs from "./navigators/Tabs.js";
 
@@ -10,30 +11,34 @@ import LogIn from "./screens/auth/LogIn.js";
 import SignUp from "./screens/auth/SignUp.js";
 import ForgotPass from "./screens/auth/ForgotPass.js";
 
+const Stack = createNativeStackNavigator();
+
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  function handleLogin() {
-    setIsLoggedIn(true);
-  }
-
-  let screen = <LogIn onLogIn={handleLogin} />;
-
-  if (isLoggedIn) {
-    screen = <Tabs />;
+  function ScreenContent({ setIsLoggedIn }) {
+    return (
+      <NavigationContainer>
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+          {!isLoggedIn ? (
+            <>
+              <Stack.Screen name="LogIn" component={LogIn} />
+              <Stack.Screen name="SignUp" component={SignUp} />
+              <Stack.Screen name="ForgotPassword" component={ForgotPass} />
+            </>
+          ) : (
+            <Stack.Screen name="Tabs" component={Tabs} />
+          )}
+        </Stack.Navigator>
+      </NavigationContainer>
+    );
   }
 
   return (
-    // <SafeAreaProvider>
-    <>
+    <SafeAreaProvider>
       <StatusBar style="dark" />
-      <NavigationContainer>
-        {/* <Profile /> */}
-        {screen}
-        {/* <TabsComponent /> */}
-      </NavigationContainer>
-    </>
-    // </SafeAreaProvider>
+      <ScreenContent />
+    </SafeAreaProvider>
   );
 }
 

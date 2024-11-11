@@ -7,7 +7,10 @@ import AuthButton from "../../components/ui/AuthUi/AuthButton";
 import AuthRedirectButton from "../../components/ui/AuthUi/AuthRedirectButton";
 import BoldText from "../../components/ui/BoldText";
 
-function ForgotPass() {
+function ForgotPass({ navigation }) {
+  function handleBackToLogin() {
+    navigation.goBack("SignUp");
+  }
   return (
     <View style={styles.container}>
       <PlaceHolderIcon />
@@ -20,7 +23,7 @@ function ForgotPass() {
       <AuthTextInput placeholder="Email" />
       <AuthButton>Send</AuthButton>
 
-      <AuthRedirectButton>
+      <AuthRedirectButton onPress={handleBackToLogin}>
         Remembered your password? <BoldText>Log In</BoldText>
       </AuthRedirectButton>
     </View>

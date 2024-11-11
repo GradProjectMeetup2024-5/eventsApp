@@ -7,7 +7,14 @@ import AuthButton from "../../components/ui/AuthUi/AuthButton";
 import AuthRedirectButton from "../../components/ui/AuthUi/AuthRedirectButton";
 import BoldText from "../../components/ui/BoldText";
 
-function LogIn({ onLogIn }) {
+function LogIn({ navigation }) {
+  function handleSignUp() {
+    navigation.navigate("SignUp");
+  }
+  function handleForgotPass() {
+    navigation.navigate("ForgotPassword");
+  }
+
   return (
     <View style={styles.container}>
       <PlaceHolderIcon />
@@ -17,13 +24,13 @@ function LogIn({ onLogIn }) {
       <AuthTextInput placeholder="Email" />
       <AuthTextInput placeholder="Password" secureTextEntry />
 
-      <AuthButton onPress={onLogIn}>Log In</AuthButton>
+      <AuthButton>Log In</AuthButton>
 
-      <AuthRedirectButton>
+      <AuthRedirectButton onPress={handleSignUp}>
         Don't have an account? {<BoldText>Sign Up</BoldText>}
       </AuthRedirectButton>
 
-      <Pressable style={styles.forgotPassword}>
+      <Pressable style={styles.forgotPassword} onPress={handleForgotPass}>
         <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
       </Pressable>
     </View>

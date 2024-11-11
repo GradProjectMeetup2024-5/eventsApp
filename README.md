@@ -14,16 +14,15 @@ University students often miss out on important events due to a lack of a centra
 
 1. Clone this repository.
 2. Run `npm install` to install necessary dependencies.
-3. Install the dependencies listed below.
-4. Start the development server with `expo start`.
-   
+3. Run `npx expo install react-native-screens react-native-safe-area-context` to set up React Navigation properly.
+4. Install the dependencies listed below.
+5. Start the development server with `npm start`.
+
 ## Dependencies
 
 Install the following dependencies:
 
-- `@react-navigation/native@^6.1.0`
-- `@react-navigation/bottom-tabs@^6.5.7`
-- `@react-navigation/native-stack@^6.9.12`
+- `@react-navigation/native`
+- `@react-navigation/bottom-tabs`
+- `@react-navigation/native-stack`
 - `expo-router`
-- `react-native-screens`
-- `react-native-safe-area-context`
