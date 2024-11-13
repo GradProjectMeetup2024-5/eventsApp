@@ -1,4 +1,6 @@
+import { useContext } from "react";
 import { StyleSheet, View, Text, Pressable } from "react-native";
+import AuthContext from "../../context/AuthContext";
 
 import PlaceHolderIcon from "../../components/ui/PlaceHolderIcon";
 import AuthTitle from "../../components/ui/AuthUi/AuthTitle";
@@ -8,11 +10,16 @@ import AuthRedirectButton from "../../components/ui/AuthUi/AuthRedirectButton";
 import BoldText from "../../components/ui/BoldText";
 
 function LogIn({ navigation }) {
+  const { setIsLoggedIn } = useContext(AuthContext);
+
   function handleSignUp() {
     navigation.navigate("SignUp");
   }
   function handleForgotPass() {
     navigation.navigate("ForgotPassword");
+  }
+  function handleLogin() {
+    setIsLoggedIn(true);
   }
 
   return (
@@ -24,7 +31,7 @@ function LogIn({ navigation }) {
       <AuthTextInput placeholder="Email" />
       <AuthTextInput placeholder="Password" secureTextEntry />
 
-      <AuthButton>Log In</AuthButton>
+      <AuthButton onPress={handleLogin}>Log In</AuthButton>
 
       <AuthRedirectButton onPress={handleSignUp}>
         Don't have an account? {<BoldText>Sign Up</BoldText>}
