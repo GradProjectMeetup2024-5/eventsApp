@@ -45,7 +45,7 @@ export default function Profile() {
                 <Pencil size={16} color="#000000" />
               </View>
               <Text style={styles.settingText}>Profile details</Text>
-              <View style={styles.chevron} />
+              <View style={styles.smallChevron} />
             </Pressable>
 
             <Pressable style={styles.settingItem}>
@@ -53,7 +53,7 @@ export default function Profile() {
                 <CheckCircle2 size={16} color="#000000" />
               </View>
               <Text style={styles.settingText}>Approved Requests</Text>
-              <View style={styles.chevron} />
+              <View style={styles.smallChevron} />
             </Pressable>
 
             <Pressable style={styles.settingItem}>
@@ -61,19 +61,19 @@ export default function Profile() {
                 <History size={16} color="#000000" />
               </View>
               <Text style={styles.settingText}>History</Text>
-              <View style={styles.chevron} />
+              <View style={styles.smallChevron} />
             </Pressable>
           </View>
 
           <Text style={styles.sectionTitle}>App Settings</Text>
 
-          <View style={styles.settingsSection}>
+          <View style={[styles.settingsSection, { marginTop: 16 }]}>
             <Pressable style={styles.settingItem}>
               <View style={styles.settingIcon}>
                 <Bell size={16} color="#000000" />
               </View>
               <Text style={styles.settingText}>Notifications Management</Text>
-              <View style={styles.chevron} />
+              <View style={styles.smallChevron} />
             </Pressable>
 
             <View style={styles.settingItem}>
@@ -88,7 +88,7 @@ export default function Profile() {
                 <LogOut size={16} color="#000000" />
               </View>
               <Text style={styles.settingText}>Log Out</Text>
-              <View style={[styles.chevron]} />
+              <View style={styles.smallChevron} />
             </Pressable>
           </View>
         </ScrollView>
@@ -190,6 +190,14 @@ const styles = StyleSheet.create({
   chevron: {
     width: 24,
     height: 24,
+    borderTopWidth: 2,
+    borderRightWidth: 2,
+    borderColor: "#000000",
+    transform: [{ rotate: "45deg" }],
+  },
+  smallChevron: {
+    width: 10,
+    height: 10,
     borderTopWidth: 2,
     borderRightWidth: 2,
     borderColor: "#000000",

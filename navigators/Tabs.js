@@ -27,7 +27,6 @@ const TabIcon = ({ icon, focused, name }) => {
           width: 24,
           height: 24,
           tintColor: focused ? "#DC143C" : "#aaa",
-          // paddingBottom: ,
         }}
       />
       <Text
@@ -35,7 +34,6 @@ const TabIcon = ({ icon, focused, name }) => {
           color: focused ? "#DC143C" : "#aaa",
           fontSize: 12,
           paddingTop: 3,
-          // tintColor: focused ? "#DC143C" : "#aaa",
         }}
       >
         {name}
@@ -52,14 +50,14 @@ const Tabs = () => {
         tabBarShowLabel: false,
         tabBarStyle: {
           position: "absolute",
-          bottom: Platform.OS === "ios" ? 25 : 20,
+          bottom: Platform.OS === "ios" ? 10 : 5, // Lowered the bottom position
           right: 20,
           left: 20,
           elevation: 0,
           backgroundColor: "#fff",
           borderRadius: 20,
-          height: 90,
-          paddingTop: Platform.OS === "ios" ? 30 : 0,
+          height: 70, // Reduced the height to make the nav bar thinner
+          paddingTop: Platform.OS === "ios" ? 20 : 0, // Adjusted padding to match new height
           ...styles.shadow,
         },
       }}

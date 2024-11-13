@@ -1,10 +1,13 @@
 import React from "react";
 import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
 import PlaceHolderIcon from "../../components/ui/PlaceHolderIcon";
+import { useNavigation } from '@react-navigation/native'; // Import useNavigation hook
 
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const Bookmark = () => {
+  const navigation = useNavigation(); // Initialize navigation
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
@@ -24,7 +27,10 @@ const Bookmark = () => {
         </ScrollView>
 
         <View style={styles.footer}>
-          <Pressable style={styles.button}>
+          <Pressable
+            style={styles.button}
+            onPress={() => navigation.navigate('Home')} // Navigate to Home screen
+          >
             <Text style={styles.buttonText}>Browse</Text>
           </Pressable>
         </View>

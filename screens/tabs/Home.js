@@ -1,83 +1,69 @@
-import React, { useState, useEffect } from "react";
-import {
-  View,
-  Text,
-  ScrollView,
-  StyleSheet,
-  Image,
-  Pressable,
-  TextInput,
-} from "react-native";
-import { createShimmerPlaceholder } from "react-native-shimmer-placeholder";
-import { LinearGradient } from "expo-linear-gradient";
-import Animated, { FadeIn, FadeOut } from "react-native-reanimated";
-import { BlurView } from "expo-blur";
-import { Ionicons } from "@expo/vector-icons";
-import {
-  Header,
-  getHeaderTitle,
-  useHeaderHeight,
-} from "@react-navigation/elements";
-
-import { SafeAreaView } from "react-native-safe-area-context";
-
-const ShimmerPlaceholder = createShimmerPlaceholder(LinearGradient);
+import React, { useState, useEffect } from 'react'
+import { View, Text, ScrollView, TouchableOpacity, TextInput, Image, StyleSheet } from 'react-native'
+import { Feather } from '@expo/vector-icons'
 
 const sections = [
   { title: "Trending", label: "Curated top picks from this week" },
   { title: "Outdoors", label: "Go outside" },
-  { title: "Nature", label: "Discover Jordan’s nature" },
+  { title: "Nature", label: "Discover Jordan's nature" },
   { title: "Games", label: "Play a game" },
   { title: "Activities", label: "Discover fun activities" },
   { title: "Other", label: "Explore other options" },
-];
+]
 
 const apps = [
   {
     title: "Concert",
-    description:
-      "Discover the best flight deals trending this week. Book now and save big on your next trip.",
+    description: "Discover the best flight deals trending this week. Book now and save big on your next trip.",
     author: "By Travel Experts",
     image: "https://picsum.photos/50/50",
   },
   {
     title: "Football",
-    description:
-      "Stay at the most popular hotels trending this season. Find the perfect accommodation for your travels.",
+    description: "Stay at the most popular hotels trending this season. Find the perfect accommodation for your travels.",
     author: "By Hotel Gurus",
     image: "https://picsum.photos/50/50",
   },
   {
     title: "Park",
-    description:
-      "Catch the best last-minute flight deals. Perfect for spontaneous travelers looking for great prices.",
+    description: "Catch the best last-minute flight deals. Perfect for spontaneous travelers looking for great prices.",
     author: "By Trip Masters",
     image: "https://picsum.photos/50/50",
   },
   {
     title: "Forest",
-    description:
-      "Experience luxury at its finest with these trending high-end hotels. Book your stay today.",
+    description: "Experience luxury at its finest with these trending high-end hotels. Book your stay today.",
     author: "By Luxury Travels",
     image: "https://picsum.photos/50/50",
   },
-];
+  {
+    title: "Forest",
+    description: "Experience luxury at its finest with these trending high-end hotels. Book your stay today.",
+    author: "By Luxury Travels",
+    image: "https://picsum.photos/50/50",
+  },
+  {
+    title: "Forest",
+    description: "Experience luxury at its finest with these trending high-end hotels. Book your stay today.",
+    author: "By Luxury Travels",
+    image: "https://picsum.photos/50/50",
+  },
+]
 
-export default function Home() {
-  const [loading, setLoading] = useState(true);
-  const [selected, setSelected] = useState(sections[0]);
-  const [searchVisible, setSearchVisible] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [filteredApps, setFilteredApps] = useState(apps);
-  const headerHeight = useHeaderHeight();
+export default function Component() {
+  const [loading, setLoading] = useState(true)
+  const [selected, setSelected] = useState(sections[0])
+  const [searchVisible, setSearchVisible] = useState(false)
+  const [searchQuery, setSearchQuery] = useState("")
+  const [filteredApps, setFilteredApps] = useState(apps)
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setLoading(false);
-    }, 2000);
+      setLoading(false)
+    }, 2000)
 
-    return () => clearTimeout(timer);
-  }, []);
+    return () => clearTimeout(timer)
+  }, [])
 
   useEffect(() => {
     const filtered = apps.filter(
@@ -85,222 +71,171 @@ export default function Home() {
         app.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         app.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
         app.author.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-    setFilteredApps(filtered);
-  }, [searchQuery]);
-
-  const renderExploreItem = (item, index) => (
-    <View key={index} style={styles.card}>
-      <ShimmerPlaceholder
-        width={60}
-        height={60}
-        shimmerStyle={{ borderRadius: 30 }}
-        visible={!loading}
-      >
-        <Image source={{ uri: item.image }} style={styles.cardImage} />
-      </ShimmerPlaceholder>
-
-      <View style={styles.cardContent}>
-        <ShimmerPlaceholder width={160} height={20} visible={!loading}>
-          <Text style={styles.cardTitle}>{item.title}</Text>
-        </ShimmerPlaceholder>
-
-        <ShimmerPlaceholder width={200} height={20} visible={!loading}>
-          <Text style={styles.cardDesc}>{item.description}</Text>
-        </ShimmerPlaceholder>
-
-        <ShimmerPlaceholder width={150} height={20} visible={!loading}>
-          <Text style={styles.cardAuthor}>{item.author}</Text>
-        </ShimmerPlaceholder>
-      </View>
-    </View>
-  );
+    )
+    setFilteredApps(filtered)
+  }, [searchQuery])
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <View style={styles.container}>
-        <View>
-          <BlurView
-            intensity={60}
-            tint="light"
-            style={[
-              StyleSheet.absoluteFill,
-              { backgroundColor: "rgba(255,255,255,0.5)" },
-            ]}
-          />
-          <Pressable
-            style={{ marginRight: 16 }}
-            onPress={() => setSearchVisible((prev) => !prev)}
-          >
-            <Ionicons name="search" size={24} color="#666" />
-          </Pressable>
-          <Header title="Explore" />
-          {searchVisible && (
-            <View style={styles.searchContainer}>
-              <TextInput
-                style={styles.searchInput}
-                placeholder="Search..."
-                value={searchQuery}
-                onChangeText={setSearchQuery}
-              />
-            </View>
-          )}
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={styles.sectionsContainer}
-          >
-            {sections.map((section, index) => (
-              <Pressable
-                key={index}
-                onPress={() => setSelected(section)}
-                style={
-                  selected === section
-                    ? styles.sectionBtnSelected
-                    : styles.sectionBtn
-                }
-              >
-                <Text
-                  style={
-                    selected === section
-                      ? styles.sectionBtnTextSelected
-                      : styles.sectionBtnText
-                  }
-                >
-                  {section.title}
-                </Text>
-              </Pressable>
-            ))}
-          </ScrollView>
-        </View>
-        <ScrollView
-          contentContainerStyle={[
-            styles.scrollContainer,
-            { paddingTop: headerHeight },
-          ]}
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.title}>Explore</Text>
+        <TouchableOpacity
+          style={styles.searchButton}
+          onPress={() => setSearchVisible((prev) => !prev)}
         >
-          <Animated.View
-            style={styles.section}
-            entering={FadeIn.duration(600).delay(400)}
-            exiting={FadeOut.duration(400)}
-          >
-            <ShimmerPlaceholder width={160} height={20} visible={!loading}>
-              <Text style={styles.title}>{selected.title}</Text>
-            </ShimmerPlaceholder>
-            <ShimmerPlaceholder
-              width={280}
-              height={50}
-              visible={!loading}
-              shimmerStyle={{ marginVertical: 10 }}
-            >
-              <Text style={styles.label}>{selected.label}</Text>
-            </ShimmerPlaceholder>
-
-            {filteredApps.map(renderExploreItem)}
-          </Animated.View>
-        </ScrollView>
+          <Feather name="search" size={24} color="black" />
+        </TouchableOpacity>
       </View>
-    </SafeAreaView>
-  );
+      {searchVisible && (
+        <View style={styles.searchContainer}>
+          <TextInput
+            style={styles.searchInput}
+            placeholder="Search..."
+            value={searchQuery}
+            onChangeText={setSearchQuery}
+          />
+        </View>
+      )}
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.sectionsContainer} contentContainerStyle={{ paddingRight: 16 }}>
+        {sections.map((section, index) => (
+          <TouchableOpacity
+            key={index}
+            style={[
+              styles.sectionButton,
+              selected === section && styles.sectionButtonSelected,
+            ]}
+            onPress={() => setSelected(section)}
+          >
+            <Text
+              style={[
+                styles.sectionButtonText,
+                selected === section && styles.sectionButtonTextSelected,
+              ]}
+            >
+              {section.title}
+            </Text>
+          </TouchableOpacity>
+        ))}
+      </ScrollView>
+      <ScrollView style={styles.content}>
+        <Text style={styles.sectionTitle}>{selected.title}</Text>
+        <Text style={styles.sectionLabel}>{selected.label}</Text>
+        {filteredApps.map((app, index) => (
+          <View key={index} style={styles.appCard}>
+            <View style={styles.appCardContent}>
+              <Image source={{ uri: app.image }} style={styles.cardImage} />
+              <View style={styles.cardContent}>
+                <Text style={styles.cardTitle}>{app.title}</Text>
+                <Text style={styles.appDescription}>{app.description}</Text>
+                <Text style={styles.cardAuthor}>{app.author}</Text>
+              </View>
+            </View>
+          </View>
+        ))}
+      </ScrollView>
+    </View>
+  )
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f0f0f0",
-  },
-  scrollContainer: {
+    backgroundColor: '#fff',
     padding: 16,
   },
-  section: {
-    padding: 16,
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 20,
   },
   title: {
     fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 8,
-    // fontFamily: "Work Sans",
+    fontWeight: 'bold',
+    paddingTop: 10,
   },
-  label: {
-    fontSize: 16,
-    color: "#666",
+  searchButton: {
+    padding: 20,
+  },
+  searchContainer: {
     marginBottom: 16,
-    // fontFamily: "Work Sans",
+  },
+  searchInput: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 8,
+    padding: 8,
   },
   sectionsContainer: {
-    gap: 8,
-    paddingHorizontal: 16,
-    paddingVertical: 10,
+    flexDirection: 'row',
+    marginBottom: 20,
   },
-  sectionBtn: {
-    backgroundColor: "#e0e0e0",
-    borderRadius: 14,
-    paddingHorizontal: 12,
-    paddingVertical: 6,
+  sectionButton: {
+    borderRadius: 16,
+    marginRight: 8,
+    backgroundColor: '#f0f0f0',
+    alignSelf: 'flex-start',
+    paddingBottom: 8,
   },
-  sectionBtnSelected: {
-    backgroundColor: "#19191B",
-    borderRadius: 14,
-    paddingHorizontal: 12,
-    paddingVertical: 6,
+  sectionButtonSelected: {
+    backgroundColor: '#007AFF',
   },
-  sectionBtnText: {
-    color: "#000",
-    fontWeight: "500",
-    // fontFamily: "Work Sans",
+  sectionButtonText: {
+    color: '#333',
+    fontWeight: '600',
+    fontSize: 14,
   },
-  sectionBtnTextSelected: {
-    color: "#fff",
-    fontWeight: "500",
-    // fontFamily: "Work Sans",
+  sectionButtonTextSelected: {
+    color: '#ffffff',
   },
-  card: {
-    borderRadius: 8,
-    backgroundColor: "#e0e0e0",
-    padding: 16,
+
+  sectionTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
     marginBottom: 8,
-    flexDirection: "row",
-    alignItems: "center",
+  },
+  sectionLabel: {
+    fontSize: 16,
+    color: '#666',
+    marginBottom: 16,
+  },
+  appCard: {
+    backgroundColor: '#ffffff',
+    borderRadius: 12,
+    marginBottom: 16,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 4,
+    elevation: 3,
   },
   cardImage: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    marginRight: 16,
+  },
+  appCardContent: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    padding: 16,
   },
   cardContent: {
     flex: 1,
-    marginLeft: 16,
   },
   cardTitle: {
-    fontSize: 16,
-    fontWeight: "600",
-    // fontFamily: "Work Sans",
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 4,
   },
-  cardDesc: {
+  appDescription: {
     fontSize: 14,
-    color: "#000",
-    marginTop: 4,
-    // fontFamily: "Work Sans",
+    color: '#666',
+    marginBottom: 4,
+    flexShrink: 1,
   },
   cardAuthor: {
-    fontSize: 14,
-    color: "#666",
-    marginTop: 4,
-    // fontFamily: "Work Sans",
+    fontSize: 12,
+    color: '#999',
   },
-  searchContainer: {
-    padding: 16,
-    backgroundColor: "#fff",
-    borderRadius: 8,
-    marginHorizontal: 16,
-    marginBottom: 10,
-  },
-  searchInput: {
-    height: 40,
-    borderColor: "#e0e0e0",
-    borderWidth: 1,
-    borderRadius: 8,
-    paddingHorizontal: 8,
-    // fontFamily: "Work Sans",
-  },
-});
+})
