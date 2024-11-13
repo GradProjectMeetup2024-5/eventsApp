@@ -77,12 +77,11 @@ export default function Create() {
         <View style={styles.inputContainer}>
           <Text style={styles.label}>Description</Text>
           <TextInput
-            style={[styles.input, styles.textArea]}
+            style={styles.input}
             value={eventDescription}
             onChangeText={setEventDescription}
             placeholder="Enter event description"
             multiline
-            numberOfLines={4}
           />
         </View>
 
@@ -124,20 +123,17 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#ddd",
   },
-  textArea: {
-    height: 100,
-    textAlignVertical: "top",
-  },
   button: {
     backgroundColor: "#DC143C",
-    padding: 15,
-    borderRadius: 5,
+    borderRadius: 100,
+    padding: 8,
     alignItems: "center",
-    marginTop: 10,
   },
   buttonText: {
-    color: "white",
-    fontSize: 18,
-    fontWeight: "bold",
+    fontFamily: "Roboto",
+    fontWeight: "500",
+    fontSize: 14,
+    lineHeight: 24,
+    color: "#FFFFFF",
   },
 });
