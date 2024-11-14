@@ -1,15 +1,14 @@
-import React, { useState, useEffect } from 'react'
-import { View, Text, ScrollView, TouchableOpacity, TextInput, Image, StyleSheet } from 'react-native'
-import { Feather } from '@expo/vector-icons'
+import React, { useState, useEffect, useRef } from 'react'
+import { View, Text, ScrollView, TouchableOpacity, Image, StyleSheet, SafeAreaView, TextInput } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
 
 const sections = [
-  { title: "Trending", label: "Curated top picks from this week" },
-  { title: "Outdoors", label: "Go outside" },
-  { title: "Nature", label: "Discover Jordan's nature" },
-  { title: "Games", label: "Play a game" },
-  { title: "Activities", label: "Discover fun activities" },
-  { title: "Other", label: "Explore other options" },
-]
+  { title: 'Trending' },
+  { title: 'Outdoor' },
+  { title: 'Indoor' },
+  { title: 'Sports' },
+  { title: 'Kids' },
+];
 
 const apps = [
   {
@@ -53,9 +52,9 @@ const apps = [
 export default function Component() {
   const [loading, setLoading] = useState(true)
   const [selected, setSelected] = useState(sections[0])
-  const [searchVisible, setSearchVisible] = useState(false)
-  const [searchQuery, setSearchQuery] = useState("")
   const [filteredApps, setFilteredApps] = useState(apps)
+  const navigation = useNavigation()
+  const scrollViewRef = useRef(null)
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -65,61 +64,58 @@ export default function Component() {
     return () => clearTimeout(timer)
   }, [])
 
-  useEffect(() => {
-    const filtered = apps.filter(
-      (app) =>
-        app.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        app.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        app.author.toLowerCase().includes(searchQuery.toLowerCase())
-    )
-    setFilteredApps(filtered)
-  }, [searchQuery])
+  const handleSectionSelect = (section) => {
+    setSelected(section)
+  }
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
+      {/* Title and Search Bar */}
       <View style={styles.header}>
         <Text style={styles.title}>Explore</Text>
-        <TouchableOpacity
-          style={styles.searchButton}
-          onPress={() => setSearchVisible((prev) => !prev)}
-        >
-          <Feather name="search" size={24} color="black" />
-        </TouchableOpacity>
+        <TextInput
+          style={styles.searchBar}
+          placeholder="Search"
+        />
       </View>
-      {searchVisible && (
-        <View style={styles.searchContainer}>
-          <TextInput
-            style={styles.searchInput}
-            placeholder="Search..."
-            value={searchQuery}
-            onChangeText={setSearchQuery}
-          />
-        </View>
-      )}
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.sectionsContainer} contentContainerStyle={{ paddingRight: 16 }}>
+
+      {/* Pills Section */}
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.pillsContainer}>
         {sections.map((section, index) => (
           <TouchableOpacity
             key={index}
+            onPress={() => handleSectionSelect(section)}
             style={[
-              styles.sectionButton,
-              selected === section && styles.sectionButtonSelected,
+              {
+                paddingHorizontal: 16,
+                paddingVertical: 6,
+                borderRadius: 20,
+                flexDirection: 'row',
+                alignItems: 'center',
+                height: 32,
+                marginRight: 8,
+                borderWidth: 1,
+                borderColor: selected === section ? 'red' : '#CBD5E1',
+              },
             ]}
-            onPress={() => setSelected(section)}
           >
             <Text
-              style={[
-                styles.sectionButtonText,
-                selected === section && styles.sectionButtonTextSelected,
-              ]}
+              style={{
+                color: selected === section ? 'red' : '#CBD5E1',
+                fontSize: 12,
+                fontWeight: '500',
+                textAlign: 'center',
+                fontFamily: 'Roboto',
+              }}
             >
               {section.title}
             </Text>
           </TouchableOpacity>
         ))}
       </ScrollView>
+      <View style={{ paddingBottom: 20 }} />
       <ScrollView style={styles.content}>
-        <Text style={styles.sectionTitle}>{selected.title}</Text>
-        <Text style={styles.sectionLabel}>{selected.label}</Text>
+        <Text style={[styles.sectionTitle, { paddingBottom: 10 }]}>{selected.title}</Text>
         {filteredApps.map((app, index) => (
           <View key={index} style={styles.appCard}>
             <View style={styles.appCardContent}>
@@ -133,7 +129,7 @@ export default function Component() {
           </View>
         ))}
       </ScrollView>
-    </View>
+    </SafeAreaView>
   )
 }
 
@@ -142,29 +138,32 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     padding: 16,
+    paddingTop: 40,
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: 0,
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     paddingTop: 10,
   },
-  searchButton: {
-    padding: 20,
-  },
-  searchContainer: {
-    marginBottom: 16,
-  },
-  searchInput: {
+  searchBar: {
+    height: 40,
+    borderColor: 'black',
     borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 8,
-    padding: 8,
+    borderRadius: 20,
+    paddingHorizontal: 10,
+    flex: 1,
+    marginLeft: 10,
+    paddingTop: 10,
+  },
+  pillsContainer: {
+    width: '100%',
+    paddingVertical: 10,
   },
   sectionsContainer: {
     flexDirection: 'row',
@@ -193,11 +192,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 8,
-  },
-  sectionLabel: {
-    fontSize: 16,
-    color: '#666',
-    marginBottom: 16,
   },
   appCard: {
     backgroundColor: '#ffffff',
