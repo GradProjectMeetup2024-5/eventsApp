@@ -67,16 +67,16 @@ const Tabs = () => {
         component={Home}
         options={{
           tabBarIcon: ({ focused }) => (
-            <TabIcon name="Home" icon={Icons.home} focused={focused} />
+            <TabIcon name="Explore" icon={Icons.home} focused={focused} />
           ),
         }}
       />
       <Tab.Screen
-        name="Bookmarks"
+        name="My Events"
         component={Bookmarks}
         options={{
           tabBarIcon: ({ focused }) => (
-            <TabIcon name="Bookmarks" icon={Icons.bookmark} focused={focused} />
+            <TabIcon name="My Events" icon={Icons.bookmark} focused={focused} />
           ),
         }}
       />
