@@ -25,4 +25,5 @@ Install the following dependencies:
 - `@react-navigation/native`
 - `@react-navigation/bottom-tabs`
 - `@react-navigation/native-stack`
+- `@react-native/virtualized-lists`
 - `expo-router`

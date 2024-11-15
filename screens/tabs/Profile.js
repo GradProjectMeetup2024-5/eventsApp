@@ -1,80 +1,100 @@
-import React from "react";
-import {
-  View,
-  Text,
-  Image,
-  ScrollView,
-  StyleSheet,
-  Pressable,
-} from "react-native";
-import {
-  Pencil,
-  CheckCircle2,
-  History,
-  Bell,
-  LogOut,
-} from "lucide-react-native";
-
+import React, { useContext, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { View, Text, ScrollView, StyleSheet } from "react-native";
 
-export default function Profile() {
+import { CheckCircle2, History, Bell, LogOut } from "lucide-react-native";
+
+import AuthContext from "../../context/AuthContext";
+
+import ButtonItem from "../../components/ui/ProfileUi/ButtonItem";
+import UserDetails from "../../components/ui/ProfileUi/UserDetails";
+
+import NotificationSettings from "../../components/ui/ProfileUi/Modals/NotificationSettings";
+import HistoryPage from "../../components/ui/ProfileUi/Modals/History";
+import RequestStatus from "../../components/ui/ProfileUi/Modals/RequestStatus";
+
+export default function Profile({ navigation }) {
+  const { setIsLoggedIn } = useContext(AuthContext);
+  const [rqStatusVisible, setRqStatusVisible] = useState(false);
+  const [historyVisible, setHistoryVisible] = useState(false);
+  const [notificationsVisible, setNotificationVisible] = useState(false);
+
+  function handleLogOut() {
+    setIsLoggedIn(false);
+  }
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
         <ScrollView>
-          <View style={styles.profileCard}>
-            <View style={styles.profileInfo}>
-              <Image
-                source={{ uri: "https://example.com/profile-image.jpg" }}
-                style={styles.profileImage}
-              />
-              <View style={styles.profileDetails}>
-                <Text style={styles.profileName}>Sameer</Text>
-                <Text style={styles.profileEmail}>sameer@gmail.com</Text>
-                <Text style={styles.profilePhone}>01228547392</Text>
-                <Text style={styles.profileLocation}>Amman, Jordan</Text>
-              </View>
-            </View>
-          </View>
+          <UserDetails
+            image="https://example.com/profile-image.jpg"
+            name="Sameer"
+            email="sameer@gmail.com"
+            phone="01228547392"
+            address="Amman, Jordan"
+          />
+
+          <Text style={styles.sectionTitle}>General</Text>
 
           <View style={styles.settingsSection}>
-            <Pressable style={styles.settingItem}>
-              <View style={styles.settingIcon}>
-                <CheckCircle2 size={16} color="#000000" />
-              </View>
-              <Text style={styles.settingText}>Requisites Status</Text>
-              <View style={styles.smallChevron} />
-            </Pressable>
+            <ButtonItem
+              icon={<CheckCircle2 size={16} color="#000000" />}
+              onPress={() => {
+                setRqStatusVisible(true);
+              }}
+            >
+              Request Status
+            </ButtonItem>
 
-            <Pressable style={styles.settingItem}>
-              <View style={styles.settingIcon}>
-                <History size={16} color="#000000" />
-              </View>
-              <Text style={styles.settingText}>History</Text>
-              <View style={styles.smallChevron} />
-            </Pressable>
+            <ButtonItem
+              icon={<History size={16} color="#000000" />}
+              onPress={() => {
+                setHistoryVisible(true);
+              }}
+            >
+              History
+            </ButtonItem>
           </View>
 
           <Text style={styles.sectionTitle}>App Settings</Text>
 
           <View style={[styles.settingsSection, { marginTop: 16 }]}>
-            <Pressable style={styles.settingItem}>
-              <View style={styles.settingIcon}>
-                <Bell size={16} color="#000000" />
-              </View>
-              <Text style={styles.settingText}>Notifications Management</Text>
-              <View style={styles.smallChevron} />
-            </Pressable>
+            <ButtonItem
+              icon={<Bell size={16} color="#000000" />}
+              onPress={() => {
+                setNotificationVisible(true);
+              }}
+            >
+              Notifications
+            </ButtonItem>
 
-            <Pressable style={styles.settingItem}>
-              <View style={styles.settingIcon}>
-                <LogOut size={16} color="#000000" />
-              </View>
-              <Text style={styles.settingText}>Log Out</Text>
-              <View style={styles.smallChevron} />
-            </Pressable>
+            <ButtonItem
+              icon={<LogOut size={16} color="#000000" />}
+              onPress={handleLogOut}
+            >
+              Log Out
+            </ButtonItem>
           </View>
         </ScrollView>
+
+        <NotificationSettings
+          visible={notificationsVisible}
+          onClose={() => {
+            setNotificationVisible(false);
+          }}
+        />
+        <HistoryPage
+          visible={historyVisible}
+          onClose={() => {
+            setHistoryVisible(false);
+          }}
+        />
+        <RequestStatus
+          visible={rqStatusVisible}
+          onClose={() => {
+            setRqStatusVisible(false);
+          }}
+        />
       </View>
     </SafeAreaView>
   );
@@ -85,51 +105,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#f0f0f0",
     paddingBottom: 80,
-  },
-  profileCard: {
-    backgroundColor: "#FFFFFF",
-    borderWidth: 1,
-    borderColor: "#E2E8F0",
-    borderRadius: 12,
-    padding: 16,
-    marginHorizontal: 16,
-    marginTop: 16,
-  },
-  profileInfo: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  profileImage: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-  },
-  profileDetails: {
-    marginLeft: 12,
-  },
-  profileName: {
-    fontFamily: "Roboto",
-    fontWeight: "600",
-    fontSize: 18,
-    color: "#000000",
-  },
-  profileEmail: {
-    fontFamily: "Roboto",
-    fontSize: 12,
-    color: "#94A3B8",
-    marginTop: 4,
-  },
-  profilePhone: {
-    fontFamily: "Roboto",
-    fontSize: 12,
-    color: "#94A3B8",
-    marginTop: 2,
-  },
-  profileLocation: {
-    fontFamily: "Roboto",
-    fontSize: 12,
-    color: "#94A3B8",
-    marginTop: 2,
   },
   settingsSection: {
     backgroundColor: "#FFFFFF",
@@ -147,43 +122,5 @@ const styles = StyleSheet.create({
     marginLeft: 16,
     marginTop: 24,
     marginBottom: 8,
-  },
-  settingItem: {
-    flexDirection: "row",
-    alignItems: "center",
-    padding: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: "#E2E8F0",
-  },
-  settingIcon: {
-    width: 32,
-    height: 32,
-    backgroundColor: "#F1F5F9",
-    borderRadius: 16,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  settingText: {
-    fontFamily: "Roboto",
-    fontSize: 14,
-    color: "#000000",
-    marginLeft: 8,
-    flex: 1,
-  },
-  chevron: {
-    width: 24,
-    height: 24,
-    borderTopWidth: 2,
-    borderRightWidth: 2,
-    borderColor: "#000000",
-    transform: [{ rotate: "45deg" }],
-  },
-  smallChevron: {
-    width: 10,
-    height: 10,
-    borderTopWidth: 2,
-    borderRightWidth: 2,
-    borderColor: "#000000",
-    transform: [{ rotate: "45deg" }],
   },
 });
