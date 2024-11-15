@@ -5,7 +5,6 @@ import {
   Image,
   ScrollView,
   StyleSheet,
-  Switch,
   Pressable,
 } from "react-native";
 import {
@@ -13,7 +12,6 @@ import {
   CheckCircle2,
   History,
   Bell,
-  Moon,
   LogOut,
 } from "lucide-react-native";
 
@@ -42,17 +40,9 @@ export default function Profile() {
           <View style={styles.settingsSection}>
             <Pressable style={styles.settingItem}>
               <View style={styles.settingIcon}>
-                <Pencil size={16} color="#000000" />
-              </View>
-              <Text style={styles.settingText}>Profile details</Text>
-              <View style={styles.smallChevron} />
-            </Pressable>
-
-            <Pressable style={styles.settingItem}>
-              <View style={styles.settingIcon}>
                 <CheckCircle2 size={16} color="#000000" />
               </View>
-              <Text style={styles.settingText}>Approved Requests</Text>
+              <Text style={styles.settingText}>Requisites Status</Text>
               <View style={styles.smallChevron} />
             </Pressable>
 
@@ -76,13 +66,6 @@ export default function Profile() {
               <View style={styles.smallChevron} />
             </Pressable>
 
-            <View style={styles.settingItem}>
-              <View style={styles.settingIcon}>
-                <Moon size={16} color="#000000" />
-              </View>
-              <Text style={styles.settingText}>Dark mode</Text>
-              <Switch />
-            </View>
             <Pressable style={styles.settingItem}>
               <View style={styles.settingIcon}>
                 <LogOut size={16} color="#000000" />

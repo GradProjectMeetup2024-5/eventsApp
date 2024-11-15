@@ -15,37 +15,37 @@ const apps = [
     title: "Concert",
     description: "Discover the best flight deals trending this week. Book now and save big on your next trip.",
     author: "By Travel Experts",
-    image: "https://picsum.photos/50/50",
+    image: "https://picsum.photos/100/100",
   },
   {
     title: "Football",
     description: "Stay at the most popular hotels trending this season. Find the perfect accommodation for your travels.",
     author: "By Hotel Gurus",
-    image: "https://picsum.photos/50/50",
+    image: "https://picsum.photos/100/100",
   },
   {
     title: "Park",
     description: "Catch the best last-minute flight deals. Perfect for spontaneous travelers looking for great prices.",
     author: "By Trip Masters",
-    image: "https://picsum.photos/50/50",
+    image: "https://picsum.photos/100/100",
   },
   {
     title: "Forest",
     description: "Experience luxury at its finest with these trending high-end hotels. Book your stay today.",
     author: "By Luxury Travels",
-    image: "https://picsum.photos/50/50",
+    image: "https://picsum.photos/100/100",
   },
   {
     title: "Forest",
     description: "Experience luxury at its finest with these trending high-end hotels. Book your stay today.",
     author: "By Luxury Travels",
-    image: "https://picsum.photos/50/50",
+    image: "https://picsum.photos/100/100",
   },
   {
     title: "Forest",
     description: "Experience luxury at its finest with these trending high-end hotels. Book your stay today.",
     author: "By Luxury Travels",
-    image: "https://picsum.photos/50/50",
+    image: "https://picsum.photos/100/100",
   },
 ]
 
@@ -204,9 +204,9 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   cardImage: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
+    width: 100,
+    height: 100,
+    borderRadius: 50,
     marginRight: 16,
   },
   appCardContent: {
