@@ -46,18 +46,19 @@ const Tabs = () => {
   return (
     <Tab.Navigator
       screenOptions={{
+        tabBarHideOnKeyboard: true,
         headerShown: false,
         tabBarShowLabel: false,
         tabBarStyle: {
           position: "absolute",
-          bottom: Platform.OS === "ios" ? 10 : 5, // Lowered the bottom position
+          bottom: Platform.OS === "ios" ? 15 : 10,
           right: 20,
           left: 20,
-          elevation: 0,
-          backgroundColor: "#fff",
-          borderRadius: 20,
-          height: 70, // Reduced the height to make the nav bar thinner
-          paddingTop: Platform.OS === "ios" ? 20 : 0, // Adjusted padding to match new height
+          elevation: 8,
+          backgroundColor: "rgba(255, 255, 255, 0.9)",
+          borderRadius: 15,
+          height: 60,
+          paddingTop: Platform.OS === "ios" ? 25 : 0,
           ...styles.shadow,
         },
       }}

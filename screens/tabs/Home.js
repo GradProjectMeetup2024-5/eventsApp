@@ -1,47 +1,69 @@
-'use client'
+"use client";
 
-import React, { useState, useEffect } from 'react'
-import { View, Text, TextInput, TouchableOpacity, ScrollView, ActivityIndicator } from 'react-native'
-import { FontAwesome } from '@expo/vector-icons'
-import TravelCard from '../../components/ui/eventsCard'
+import React, { useState, useEffect } from "react";
+import {
+  View,
+  Text,
+  TextInput,
+  Pressable,
+  ScrollView,
+  ActivityIndicator,
+} from "react-native";
+import { FontAwesome } from "@expo/vector-icons";
+import EventCard from "../../components/ui/EventCard";
 
 const sections = [
-  { title: 'Trending' },
-  { title: 'Outdoor' },
-  { title: 'Indoor' },
-  { title: 'Sports' },
-]
+  { title: "Trending" },
+  { title: "Outdoor" },
+  { title: "Indoor" },
+  { title: "Sports" },
+];
 
 export default function Explore() {
-  const [loading, setLoading] = useState(true)
-  const [selected, setSelected] = useState(sections[0])
+  const [loading, setLoading] = useState(true);
+  const [selected, setSelected] = useState(sections[0]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setLoading(false)
-    }, 2000)
+      setLoading(false);
+    }, 2000);
 
-    return () => clearTimeout(timer)
-  }, [])
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleSectionSelect = (section) => {
-    setSelected(section)
-  }
+    setSelected(section);
+  };
 
   return (
-    <View style={{ flex: 1, backgroundColor: 'white', padding: 16, paddingTop: 40 }}>
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: "white",
+        padding: 16,
+        paddingTop: 40,
+        paddingBottom: 0,
+      }}
+    >
       {/* Title and Search Bar */}
-      <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
-        <Text style={{ fontSize: 24, fontWeight: 'bold' }}>Explore</Text>
-        <View style={{ flex: 1, marginLeft: 16, position: 'relative' }}>
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: 16,
+        }}
+      >
+        <Text style={{ fontSize: 24, fontWeight: "bold" }}>Explore</Text>
+        <View style={{ flex: 1, marginLeft: 16, position: "relative" }}>
           <TextInput
             placeholder="Search"
             style={{
-              width: '100%',
+              width: "100%",
               height: 40,
               paddingLeft: 40,
               paddingRight: 16,
-              borderColor: '#D1D5DB',
+              borderColor: "#D1D5DB",
               borderWidth: 1,
               borderRadius: 20,
             }}
@@ -51,7 +73,7 @@ export default function Explore() {
             size={20}
             color="#9CA3AF"
             style={{
-              position: 'absolute',
+              position: "absolute",
               left: 12,
               top: 10,
             }}
@@ -62,47 +84,68 @@ export default function Explore() {
       {/* Pills Section */}
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
         {sections.map((section, index) => (
-          <TouchableOpacity
+          <Pressable
             key={index}
             onPress={() => handleSectionSelect(section)}
             style={{
               paddingHorizontal: 16,
               paddingVertical: 6,
               borderRadius: 20,
-              flexDirection: 'row',
-              alignItems: 'center',
+              flexDirection: "row",
+              alignItems: "center",
               height: 32,
               marginRight: 8,
               marginBottom: 8,
               borderWidth: 1,
-              borderColor: selected === section ? 'red' : '#D1D5DB',
-              backgroundColor: selected === section ? 'rgba(255, 0, 0, 0.1)' : 'transparent',
+              borderColor: selected === section ? "red" : "#D1D5DB",
+              backgroundColor:
+                selected === section ? "rgba(255, 0, 0, 0.1)" : "transparent",
             }}
           >
-            <Text style={{ fontSize: 12, fontWeight: '500', color: selected === section ? 'red' : '#6B7280' }}>
+            <Text
+              style={{
+                fontSize: 12,
+                fontWeight: "500",
+                color: selected === section ? "red" : "#6B7280",
+              }}
+            >
               {section.title}
             </Text>
-          </TouchableOpacity>
+          </Pressable>
         ))}
       </ScrollView>
 
       {/* Content Section */}
       <ScrollView style={{ marginTop: 8 }} showsVerticalScrollIndicator={false}>
-        <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 16 }}>{selected.title}</Text>
+        <Text style={{ fontSize: 20, fontWeight: "bold", marginBottom: 16 }}>
+          {selected.title}
+        </Text>
         {loading ? (
-          <View style={{ justifyContent: 'center', alignItems: 'center', height: 256 }}>
+          <View
+            style={{
+              justifyContent: "center",
+              alignItems: "center",
+              height: 256,
+            }}
+          >
             <ActivityIndicator size="large" color="#3B82F6" />
           </View>
         ) : (
-          <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' }}>
+          <View
+            style={{
+              flexDirection: "row",
+              flexWrap: "wrap",
+              justifyContent: "space-between",
+            }}
+          >
             {[...Array(4)].map((_, index) => (
               <View key={index} style={{ marginBottom: 16 }}>
-                <TravelCard />
+                <EventCard />
               </View>
             ))}
           </View>
         )}
       </ScrollView>
     </View>
-  )
+  );
 }
