@@ -15,8 +15,10 @@ const Stack = createNativeStackNavigator();
 
 function AppNavigator() {
   // Access Redux state
-  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
-
+  const isLoggedIn = useSelector((state) => state.auth);
+  // const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
+  // console.log(user)
+  console.log(isLoggedIn)
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
