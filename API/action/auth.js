@@ -1,7 +1,7 @@
 import {AUTH} from '../actionTypes'
-import * as api from '../api'
+import * as api from './API'
 
-export const signin=(formData)=>async(dispatch)=>{
+export const signin = (formData)=>async(dispatch)=>{
     try {
         const {data} =await api.signin(formData)
          dispatch({type:AUTH,data})
@@ -9,7 +9,7 @@ export const signin=(formData)=>async(dispatch)=>{
         console.log(error)
     }
 }
-export const signup =(formData)=>async(dispatch)=>{
+export const signup = (formData)=>async(dispatch)=>{
     try {
         const{data}=await api.signup (formData)
         dispatch({type:AUTH,data})
@@ -17,7 +17,8 @@ export const signup =(formData)=>async(dispatch)=>{
         console.log(error)
     }
 }
-module.exports= {
+
+module.exports = {
     signin,
     signup
 }

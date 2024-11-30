@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { StyleSheet, View, Text, Pressable } from "react-native";
 import AuthContext from "../../context/AuthContext";
 
@@ -9,8 +9,13 @@ import AuthButton from "../../components/ui/AuthUi/AuthButton";
 import AuthRedirectButton from "../../components/ui/AuthUi/AuthRedirectButton";
 import BoldText from "../../components/ui/BoldText";
 
+import { useDispatch, useSelector } from 'react-redux';
+import {signin}  from '../../API/action/auth'
+
 function LogIn({ navigation }) {
-  const { setIsLoggedIn } = useContext(AuthContext);
+
+  const [formData,setFormData] = useState({email:'',password:''})
+  const dispatch = useDispatch()
 
   function handleSignUp() {
     navigation.navigate("SignUp");
@@ -19,7 +24,8 @@ function LogIn({ navigation }) {
     navigation.navigate("ForgotPassword");
   }
   function handleLogin() {
-    setIsLoggedIn(true);
+    console.log("Login button pressed"); // Debug log
+    dispatch(signin(formData));
   }
 
   return (
@@ -28,8 +34,17 @@ function LogIn({ navigation }) {
 
       <AuthTitle>Welcome Back</AuthTitle>
 
-      <AuthTextInput placeholder="Email" />
-      <AuthTextInput placeholder="Password" secureTextEntry />
+      <AuthTextInput
+  placeholder="Email"
+  value={formData.email}
+  onChangeText={(text) => setFormData({ ...formData, email: text })}
+/>
+<AuthTextInput
+  placeholder="Password"
+  secureTextEntry
+  value={formData.password}
+  onChangeText={(text) => setFormData({ ...formData, password: text })}
+/>
 
       <AuthButton onPress={handleLogin}>Log In</AuthButton>
 
