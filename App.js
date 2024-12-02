@@ -18,11 +18,11 @@ function AppNavigator() {
   const isLoggedIn = useSelector((state) => state.auth);
   // const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
   // console.log(user)
-  console.log(isLoggedIn)
+  console.log(isLoggedIn.authData?.access_token)
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        {!isLoggedIn ? (
+        { ! isLoggedIn.authData?.access_token ? (
           <>
             <Stack.Screen name="LogIn" component={LogIn} />
             <Stack.Screen name="SignUp" component={SignUp} />

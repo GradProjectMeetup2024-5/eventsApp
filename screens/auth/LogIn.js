@@ -35,16 +35,16 @@ function LogIn({ navigation }) {
       <AuthTitle>Welcome Back</AuthTitle>
 
       <AuthTextInput
-  placeholder="Email"
-  value={formData.email}
-  onChangeText={(text) => setFormData({ ...formData, email: text })}
-/>
-<AuthTextInput
-  placeholder="Password"
-  secureTextEntry
-  value={formData.password}
-  onChangeText={(text) => setFormData({ ...formData, password: text })}
-/>
+          placeholder="Email"
+          value={formData.email}
+          onChangeText={(text) => setFormData({ ...formData, email: text })}
+      />
+      <AuthTextInput
+        placeholder="Password"
+        secureTextEntry
+        value={formData.password}
+        onChangeText={(text) => setFormData({ ...formData, password: text })}
+      />
 
       <AuthButton onPress={handleLogin}>Log In</AuthButton>
 
