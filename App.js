@@ -11,18 +11,20 @@ import LogIn from "./screens/auth/LogIn.js";
 import SignUp from "./screens/auth/SignUp.js";
 import ForgotPass from "./screens/auth/ForgotPass.js";
 
+import { useContext, useState } from "react";
+
 const Stack = createNativeStackNavigator();
 
 function AppNavigator() {
   // Access Redux state
   const isLoggedIn = useSelector((state) => state.auth);
-  // const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
-  // console.log(user)
-  console.log(isLoggedIn.authData?.access_token)
+   const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
+   console.log({"user":user})
+ 
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        { ! isLoggedIn.authData?.access_token ? (
+        {!user?.access_token ? (
           <>
             <Stack.Screen name="LogIn" component={LogIn} />
             <Stack.Screen name="SignUp" component={SignUp} />

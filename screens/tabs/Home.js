@@ -19,12 +19,25 @@ const sections = [
   { title: "Sports" },
 ];
 
+
+import { useDispatch, useSelector } from 'react-redux';
+import {showEvents}  from '../../API/action/event'
+
+
 export default function Explore() {
+  const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState(sections[0]);
 
+  const data = useSelector((state) => state.event);
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
+
+  console.log(data);
+  console.log(user);
+
   useEffect(() => {
     const timer = setTimeout(() => {
+      dispatch(showEvents());
       setLoading(false);
     }, 2000);
 
