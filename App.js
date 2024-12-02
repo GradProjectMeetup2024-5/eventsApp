@@ -11,7 +11,7 @@ import LogIn from "./screens/auth/LogIn.js";
 import SignUp from "./screens/auth/SignUp.js";
 import ForgotPass from "./screens/auth/ForgotPass.js";
 
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 
 const Stack = createNativeStackNavigator();
 
@@ -21,6 +21,14 @@ function AppNavigator() {
    const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
    console.log({"user":user})
  
+   useEffect(() => {
+    const storedProfile = JSON.parse(localStorage.getItem('profile'));
+    if (storedProfile) {
+      setUser(storedProfile);
+    }
+  }, [isLoggedIn]); 
+
+
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>

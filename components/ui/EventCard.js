@@ -2,7 +2,7 @@ import React from "react";
 import { Image, View, Text, Pressable } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 
-export default function EventCard() {
+export default function EventCard({eventName,eventDescription}) {
   return (
     <View
       style={{
@@ -64,12 +64,12 @@ export default function EventCard() {
                   textAlign: "left",
                 }}
               >
-                Event
+               {eventName}
               </Text>
               <Icon name="chevron-right" size={16} color="black" />
             </View>
             <Text style={{ fontSize: 10, color: "#9CA3AF", textAlign: "left" }}>
-              Event Description
+              {eventDescription}
             </Text>
             <Pressable
               style={{

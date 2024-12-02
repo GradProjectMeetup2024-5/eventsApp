@@ -13,15 +13,22 @@ import NotificationSettings from "../../components/ui/ProfileUi/Modals/Notificat
 import HistoryPage from "../../components/ui/ProfileUi/Modals/History";
 import RequestStatus from "../../components/ui/ProfileUi/Modals/RequestStatus";
 
+import { useDispatch } from 'react-redux';
+import * as actionType from '../../API/actionTypes';
+
 export default function Profile({ navigation }) {
   // const { setIsLoggedIn } = useContext(AuthContext);
   const [rqStatusVisible, setRqStatusVisible] = useState(false);
   const [historyVisible, setHistoryVisible] = useState(false);
   const [notificationsVisible, setNotificationVisible] = useState(false);
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
+  const dispatch = useDispatch();
 
-  // function handleLogOut() {
-  //   setIsLoggedIn(false);
-  // }
+  function handleLogOut() {
+    dispatch({ type: actionType.LOGOUT });
+    setUser(null);
+    //navigation.navigate('LogIn');
+  }
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
@@ -70,7 +77,7 @@ export default function Profile({ navigation }) {
 
             <ButtonItem
               icon={<LogOut size={16} color="#000000" />}
-              // onPress={handleLogOut}
+               onPress={handleLogOut}
             >
               Log Out
             </ButtonItem>

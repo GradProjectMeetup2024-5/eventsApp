@@ -29,11 +29,9 @@ export default function Explore() {
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState(sections[0]);
 
-  const data = useSelector((state) => state.event);
+  const events = useSelector((state) => state.event);
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
 
-  console.log(data);
-  console.log(user);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -151,11 +149,17 @@ export default function Explore() {
               justifyContent: "space-between",
             }}
           >
-            {[...Array(4)].map((_, index) => (
-              <View key={index} style={{ marginBottom: 16 }}>
-                <EventCard />
-              </View>
-            ))}
+            {
+              events?.map((event, index) => (
+                <View key={index} style={{ marginBottom: 16 }}>
+                  <EventCard 
+                  eventName={event.event_name}
+                  eventDescription={event.event_desc}
+                  />
+                </View>
+              ))
+            }
+
           </View>
         )}
       </ScrollView>
