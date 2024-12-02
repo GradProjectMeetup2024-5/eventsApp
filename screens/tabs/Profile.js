@@ -14,14 +14,14 @@ import HistoryPage from "../../components/ui/ProfileUi/Modals/History";
 import RequestStatus from "../../components/ui/ProfileUi/Modals/RequestStatus";
 
 export default function Profile({ navigation }) {
-  const { setIsLoggedIn } = useContext(AuthContext);
+  // const { setIsLoggedIn } = useContext(AuthContext);
   const [rqStatusVisible, setRqStatusVisible] = useState(false);
   const [historyVisible, setHistoryVisible] = useState(false);
   const [notificationsVisible, setNotificationVisible] = useState(false);
 
-  function handleLogOut() {
-    setIsLoggedIn(false);
-  }
+  // function handleLogOut() {
+  //   setIsLoggedIn(false);
+  // }
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
@@ -70,7 +70,7 @@ export default function Profile({ navigation }) {
 
             <ButtonItem
               icon={<LogOut size={16} color="#000000" />}
-              onPress={handleLogOut}
+              // onPress={handleLogOut}
             >
               Log Out
             </ButtonItem>
