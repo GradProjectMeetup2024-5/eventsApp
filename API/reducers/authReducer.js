@@ -9,7 +9,6 @@ const authReducer = (state = { authData: null }, action) => {
     case actionType.LOGOUT:
       localStorage.clear();
       return { ...state, authData: null, loading: false, errors: null };
-      //awdawd
       case actionType.FETCH_ALL:
         return [action.payload]
     default:
