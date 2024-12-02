@@ -37,7 +37,7 @@ export default function Explore() {
     const timer = setTimeout(() => {
       dispatch(showEvents());
       setLoading(false);
-    }, 2000);
+    }, 2);
 
     return () => clearTimeout(timer);
   }, []);

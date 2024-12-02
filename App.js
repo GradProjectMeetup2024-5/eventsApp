@@ -19,12 +19,14 @@ function AppNavigator() {
   // Access Redux state
   const isLoggedIn = useSelector((state) => state.auth);
    const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
-   console.log({"user":user})
  
    useEffect(() => {
     const storedProfile = JSON.parse(localStorage.getItem('profile'));
     if (storedProfile) {
       setUser(storedProfile);
+    }
+    else{
+      setUser(null)
     }
   }, [isLoggedIn]); 
 
