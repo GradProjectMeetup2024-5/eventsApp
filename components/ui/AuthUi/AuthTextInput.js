@@ -6,6 +6,8 @@ function AuthTextInput({
   placeholder,
   placeholderTextColor = "#FFFFFF",
   secureTextEntry = false,
+  value,
+  onChangeText, 
 }) {
   return (
     <TextInput
@@ -13,6 +15,8 @@ function AuthTextInput({
       placeholder={placeholder}
       placeholderTextColor={placeholderTextColor}
       secureTextEntry={secureTextEntry}
+      value={value} 
+      onChangeText={onChangeText} 
     />
   );
 }
@@ -28,7 +32,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     marginBottom: 10,
     color: "#FFFFFF",
-    // fontFamily: "WorkSans-Medium",
     fontSize: 16,
   },
 });
