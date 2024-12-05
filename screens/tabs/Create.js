@@ -9,12 +9,18 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+import { useDispatch, useSelector } from 'react-redux';
+import {createEvent}  from '../../API/action/event'
+
 export default function Create() {
+  const dispatch = useDispatch();
   const [eventName, setEventName] = useState("");
   const [eventDate, setEventDate] = useState("");
   const [eventTime, setEventTime] = useState("");
   const [eventLocation, setEventLocation] = useState("");
   const [eventDescription, setEventDescription] = useState("");
+
+  const [eventData,setEventData] = useState({event_name:'',event_desc:''})
 
   const handleSubmit = () => {
     // Here you would typically handle the form submission,
@@ -26,6 +32,7 @@ export default function Create() {
       eventLocation,
       eventDescription,
     });
+    dispatch(createEvent(eventData));
     // Reset form or navigate to another screen
   };
 
@@ -38,8 +45,9 @@ export default function Create() {
           <Text style={styles.label}>Event Name</Text>
           <TextInput
             style={styles.input}
-            value={eventName}
-            onChangeText={setEventName}
+            value={eventData.event_name}
+            onChangeText={(text)=> setEventData({...eventData,event_name:text})}
+          // onChangeText={(text) => setFormData({ ...formData, password: text })}
             placeholder="Enter event name"
           />
         </View>
@@ -78,8 +86,8 @@ export default function Create() {
           <Text style={styles.label}>Description</Text>
           <TextInput
             style={styles.input}
-            value={eventDescription}
-            onChangeText={setEventDescription}
+            value={eventDescription.event_desc}
+            onChangeText={(text)=> setEventData({...eventData,event_desc:text})}
             placeholder="Enter event description"
             multiline
           />
