@@ -20,3 +20,7 @@ export const signup  =(formData)=>API.post('/auth/signup',formData)
 // Event
 export const showEvents =()=>API.get('/event')
 export const createEvent = (formData)=>API.post('/event',formData)
+
+
+// my events
+export const myJoinedEvents =()=>API.get('/event-user/show-my-joined-events')

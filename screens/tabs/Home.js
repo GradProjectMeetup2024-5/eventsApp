@@ -23,19 +23,21 @@ const sections = [
 import { useDispatch, useSelector } from 'react-redux';
 import {showEvents}  from '../../API/action/event'
 
+import * as actionType from '../../API/actionTypes';
 
 export default function Explore() {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState(sections[0]);
 
-  const events = useSelector((state) => state.event);
+  const allEvents = useSelector((state) => state.event);
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
 
+  console.log(allEvents)
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      dispatch(showEvents());
+      dispatch(showEvents({type: actionType.FETCH_ALL}));
       setLoading(false);
     }, 2);
 
@@ -150,7 +152,7 @@ export default function Explore() {
             }}
           >
             {
-              events?.map((event, index) => (
+              allEvents?.map((event, index) => (
                 <View key={index} style={{ marginBottom: 16 }}>
                   <EventCard 
                   eventName={event.event_name}

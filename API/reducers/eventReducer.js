@@ -1,5 +1,5 @@
 import { EDIT_ID, CREATE,FETCH_ALL, FETCH_ID ,CREATE_EVENT,
-    EDIT_SUBJECT_ID,ADD_SUBJECT_STUDENT} from '../actionTypes';
+    EDIT_SUBJECT_ID,ADD_SUBJECT_STUDENT,MY_JOINED_EVENTS} from '../actionTypes';
 
 export default (event = [], action) => {
     switch (action.type) {
@@ -7,8 +7,11 @@ export default (event = [], action) => {
               return [...event,action.payload]
               case CREATE_EVENT:
                 return [...event,action.payload]
-          case FETCH_ALL:
-              return action.payload
+
+                case FETCH_ALL:
+                  console.log("Updating allEvents in state:", action.payload); // Debug
+                  return action.payload // Update only allEvents
+
           case FETCH_ID:
             return [action.payload]
             case EDIT_ID:

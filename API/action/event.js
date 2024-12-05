@@ -1,4 +1,4 @@
-import {FETCH_ALL,CREATE_EVENT} from '../actionTypes'
+import {FETCH_ALL,CREATE_EVENT,MY_JOINED_EVENTS} from '../actionTypes'
 import * as api from './API'
 
 const showEvents = ()=>async(dispatch)=>{
@@ -19,7 +19,8 @@ const createEvent = (formData)=>async(dispatch)=>{
     }
 }
 
+
 module.exports = {
     showEvents,
-    createEvent
+    createEvent,
 }
