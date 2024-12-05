@@ -16,6 +16,7 @@ import RequestStatus from "../../components/ui/ProfileUi/Modals/RequestStatus";
 import { useDispatch } from 'react-redux';
 import * as actionType from '../../API/actionTypes';
 
+
 export default function Profile({ navigation }) {
   // const { setIsLoggedIn } = useContext(AuthContext);
   const [rqStatusVisible, setRqStatusVisible] = useState(false);
@@ -23,7 +24,7 @@ export default function Profile({ navigation }) {
   const [notificationsVisible, setNotificationVisible] = useState(false);
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
   const dispatch = useDispatch();
-
+    console.log(user?.user?.user?.name)
   function handleLogOut() {
     dispatch({ type: actionType.LOGOUT });
     setUser(null);
@@ -35,8 +36,8 @@ export default function Profile({ navigation }) {
         <ScrollView>
           <UserDetails
             image="https://example.com/profile-image.jpg"
-            name="Sameer"
-            email="sameer@gmail.com"
+            name={user.user.user.name}
+            email={user.user.user.email}
             phone="01228547392"
             address="Amman, Jordan"
           />
