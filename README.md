@@ -27,4 +27,5 @@ Install the following dependencies:
 - `@react-navigation/native-stack`
 - `@react-native/virtualized-lists`
 - `react-native-vector-icons`
+- `react-native-ionicons`
 - `expo-router`
