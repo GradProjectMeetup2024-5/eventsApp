@@ -16,6 +16,8 @@ function LogIn({ navigation }) {
 
   const [formData,setFormData] = useState({email:'',password:''})
   const dispatch = useDispatch()
+  const storedProfile = JSON.parse(localStorage.getItem('profile'));
+  const [user, setUser] = useState();
 
   function handleSignUp() {
     navigation.navigate("SignUp");
@@ -26,6 +28,7 @@ function LogIn({ navigation }) {
   function handleLogin() {
     console.log("Login button pressed"); // Debug log
     dispatch(signin(formData));
+    setUser(storedProfile)
   }
 
   return (

@@ -1,12 +1,34 @@
-import React from "react";
+import React,{useEffect,useState} from "react";
 import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
 import PlaceHolderIcon from "../../components/ui/PlaceHolderIcon";
-import { useNavigation } from '@react-navigation/native'; // Import useNavigation hook
+import { useNavigation } from '@react-navigation/native'; 
 
 import { SafeAreaView } from "react-native-safe-area-context";
 
+import { useDispatch, useSelector } from 'react-redux';
+import {myJoinedEvents}  from '../../API/action/eventUser'
+
+import EventCard from "../../components/ui/EventCard";
+import * as actionType from '../../API/actionTypes';
+
 const Bookmark = () => {
-  const navigation = useNavigation(); // Initialize navigation
+  const dispatch = useDispatch();
+  const [loading, setLoading] = useState(true);
+  const events = useSelector((state) => state.eventUser);
+  const navigation = useNavigation();
+  console.log(events)
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      dispatch(myJoinedEvents({type: actionType.MY_JOINED_EVENTS}));
+      setLoading(false);
+    }, 2);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  const handleSectionSelect = (section) => {
+    setSelected(section);
+  };
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -14,10 +36,22 @@ const Bookmark = () => {
         <View style={styles.header}>
           <Text style={styles.headerTitle}>My Trips</Text>
         </View>
-
+        <>
+      {events?.length > 0 ? (
+        <ScrollView contentContainerStyle={{ padding: 16 }}>
+          {events.map((event, index) => (
+            console.log(event.event_name),
+            <View key={index} style={{ marginBottom: 16 }}>
+              <EventCard
+                eventName={event.event_name}
+                eventDescription={event.event_desc}
+              />
+            </View>
+          ))}
+        </ScrollView>
+      ) : (
         <ScrollView contentContainerStyle={styles.content}>
           <View style={styles.emptyState}>
-            {/* You might want to replace this with an actual icon or image */}
             <PlaceHolderIcon />
             <Text style={styles.emptyStateTitle}>No Trips Scheduled</Text>
             <Text style={styles.emptyStateDescription}>
@@ -25,6 +59,9 @@ const Bookmark = () => {
             </Text>
           </View>
         </ScrollView>
+      )}
+    </>
+
 
         <View style={styles.footer}>
           <Pressable

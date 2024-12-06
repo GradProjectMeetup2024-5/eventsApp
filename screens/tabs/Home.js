@@ -19,14 +19,27 @@ const sections = [
   { title: "Sports" },
 ];
 
+
+import { useDispatch, useSelector } from 'react-redux';
+import {showEvents}  from '../../API/action/event'
+
+import * as actionType from '../../API/actionTypes';
+
 export default function Explore() {
+  const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState(sections[0]);
 
+  const allEvents = useSelector((state) => state.event);
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
+
+  console.log(allEvents)
+
   useEffect(() => {
     const timer = setTimeout(() => {
+      dispatch(showEvents({type: actionType.FETCH_ALL}));
       setLoading(false);
-    }, 2000);
+    }, 2);
 
     return () => clearTimeout(timer);
   }, []);
@@ -138,11 +151,17 @@ export default function Explore() {
               justifyContent: "space-between",
             }}
           >
-            {[...Array(4)].map((_, index) => (
-              <View key={index} style={{ marginBottom: 16 }}>
-                <EventCard />
-              </View>
-            ))}
+            {
+              allEvents?.map((event, index) => (
+                <View key={index} style={{ marginBottom: 16 }}>
+                  <EventCard 
+                  eventName={event.event_name}
+                  eventDescription={event.event_desc}
+                  />
+                </View>
+              ))
+            }
+
           </View>
         )}
       </ScrollView>
