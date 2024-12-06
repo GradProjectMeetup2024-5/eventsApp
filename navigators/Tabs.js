@@ -2,10 +2,10 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Text, View, Platform } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
-import Home from "../screens/tabs/Home";
+import Explore from "../screens/tabs/Explore";
 import ClubList from "../screens/tabs/ClubList";
 import MapPage from "../screens/tabs/MapPage";
-import Bookmarks from "../screens/tabs/Bookmarks";
+import AttendingPage from "../screens/tabs/AttendingPage";
 import Create from "../screens/tabs/Create";
 
 import Icons from "../src/constants/Icons";
@@ -50,8 +50,8 @@ const Tabs = () => {
       }}
     >
       <Tab.Screen
-        name="Home"
-        component={Home}
+        name="Explore"
+        component={Explore}
         options={{
           tabBarIcon: ({ focused }) => (
             <TabIcon name="Explore" icon="compass-outline" focused={focused} />
@@ -60,7 +60,7 @@ const Tabs = () => {
       />
       <Tab.Screen
         name="Attending"
-        component={Bookmarks}
+        component={AttendingPage}
         options={{
           tabBarIcon: ({ focused }) => (
             <TabIcon
@@ -85,20 +85,20 @@ const Tabs = () => {
         }}
       />
       <Tab.Screen
-        name="Map"
-        component={MapPage}
-        options={{
-          tabBarIcon: ({ focused }) => (
-            <TabIcon name="Map" icon="location-outline" focused={focused} />
-          ),
-        }}
-      />
-      <Tab.Screen
         name="Clubs"
         component={ClubList}
         options={{
           tabBarIcon: ({ focused }) => (
             <TabIcon name="Clubs" icon="people-outline" focused={focused} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Map"
+        component={MapPage}
+        options={{
+          tabBarIcon: ({ focused }) => (
+            <TabIcon name="Map" icon="location-outline" focused={focused} />
           ),
         }}
       />
