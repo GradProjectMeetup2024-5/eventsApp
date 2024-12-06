@@ -1,0 +1,92 @@
+import React, { useContext, useState } from "react";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { View, Text, ScrollView, StyleSheet } from "react-native";
+
+import { CheckCircle2, History, Bell, LogOut } from "lucide-react-native";
+
+import AuthContext from "../context/AuthContext";
+
+import ButtonItem from "../components/ui/ProfileUi/ButtonItem";
+import UserDetails from "../components/ui/ProfileUi/UserDetails";
+
+import { useDispatch } from "react-redux";
+import * as actionType from "../API/actionTypes";
+
+export default function Profile({ navigation }) {
+  // const { setIsLoggedIn } = useContext(AuthContext);
+  // const [user, setUser] = useState(JSON.parse(localStorage.getItem("profile")));
+  // const dispatch = useDispatch();
+  // console.log(user?.user?.user?.name);
+  // function handleLogOut() {
+  //   dispatch({ type: actionType.LOGOUT });
+  //   setUser(null);
+  //   navigation.navigate("LogIn");
+  // }
+  return (
+    <SafeAreaView style={{ flex: 1 }}>
+      <View style={styles.container}>
+        <ScrollView>
+          <UserDetails
+            image="https://example.com/profile-image.jpg"
+            // name={user.user.user.name}
+            // email={user.user.user.email}
+            phone="01228547392"
+            address="Amman, Jordan"
+          />
+
+          <Text style={styles.sectionTitle}>General</Text>
+
+          <View style={styles.settingsSection}>
+            <ButtonItem icon={<CheckCircle2 size={16} color="#000000" />}>
+              Request Status
+            </ButtonItem>
+
+            <ButtonItem icon={<History size={16} color="#000000" />}>
+              History
+            </ButtonItem>
+          </View>
+
+          <Text style={styles.sectionTitle}>App Settings</Text>
+
+          <View style={[styles.settingsSection, { marginTop: 16 }]}>
+            <ButtonItem icon={<Bell size={16} color="#000000" />}>
+              Notifications
+            </ButtonItem>
+
+            <ButtonItem
+              icon={<LogOut size={16} color="#000000" />}
+              // onPress={handleLogOut}
+            >
+              Log Out
+            </ButtonItem>
+          </View>
+        </ScrollView>
+      </View>
+    </SafeAreaView>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#f0f0f0",
+    paddingBottom: 80,
+  },
+  settingsSection: {
+    backgroundColor: "#FFFFFF",
+    borderWidth: 1,
+    borderColor: "#E2E8F0",
+    borderRadius: 12,
+    marginHorizontal: 16,
+    marginTop: 24,
+  },
+  sectionTitle: {
+    fontFamily: "Roboto",
+    fontWeight: "600",
+    fontSize: 14,
+    color: "#000000",
+    marginLeft: 16,
+    marginTop: 24,
+    marginBottom: 8,
+  },
+});

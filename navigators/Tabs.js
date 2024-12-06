@@ -1,39 +1,30 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import {
-  StyleSheet,
-  Text,
-  Pressable,
-  View,
-  Image,
-  Platform,
-} from "react-native";
+import { Text, View, Platform } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 
 import Home from "../screens/tabs/Home";
-import Profile from "../screens/tabs/Profile";
+import ClubList from "../screens/tabs/ClubList";
+import MapPage from "../screens/tabs/MapPage";
 import Bookmarks from "../screens/tabs/Bookmarks";
 import Create from "../screens/tabs/Create";
 
 import Icons from "../src/constants/Icons";
+import Colors from "../src/constants/Colors";
 
 const Tab = createBottomTabNavigator();
 
 const TabIcon = ({ icon, focused, name }) => {
   return (
     <View style={{ alignItems: "center", justifyContent: "center" }}>
-      <Image
-        source={icon}
-        resizeMode="contain"
-        style={{
-          width: 24,
-          height: 24,
-          tintColor: focused ? "#DC143C" : "#aaa",
-        }}
+      <Ionicons
+        size={34}
+        name={icon}
+        color={focused ? Colors.accent.primary : Colors.gray.dark}
       />
       <Text
         style={{
-          color: focused ? "#DC143C" : "#aaa",
+          color: focused ? Colors.accent.primary : Colors.gray.dark,
           fontSize: 12,
-          paddingTop: 3,
         }}
       >
         {name}
@@ -50,16 +41,11 @@ const Tabs = () => {
         headerShown: false,
         tabBarShowLabel: false,
         tabBarStyle: {
-          position: "absolute",
-          bottom: Platform.OS === "ios" ? 15 : 10,
-          right: 20,
-          left: 20,
-          elevation: 8,
-          backgroundColor: "rgba(255, 255, 255, 0.9)",
-          borderRadius: 15,
-          height: 60,
+          backgroundColor: Colors.background.elevated,
+          height: 70,
+          borderTopWidth: 1,
+          borderTopColor: Colors.gray.darkest,
           paddingTop: Platform.OS === "ios" ? 25 : 0,
-          ...styles.shadow,
         },
       }}
     >
@@ -68,16 +54,20 @@ const Tabs = () => {
         component={Home}
         options={{
           tabBarIcon: ({ focused }) => (
-            <TabIcon name="Explore" icon={Icons.home} focused={focused} />
+            <TabIcon name="Explore" icon="compass-outline" focused={focused} />
           ),
         }}
       />
       <Tab.Screen
-        name="My Events"
+        name="Attending"
         component={Bookmarks}
         options={{
           tabBarIcon: ({ focused }) => (
-            <TabIcon name="My Events" icon={Icons.bookmark} focused={focused} />
+            <TabIcon
+              name="Attending"
+              icon="calendar-outline"
+              focused={focused}
+            />
           ),
         }}
       />
@@ -86,16 +76,29 @@ const Tabs = () => {
         component={Create}
         options={{
           tabBarIcon: ({ focused }) => (
-            <TabIcon name="Create" icon={Icons.plus} focused={focused} />
+            <TabIcon
+              name="Create"
+              icon="add-circle-outline"
+              focused={focused}
+            />
           ),
         }}
       />
       <Tab.Screen
-        name="Profile"
-        component={Profile}
+        name="Map"
+        component={MapPage}
         options={{
           tabBarIcon: ({ focused }) => (
-            <TabIcon name="Profile" icon={Icons.profile} focused={focused} />
+            <TabIcon name="Map" icon="location-outline" focused={focused} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Clubs"
+        component={ClubList}
+        options={{
+          tabBarIcon: ({ focused }) => (
+            <TabIcon name="Clubs" icon="people-outline" focused={focused} />
           ),
         }}
       />
@@ -104,17 +107,3 @@ const Tabs = () => {
 };
 
 export default Tabs;
-
-const styles = StyleSheet.create({
-  shadow: {
-    flex: 1,
-    shadowColor: "black",
-    shadowOffset: {
-      width: 0,
-      height: 10,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.5,
-    elevation: 10,
-  },
-});
