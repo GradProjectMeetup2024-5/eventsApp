@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const API = axios.create({ baseURL: 'http://localhost:3000' });
+const API = axios.create({ baseURL: 'https://eventat-app-backend.vercel.app' });
 
 API.interceptors.request.use((req) => {
   const profile = JSON.parse(localStorage.getItem('profile')); // Retrieve profile from localStorage
