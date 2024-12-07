@@ -42,8 +42,10 @@ function AppNavigator() {
             <Stack.Screen name="ForgotPassword" component={ForgotPass} />
           </>
         ) : ( */}
-        <Stack.Screen name="Tabs" component={Tabs} />
-        <Stack.Screen name="Profile" component={Profile} />
+        <>
+          <Stack.Screen name="Tabs" component={Tabs} />
+          <Stack.Screen name="Profile" component={Profile} />
+        </>
         {/* )} */}
       </Stack.Navigator>
     </NavigationContainer>

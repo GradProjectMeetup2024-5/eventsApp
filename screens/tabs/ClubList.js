@@ -1,9 +1,10 @@
 import { SafeAreaView } from "react-native-safe-area-context";
-import { View, Text, StyleSheet } from "react-native";
+import { View, StyleSheet, ScrollView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 import Colors from "../../src/constants/Colors";
 import Header from "../../components/Header";
+import ClubCard from "../../components/ui/ClubCard";
 
 function ClubList() {
   const navigation = useNavigation();
@@ -13,11 +14,17 @@ function ClubList() {
   return (
     <SafeAreaView style={styles.container}>
       <Header onPress={pressHandler} />
-      <View style={styles.clubListContainer}>
-        <View style={styles.cardInfo}>
-          <Text>ahaa</Text>
-        </View>
-      </View>
+
+      <ScrollView contentContainerStyle={styles.clubListContainer}>
+        {/*need to change ScrollView into FlatList later for performance */}
+        <ClubCard
+          image="https://d1csarkz8obe9u.cloudfront.net/posterpreviews/art-club-logo-design-template-7363f499d408b8d5aa636f25e135ce56_screen.jpg?ts=1688208799"
+          title="Arts' Club"
+          description="Nam at imperdiet tortor. Morbi lacinia efficitur sem, quis
+              elementum nulla convallis quis. Pellentesque nec sapien auctor,
+              ornare diam id, sodales elit."
+        />
+      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -28,19 +35,8 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.background.base,
   },
-  cardInfo: {
-    paddingVertical: 55,
-    paddingHorizontal: 170,
-    marginVertical: 10,
-    backgroundColor: Colors.background.surface,
-    alignItems: "center", // Centers the content horizontally
-    justifyContent: "flex-start", // Keeps content at the top (if you don't want vertical centering)
-    flexDirection: "column", // Default behavior for text, vertical stacking
-    borderRadius: 8,
-    // elevation: 10,
-  },
   clubListContainer: {
-    flex: 1,
+    // flex: 1,
     alignItems: "center",
     flexDirection: "column",
   },
