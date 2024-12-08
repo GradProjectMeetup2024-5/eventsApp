@@ -15,14 +15,14 @@ import * as actionType from "../API/actionTypes";
 
 export default function Profile({ navigation }) {
   // const { setIsLoggedIn } = useContext(AuthContext);
-  // const [user, setUser] = useState(JSON.parse(localStorage.getItem("profile")));
-  // const dispatch = useDispatch();
-  // console.log(user?.user?.user?.name);
-  // function handleLogOut() {
-  //   dispatch({ type: actionType.LOGOUT });
-  //   setUser(null);
-  //   navigation.navigate("LogIn");
-  // }
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("profile")));
+  const dispatch = useDispatch();
+  console.log(user?.user?.user?.name);
+  function handleLogOut() {
+    dispatch({ type: actionType.LOGOUT });
+    setUser(null);
+    navigation.navigate("LogIn");
+  }
 
   function handleBackToHome() {
     navigation.navigate("Home");
@@ -38,8 +38,8 @@ export default function Profile({ navigation }) {
         <ScrollView contentContainerStyle={styles.scrollViewContent}>
           <UserDetails
             image="https://example.com/profile-image.jpg"
-            // name={user.user.user.name}
-            // email={user.user.user.email}
+             name={user.user.user.name}
+             email={user.user.user.email}
             phone="01228547392"
             address="Amman, Jordan"
           />
@@ -75,7 +75,7 @@ export default function Profile({ navigation }) {
             <ButtonItem
               icon={<LogOut size={16} color="#000000" />}
               style={styles.buttonItem}
-            // onPress={handleLogOut}
+            onPress={handleLogOut}
             >
               Log Out
             </ButtonItem>

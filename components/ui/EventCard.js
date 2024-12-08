@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Image, View, Text, Pressable, StyleSheet } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import profileImage from "../../assets/image 86.png";
-
+import back from '../../assets/eventplaceholder.png'
 export default function EventCard({
   eventName,
   eventDate,
@@ -13,7 +13,7 @@ export default function EventCard({
 }) {
   const [imageError, setImageError] = useState(false);
 
-  useEffect(() => { }, [eventName, eventImage]);
+
 
   const handleImageError = (e) => {
     setImageError(true);
@@ -34,7 +34,7 @@ export default function EventCard({
             </View>
           ) : (
             <Image
-              source={eventImage}
+              source={back}
               style={styles.image}
               onError={handleImageError}
             />

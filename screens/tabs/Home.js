@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useState ,useEffect} from 'react';
 import { View, TextInput, Pressable, StyleSheet, ScrollView, StatusBar } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
@@ -10,7 +10,14 @@ import mockEvents from "./mockevents";
 import TabBar from '../../components/ui/HomeTabBar';
 import BottomNavigation from '../../components/ui/BottomNavigation';
 
+import { useDispatch, useSelector } from 'react-redux';
+import {showEvents}  from '../../API/action/event'
+
+import * as actionType from '../../API/actionTypes';
+
+
 const Header = ({ onPress }) => {
+
   return (
     <View style={[styles.headerContainer, { backgroundColor: '#000000', paddingBottom: 10 }]}>
       <View style={styles.searchBarContainer}>
@@ -33,8 +40,33 @@ const Header = ({ onPress }) => {
     </View>
   );
 };
-
+import {back} from '../../assets/eventplaceholder.png'
 export default function Explore() {
+
+  const dispatch = useDispatch();
+  const [loading, setLoading] = useState(true);
+
+
+  const allEvents = useSelector((state) => state.event);
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
+
+  console.log(allEvents)
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      dispatch(showEvents({type: actionType.FETCH_ALL}));
+      setLoading(false);
+    }, 2);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  const handleSectionSelect = (section) => {
+    setSelected(section);
+  };
+
+
+
   const navigation = useNavigation();
 
   function pressHandler() {
@@ -46,16 +78,16 @@ export default function Explore() {
       <StatusBar barStyle="light-content" backgroundColor="black" />
       <Header onPress={pressHandler} />
       <ScrollView contentContainerStyle={styles.scrollViewContent}>
-        {mockEvents.map((event, index) => (
+        {allEvents?.map((event, index) => (
           <View key={event.id}>
             <EventCard
-              eventName={event.eventName}
-              eventDate={event.eventDate}
+              eventName={event.event_name}
+              eventDate={event.created_time}
               eventTime={event.eventTime}
-              eventLocation={event.eventLocation}
-              eventOrganizer={event.eventOrganizer}
-              eventImage={event.eventImage}
-              profileImageSource={event.profileImage}
+              eventLocation={event.event_desc}
+              eventOrganizer={event.userId}
+              eventImage={back}
+              profileImageSource={back}
               textColor="#FFFFFF"
             />
             {index < mockEvents.length - 1 && (
