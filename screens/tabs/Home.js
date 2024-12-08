@@ -40,7 +40,10 @@ const Header = ({ onPress }) => {
     </View>
   );
 };
+
 import {back} from '../../assets/eventplaceholder.png'
+import * as SecureStore from 'expo-secure-store';
+
 export default function Explore() {
 
   const dispatch = useDispatch();
@@ -48,7 +51,7 @@ export default function Explore() {
 
 
   const allEvents = useSelector((state) => state.event);
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
+  const [user, setUser] = useState(SecureStore.getItemAsync('profile'));
 
   console.log(allEvents)
 

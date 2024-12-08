@@ -15,26 +15,33 @@ import SignUp from "./screens/auth/SignUp.js";
 import ForgotPass from "./screens/auth/ForgotPass.js";
 
 import { useContext, useState, useEffect } from "react";
+import * as SecureStore from 'expo-secure-store';
 
 const Stack = createNativeStackNavigator();
 
-function AppNavigator() {
+const AppNavigator = () => {
+  const dispatch = useDispatch();
+  const isLoggedIn = useSelector((state) => state.auth.authData !== null);
 
-  const isLoggedIn = useSelector((state) => state.auth);
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem("profile")));
   useEffect(() => {
-    const storedProfile = JSON.parse(localStorage.getItem("profile"));
-    if (storedProfile) {
-      setUser(storedProfile);
-    } else {
-      setUser(null);
-    }
-  }, [isLoggedIn]);
+    const fetchProfile = async () => {
+      try {
+        const storedProfile = await SecureStore.getItemAsync("profile");
+        if (storedProfile) {
+          dispatch({ type: actionType.AUTH, data: JSON.parse(storedProfile) });
+        }
+      } catch (error) {
+        console.error("Error fetching profile:", error);
+      }
+    };
+
+    fetchProfile();
+  }, [dispatch]);
 
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        {!user?.access_token ? (
+        {!isLoggedIn ? (
           <>
             <Stack.Screen name="LogIn" component={LogIn} />
             <Stack.Screen name="SignUp" component={SignUp} />
@@ -49,7 +56,8 @@ function AppNavigator() {
       </Stack.Navigator>
     </NavigationContainer>
   );
-}
+};
+
 
 export default function App() {
   return (

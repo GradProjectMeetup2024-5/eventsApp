@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+
 import { StyleSheet, View, Text, Pressable } from "react-native";
 import AuthContext from "../../context/AuthContext";
 
@@ -12,23 +12,48 @@ import BoldText from "../../components/ui/BoldText";
 import { useDispatch, useSelector } from 'react-redux';
 import {signin}  from '../../API/action/auth'
 
-function LogIn({ navigation }) {
+import * as SecureStore from 'expo-secure-store';
 
-  const [formData,setFormData] = useState({email:'',password:''})
-  const dispatch = useDispatch()
-  const storedProfile = JSON.parse(localStorage.getItem('profile'));
-  const [user, setUser] = useState();
+import React, { useState, useEffect } from 'react';
+
+import * as actionType from '../../API/actionTypes';
+
+function LogIn({ navigation }) {
+  const [formData, setFormData] = useState({ email: '', password: '' });
+  const [storedProfile, setStoredProfile] = useState(null);
+  const [user, setUser] = useState(null);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const profile = await SecureStore.getItemAsync('profile');
+        setStoredProfile(profile ? JSON.parse(profile) : null);
+      } catch (error) {
+        console.error('Error fetching stored profile:', error);
+      }
+    };
+    fetchProfile();
+  }, []);
+
+  async function handleLogin() {
+    console.log('Login button pressed'); // Debug log
+    try {
+      await dispatch(signin(formData)); // Dispatch login action
+      // await SecureStore.setItemAsync('profile', JSON.stringify(profileData));
+ 
+      console.log('Stored Profile:');
+    } catch (error) {
+      console.error('Error during login:', error);
+    }
+  }
 
   function handleSignUp() {
-    navigation.navigate("SignUp");
+    navigation.navigate('SignUp');
   }
+
   function handleForgotPass() {
-    navigation.navigate("ForgotPassword");
-  }
-  function handleLogin() {
-    console.log("Login button pressed"); // Debug log
-    dispatch(signin(formData));
-    setUser(storedProfile)
+    navigation.navigate('ForgotPassword');
   }
 
   return (
@@ -38,9 +63,9 @@ function LogIn({ navigation }) {
       <AuthTitle>Welcome Back</AuthTitle>
 
       <AuthTextInput
-          placeholder="Email"
-          value={formData.email}
-          onChangeText={(text) => setFormData({ ...formData, email: text })}
+        placeholder="Email"
+        value={formData.email}
+        onChangeText={(text) => setFormData({ ...formData, email: text })}
       />
       <AuthTextInput
         placeholder="Password"

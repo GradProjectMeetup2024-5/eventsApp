@@ -1,17 +1,28 @@
 import axios from 'axios'
-
+import * as SecureStore from 'expo-secure-store';
 const API = axios.create({ baseURL: 'https://eventat-app-backend.vercel.app' });
 
-API.interceptors.request.use((req) => {
-  const profile = JSON.parse(localStorage.getItem('profile')); // Retrieve profile from localStorage
-  if (profile?.token) {
-    req.headers.Authorization = `Bearer ${profile.token}`;
-    console.log('Authorization Header:', req.headers.Authorization);
-  } else {
-    console.error('Token is missing in profile');
+API.interceptors.request.use(
+  async (req) => {
+    try {
+      const profile = await SecureStore.getItemAsync("profile");
+      const parsedProfile = profile ? JSON.parse(profile) : null;
+
+      if (parsedProfile?.token) {
+        req.headers.Authorization = `Bearer ${parsedProfile.token}`;
+        console.log("Authorization Header:", req.headers.Authorization);
+      } else {
+        console.warn("Token is missing in profile");
+      }
+    } catch (error) {
+      console.error("Error setting Authorization header:", error);
+    }
+    return req;
+  },
+  (error) => {
+    return Promise.reject(error);
   }
-  return req;
-});
+);
 
  // Auth 
 export const signin =(formData)=>API.post('/auth/login',formData)
