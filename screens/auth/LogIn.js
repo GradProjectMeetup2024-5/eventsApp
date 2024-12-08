@@ -24,25 +24,23 @@ function LogIn({ navigation }) {
   const [user, setUser] = useState(null);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        const profile = await SecureStore.getItemAsync('profile');
-        setStoredProfile(profile ? JSON.parse(profile) : null);
-      } catch (error) {
-        console.error('Error fetching stored profile:', error);
-      }
-    };
-    fetchProfile();
-  }, []);
+  // useEffect(() => {
+  //   const fetchProfile = async () => {
+  //     try {
+  //       const profile = await SecureStore.getItemAsync('profile');
+  //       setStoredProfile(profile ? JSON.parse(profile) : null);
+  //     } catch (error) {
+  //       console.error('Error fetching stored profile:', error);
+  //     }
+  //   };
+  //   fetchProfile();
+  // }, []);
 
   async function handleLogin() {
     console.log('Login button pressed'); // Debug log
     try {
-      await dispatch(signin(formData)); // Dispatch login action
-      // await SecureStore.setItemAsync('profile', JSON.stringify(profileData));
- 
-      console.log('Stored Profile:');
+     const text = await dispatch(signin(formData)); 
+      console.log('Stored Profile:',text);
     } catch (error) {
       console.error('Error during login:', error);
     }

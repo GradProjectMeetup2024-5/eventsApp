@@ -13,6 +13,9 @@ const authReducer = (state = { authData: null, loading: true, errors: null }, ac
         token: action.data.access_token,
         user: user,
       };
+
+       SecureStore.setItemAsync('profile', JSON.stringify(authData));
+
       return { ...state, authData: authData, loading: false, errors: null };
 
     case actionType.LOGOUT:

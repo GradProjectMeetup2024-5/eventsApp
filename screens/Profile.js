@@ -17,9 +17,9 @@ import * as SecureStore from 'expo-secure-store';
 
 export default function Profile({ navigation }) {
   // const { setIsLoggedIn } = useContext(AuthContext);
- // const [user, setUser] = useState(SecureStore.getItemAsync("profile"));
+  const user = useState(SecureStore.getItemAsync("profile"));
   const dispatch = useDispatch();
-//  console.log(user?.user?.user?.name);
+ console.log("user",user);
   function handleLogOut() {
     dispatch({ type: actionType.LOGOUT });
     setUser(null);
@@ -40,8 +40,8 @@ export default function Profile({ navigation }) {
         <ScrollView contentContainerStyle={styles.scrollViewContent}>
           <UserDetails
             image="https://example.com/profile-image.jpg"
-           //  name={user.user.user.name}
-           //  email={user.user.user.email}
+            name={user?.user?.user?.name}
+             email={user?.user?.user?.email}
             phone="01228547392"
             address="Amman, Jordan"
           />
