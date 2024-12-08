@@ -3,7 +3,7 @@ import { View, Pressable, Text, Image, StyleSheet } from "react-native";
 import { Shadow } from "react-native-shadow-2";
 import { Ionicons } from "@expo/vector-icons";
 
-import Colors from "../../src/constants/Colors";
+import Colors from "../src/constants/Colors";
 
 function ClubCard({ image, title, description, onPress }) {
   return (
@@ -21,7 +21,7 @@ function ClubCard({ image, title, description, onPress }) {
         startColor="rgba(0, 0, 0, 0.20)"
         endColor="rgba(0, 0, 0, 0.05)"
       >
-        <Pressable style={styles.cardInfo}>
+        <Pressable style={styles.cardInfo} onPress={onPress}>
           <Image
             style={styles.clubImg}
             source={{

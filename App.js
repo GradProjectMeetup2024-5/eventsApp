@@ -10,9 +10,7 @@ import Colors from "./src/constants/Colors";
 
 import Tabs from "./navigators/Tabs.js";
 import Profile from "./screens/Profile";
-import LogIn from "./screens/auth/LogIn.js";
-import SignUp from "./screens/auth/SignUp.js";
-import ForgotPass from "./screens/auth/ForgotPass.js";
+import ClubDetails from "./screens/ClubDetails";
 
 import { useContext, useState, useEffect } from "react";
 
@@ -45,6 +43,7 @@ function AppNavigator() {
         <>
           <Stack.Screen name="Tabs" component={Tabs} />
           <Stack.Screen name="Profile" component={Profile} />
+          <Stack.Screen name="ClubDetails" component={ClubDetails} />
         </>
         {/* )} */}
       </Stack.Navigator>

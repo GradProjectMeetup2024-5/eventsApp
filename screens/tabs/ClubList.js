@@ -4,25 +4,27 @@ import { useNavigation } from "@react-navigation/native";
 
 import Colors from "../../src/constants/Colors";
 import Header from "../../components/Header";
-import ClubCard from "../../components/ui/ClubCard";
+import ClubCard from "../../components/ClubCard";
 
 function ClubList() {
   const navigation = useNavigation();
-  function pressHandler() {
-    navigation.navigate("Profile");
-  }
+  const pressHandler = (route) => {
+    navigation.navigate(route);
+  };
+
   return (
     <SafeAreaView style={styles.container}>
-      <Header onPress={pressHandler} />
+      <Header onPress={() => pressHandler("Profile")} />
 
       <ScrollView contentContainerStyle={styles.clubListContainer}>
         {/*need to change ScrollView into FlatList later for performance */}
         <ClubCard
           image="https://d1csarkz8obe9u.cloudfront.net/posterpreviews/art-club-logo-design-template-7363f499d408b8d5aa636f25e135ce56_screen.jpg?ts=1688208799"
-          title="Arts' Club"
+          title="Art Club"
           description="Nam at imperdiet tortor. Morbi lacinia efficitur sem, quis
               elementum nulla convallis quis. Pellentesque nec sapien auctor,
               ornare diam id, sodales elit."
+          onPress={() => pressHandler("ClubDetails")}
         />
       </ScrollView>
     </SafeAreaView>
