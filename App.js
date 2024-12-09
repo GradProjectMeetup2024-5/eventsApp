@@ -13,6 +13,7 @@ import Profile from "./screens/Profile";
 import ClubDetails from "./screens/ClubDetails";
 
 import { useContext, useState, useEffect } from "react";
+import AllEventsPage from "./screens/AllEventsPage";
 
 const Stack = createNativeStackNavigator();
 
@@ -44,6 +45,7 @@ function AppNavigator() {
           <Stack.Screen name="Tabs" component={Tabs} />
           <Stack.Screen name="Profile" component={Profile} />
           <Stack.Screen name="ClubDetails" component={ClubDetails} />
+          <Stack.Screen name="AllEvents" component={AllEventsPage} />
         </>
         {/* )} */}
       </Stack.Navigator>

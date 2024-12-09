@@ -1,13 +1,25 @@
 import { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { View, Pressable, Image, Text, StyleSheet } from "react-native";
+import {
+  View,
+  Pressable,
+  Image,
+  Text,
+  StyleSheet,
+  ScrollView,
+} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 import ClubDetailsHeader from "../components/ClubDetailsHeader";
+import AltClubCard from "../components/AltClubCard";
 
 import Colors from "../src/constants/Colors";
 
 function ClubDetails() {
+  const navigation = useNavigation();
+  const pressHandler = (route) => {
+    navigation.navigate(route);
+  };
   const [joinState, setJoinState] = useState(false);
   function joinHandler() {
     setJoinState(!joinState);
@@ -44,7 +56,29 @@ function ClubDetails() {
         </View>
       </View>
 
-      <View style={styles.clubBody}></View>
+      <View style={styles.clubBody}>
+        <View style={styles.sectionRow}>
+          <Text style={styles.sectionTitle}>Events</Text>
+          <Pressable onPress={() => pressHandler("AllEvents")}>
+            <Text
+              style={[styles.sectionTitle, { color: Colors.accent.secondary }]}
+            >
+              See All
+            </Text>
+          </Pressable>
+        </View>
+        <View style={styles.eventScrollView}>
+          <ScrollView
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
+            alwaysBounceHorizontal={false}
+            bounces={false}
+          >
+            <AltClubCard />
+            <AltClubCard />
+          </ScrollView>
+        </View>
+      </View>
     </SafeAreaView>
   );
 }
@@ -97,7 +131,7 @@ const styles = StyleSheet.create({
   },
   joinButton: {
     backgroundColor: Colors.accent.secondary,
-    height: 26,
+    height: 28,
     // width: 167,
     justifyContent: "center",
     alignItems: "center",
@@ -105,7 +139,7 @@ const styles = StyleSheet.create({
   },
   joinedButton: {
     backgroundColor: Colors.background.base,
-    height: 26,
+    height: 28,
     // width: 167,
     justifyContent: "center",
     alignItems: "center",
@@ -121,5 +155,24 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: Colors.accent.secondary,
   },
-  clubBody: {},
+  clubBody: {
+    flex: 1,
+    // alignItems: "center",
+  },
+  sectionRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    // alignItems: "center",
+    paddingVertical: 15,
+    paddingHorizontal: 22,
+    // width: "100%",
+  },
+  sectionTitle: {
+    fontSize: 22,
+    color: Colors.gray.light,
+  },
+  eventScrollView: {
+    alignItems: "center",
+    flexDirection: "row",
+  },
 });
