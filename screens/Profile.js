@@ -36,10 +36,9 @@ export default function Profile({ navigation }) {
     fetchUserData();
   }, []);
 
-  function handleLogOut() {
-    dispatch({ type: actionType.LOGOUT });
-    setUser(null);
-    navigation.navigate("Home");
+ async function handleLogOut() {
+    await SecureStore.deleteItemAsync('profile');
+    navigation.navigate('Profile', { screen: 'SignUp' });
   }
 
   function handleBackToHome() {

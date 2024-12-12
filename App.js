@@ -17,16 +17,19 @@ import ForgotPass from "./screens/auth/ForgotPass.js";
 import { useContext, useState, useEffect } from "react";
 import * as SecureStore from 'expo-secure-store';
 
-const Stack = createNativeStackNavigator();
+ import * as actionType from './API/actionTypes';
+
+ const Stack = createNativeStackNavigator();
 
 const AppNavigator = () => {
   const dispatch = useDispatch();
   const isLoggedIn = useSelector((state) => state.auth.authData !== null);
-
+  console.log("dw",isLoggedIn)
   useEffect(() => {
     const fetchProfile = async () => {
       try {
         const storedProfile = await SecureStore.getItemAsync("profile");
+        console.log("RE")
         if (storedProfile) {
           dispatch({ type: actionType.AUTH, data: JSON.parse(storedProfile) });
         }
