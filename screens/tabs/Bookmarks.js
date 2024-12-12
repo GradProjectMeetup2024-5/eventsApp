@@ -6,7 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { useDispatch, useSelector } from 'react-redux';
-import { myJoinedEvents } from '../../API/action/eventUser'
+import { myJoinedEvents, showMyCreatedEvents } from '../../API/action/eventUser'
 
 import EventCard from "../../components/ui/EventCard";
 import * as actionType from '../../API/actionTypes';
@@ -20,6 +20,7 @@ const Bookmark = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       dispatch(myJoinedEvents({ type: actionType.MY_JOINED_EVENTS }));
+      dispatch(showMyCreatedEvents({ type: actionType.MY_CREATED_EVENT }));
       setLoading(false);
     }, 2);
 
@@ -40,7 +41,6 @@ const Bookmark = () => {
           {events?.length > 0 ? (
             <ScrollView contentContainerStyle={{ padding: 16 }}>
               {events.map((event, index) => (
-                console.log(event.event_name),
                 <View key={index} style={{ marginBottom: 16 }}>
                   <EventCard
                     eventName={event.event_name}
