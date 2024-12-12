@@ -5,8 +5,6 @@ import { Ionicons } from "@expo/vector-icons";
 
 import { CheckCircle2, History, Bell, LogOut } from "lucide-react-native";
 
-import AuthContext from "../context/AuthContext";
-
 import ButtonItem from "../components/ui/ProfileUi/ButtonItem";
 import UserDetails from "../components/ui/ProfileUi/UserDetails";
 
@@ -18,7 +16,7 @@ import * as SecureStore from 'expo-secure-store';
 export default function Profile({ navigation }) {
 
   const dispatch = useDispatch();
-  const [user, setUser] = React.useState(null);
+  const [user, setUser] = useState(SecureStore.getItemAsync('profile'));
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -27,8 +25,6 @@ export default function Profile({ navigation }) {
         if (storedUser) {
           const userObject = JSON.parse(storedUser);
           setUser(userObject);
-          console.log("Email:", userObject.user?.user?.email);
-          console.log("Name:", userObject.user?.user?.name);
         } else {
           console.log("No user data found in SecureStore.");
         }
@@ -40,11 +36,10 @@ export default function Profile({ navigation }) {
     fetchUserData();
   }, []);
 
-
   function handleLogOut() {
     dispatch({ type: actionType.LOGOUT });
     setUser(null);
-    navigation.navigate("LogIn");
+    navigation.navigate("Home");
   }
 
   function handleBackToHome() {
@@ -62,9 +57,9 @@ export default function Profile({ navigation }) {
           <UserDetails
             image="https://example.com/profile-image.jpg"
             name={user?.user?.user?.name}
-             email={user?.user?.user?.email}
-            phone="01228547392"
-            address="Amman, Jordan"
+            email={user?.user?.user?.email}
+            studentId={user?.user?.user?.studentId}
+            major={user?.user?.user?.major}
           />
 
           <Text style={styles.sectionTitle}>General</Text>

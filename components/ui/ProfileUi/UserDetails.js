@@ -1,14 +1,14 @@
 import { StyleSheet, View, Image, Text } from "react-native";
 
-function UserDetails({ name, email, phone, address, image }) {
+function UserDetails({ name, email, studentId, major, image }) {
   return (
     <View style={styles.card}>
       <Image source={{ uri: image }} style={styles.image} />
       <View style={styles.detailsContainer}>
         <Text style={styles.name}>{name}</Text>
         <Text style={styles.text}>{email}</Text>
-        <Text style={styles.text}>{phone}</Text>
-        <Text style={styles.text}>{address}</Text>
+        <Text style={styles.text}>{studentId}</Text>
+        <Text style={styles.text}>{major}</Text>
       </View>
     </View>
   );
