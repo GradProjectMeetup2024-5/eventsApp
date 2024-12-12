@@ -16,7 +16,7 @@ import * as SecureStore from 'expo-secure-store';
 
 import React, { useState, useEffect } from 'react';
 
-import * as actionType from '../../API/actionTypes';
+// import * as actionType from '../../API/actionTypes';
 
 function LogIn({ navigation }) {
   const [formData, setFormData] = useState({ email: '', password: '' });

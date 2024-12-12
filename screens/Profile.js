@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { View, Text, ScrollView, StyleSheet, Pressable } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
@@ -16,10 +16,31 @@ import * as actionType from "../API/actionTypes";
 import * as SecureStore from 'expo-secure-store';
 
 export default function Profile({ navigation }) {
-  // const { setIsLoggedIn } = useContext(AuthContext);
-  const user = useState(SecureStore.getItemAsync("profile"));
+
   const dispatch = useDispatch();
- console.log("user",user);
+  const [user, setUser] = React.useState(null);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const storedUser = await SecureStore.getItemAsync("profile");
+        if (storedUser) {
+          const userObject = JSON.parse(storedUser);
+          setUser(userObject);
+          console.log("Email:", userObject.user?.user?.email);
+          console.log("Name:", userObject.user?.user?.name);
+        } else {
+          console.log("No user data found in SecureStore.");
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    fetchUserData();
+  }, []);
+
+
   function handleLogOut() {
     dispatch({ type: actionType.LOGOUT });
     setUser(null);

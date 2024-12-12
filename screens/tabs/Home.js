@@ -53,7 +53,7 @@ export default function Explore() {
   const allEvents = useSelector((state) => state.event);
   const [user, setUser] = useState(SecureStore.getItemAsync('profile'));
 
-  console.log(allEvents)
+  console.log("HELOO",user)
 
   useEffect(() => {
     const timer = setTimeout(() => {
