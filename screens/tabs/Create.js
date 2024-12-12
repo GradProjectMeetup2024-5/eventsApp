@@ -54,7 +54,6 @@ export default function Create() {
         room:eventRoom
       };
     
-      console.log("Event created:", newEventData);
       
       dispatch(createEvent(newEventData));
     };

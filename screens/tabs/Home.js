@@ -59,7 +59,7 @@ export default function Explore() {
       dispatch(showEvents({type: actionType.FETCH_ALL}));
       setLoading(false);
     }, 2);
-
+    
     return () => clearTimeout(timer);
   }, []);
 
