@@ -14,23 +14,32 @@ import ClubDetails from "./screens/ClubDetails";
 import EventDetails from "./screens/EventDetails";
 
 import { useContext, useState, useEffect } from "react";
+import * as SecureStore from 'expo-secure-store';
+
+ import * as actionType from './API/actionTypes';
 import AllEventsPage from "./screens/AllEventsPage";
 
-const Stack = createNativeStackNavigator();
+ const Stack = createNativeStackNavigator();
 
-function AppNavigator() {
-  // Access Redux state
-  const isLoggedIn = useSelector((state) => state.auth);
-  // const [user, setUser] = useState(JSON.parse(localStorage.getItem("profile")));
+const AppNavigator = () => {
+  const dispatch = useDispatch();
+  const isLoggedIn = useSelector((state) => state.auth.authData !== null);
+  console.log("dw",isLoggedIn)
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const storedProfile = await SecureStore.getItemAsync("profile");
+        console.log("RE")
+        if (storedProfile) {
+          dispatch({ type: actionType.AUTH, data: JSON.parse(storedProfile) });
+        }
+      } catch (error) {
+        console.error("Error fetching profile:", error);
+      }
+    };
 
-  // useEffect(() => {
-  //   const storedProfile = JSON.parse(localStorage.getItem("profile"));
-  //   if (storedProfile) {
-  //     setUser(storedProfile);
-  //   } else {
-  //     setUser(null);
-  //   }
-  // }, [isLoggedIn]);
+    fetchProfile();
+  }, [dispatch]);
 
   return (
     <NavigationContainer>
@@ -40,7 +49,7 @@ function AppNavigator() {
           // animation: "reveal_from_bottom",
         }}
       >
-        {/* {!user?.access_token ? (
+        {!isLoggedIn ? (
           <>
             <Stack.Screen name="LogIn" component={LogIn} />
             <Stack.Screen name="SignUp" component={SignUp} />
@@ -58,7 +67,8 @@ function AppNavigator() {
       </Stack.Navigator>
     </NavigationContainer>
   );
-}
+};
+
 
 export default function App() {
   return (
