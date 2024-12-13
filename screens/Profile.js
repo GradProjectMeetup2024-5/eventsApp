@@ -37,6 +37,7 @@ export default function Profile({ navigation }) {
   }, []);
 
  async function handleLogOut() {
+  console.log("delete")
     await SecureStore.deleteItemAsync('profile');
     navigation.navigate('Profile', { screen: 'SignUp' });
   }

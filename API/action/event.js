@@ -4,6 +4,7 @@ import * as api from './API'
 const showEvents = ()=>async(dispatch)=>{
     try {
         const {data} =await api.showEvents();
+        console.log("DATA",data)
          dispatch({type:FETCH_ALL,payload:data});
     } catch (error) {
         console.log(error);

@@ -30,21 +30,28 @@ const AppNavigator = () => {
   const dispatch = useDispatch();
   const isLoggedIn = useSelector((state) => state.auth.authData !== null);
   console.log("dw", isLoggedIn);
-  useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        const storedProfile = await SecureStore.getItemAsync("profile");
-        console.log("RE");
-        if (storedProfile) {
-          dispatch({ type: actionType.AUTH, data: JSON.parse(storedProfile) });
-        }
-      } catch (error) {
-        console.error("Error fetching profile:", error);
-      }
-    };
 
-    fetchProfile();
+
+   const fetchProfile = () => async (dispatch) => {
+    try {
+      console.log('Inside thunk action');
+      const storedProfile = await SecureStore.getItemAsync('profile');
+      if (storedProfile) {
+      await  dispatch({
+          type: actionType.AUTH,
+          data: JSON.parse(storedProfile),
+        });
+      }
+    } catch (error) {
+      console.error('Error fetching profile:', error);
+    }
+  };
+
+
+  useEffect(() => {
+    dispatch(fetchProfile());
   }, [dispatch]);
+
 
   return (
     <NavigationContainer>
