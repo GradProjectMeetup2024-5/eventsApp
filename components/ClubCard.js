@@ -39,7 +39,7 @@ function ClubCard({ image, title, description, onPress }) {
           // }}
         >
           <Image
-            style={styles.clubImg}
+            style={[styles.clubImg, { transform: [{ translateY: 15 }] }]}
             source={{
               uri: image,
             }}

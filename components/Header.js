@@ -1,31 +1,22 @@
+import React, { useState, useEffect } from "react";
 import { View, TextInput, Pressable, StyleSheet } from "react-native";
-
-import Colors from "../src/constants/Colors";
-import React,{useState ,useEffect} from 'react';
-import { View, TextInput, Pressable, StyleSheet, ScrollView, StatusBar } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 
 import Colors from "../src/constants/Colors";
-import EventCard from "../../components/ui/EventCard";
-import mockEvents from "./mockevents";
-import TabBar from '../../components/ui/HomeTabBar';
-import BottomNavigation from '../../components/ui/BottomNavigation';
 
-import { useDispatch, useSelector } from 'react-redux';
-import {showEvents}  from '../../API/action/event'
-
-import * as actionType from '../../API/actionTypes';
-
+// import BottomNavigation from "../../components/ui/BottomNavigation";
 
 const Header = ({ onPress }) => {
-
   return (
-    <View style={[styles.headerContainer, { backgroundColor: '#000000', paddingBottom: 10 }]}>
+    <View
+      style={[
+        styles.headerContainer,
+        { backgroundColor: "#000000", paddingBottom: 10 },
+      ]}
+    >
       <View style={styles.searchBarContainer}>
         <TextInput
-          style={[styles.searchbar, { color: '#FFFFFF' }]}
+          style={[styles.searchbar, { color: "#FFFFFF" }]}
           placeholder="Search"
           placeholderTextColor="#FFFFFF"
         />
@@ -37,78 +28,18 @@ const Header = ({ onPress }) => {
           />
         </Pressable>
       </View>
-      <TabBar />
-      <BottomNavigation />
 
+      {/* <BottomNavigation /> */}
     </View>
   );
 };
 
-import {back} from '../../assets/eventplaceholder.png'
-import * as SecureStore from 'expo-secure-store';
-
-export default function Explore() {
-
-  const dispatch = useDispatch();
-  const [loading, setLoading] = useState(true);
-
-
-  const allEvents = useSelector((state) => state.event);
-
-  const [user, setUser] = useState(SecureStore.getItemAsync('profile'));
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      dispatch(showEvents({type: actionType.FETCH_ALL}));
-      setLoading(false);
-    }, 2);
-    
-    return () => clearTimeout(timer);
-  }, []);
-
-  const handleSectionSelect = (section) => {
-    setSelected(section);
-  };
-
-
-
-  const navigation = useNavigation();
-
-  function pressHandler() {
-    navigation.navigate("Profile");
-  }
-}
-  return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="light-content" backgroundColor="black" />
-      <Header onPress={pressHandler} />
-      <ScrollView contentContainerStyle={styles.scrollViewContent}>
-        {allEvents?.map((event, index) => (
-          <View key={event.id}>
-            <EventCard
-              eventName={event.event_name}
-              eventDate={event.created_time}
-              eventTime={event.eventTime}
-              eventLocation={event.event_desc}
-              eventOrganizer={event.userId}
-              eventImage={back}
-              profileImageSource={back}
-              textColor="#FFFFFF"
-            />
-            {index < mockEvents.length - 1 && (
-              <View style={styles.separator} />
-            )}
-          </View>
-        ))}
-      </ScrollView>
-    </SafeAreaView>
-  );
-
+export default Header;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#000000',
+    backgroundColor: "#000000",
   },
   headerContainer: {
     backgroundColor: Colors.background.elevated,
@@ -128,7 +59,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: Colors.background.surface,
     paddingLeft: 15,
-    color: '#FFFFFF',
+    color: "#FFFFFF",
   },
   iconContainer: {
     padding: 5,
@@ -142,4 +73,4 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.gray.darkest,
     marginVertical: 10,
   },
-})
+});
