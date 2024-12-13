@@ -3,6 +3,9 @@ import { Image, View, Text, Pressable, StyleSheet } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import profileImage from "../../assets/image 86.png";
 import back from '../../assets/eventplaceholder.png'
+import Colors from "../../src/constants/Colors";
+
+
 export default function EventCard({
   eventName,
   eventDate,
@@ -81,9 +84,11 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
+    backgroundColor: Colors.background.base,
   },
   cardContent: {
     flex: 1,
+    backgroundColor: Colors.background.base,
   },
   imageContainer: {
     width: "100%",
@@ -127,7 +132,7 @@ const styles = StyleSheet.create({
     padding: 12,
     gap: 8,
     width: "100%",
-    backgroundColor: "black",
+    backgroundColor: Colors.background.surface,
   },
   headerContainer: {
     flexDirection: "row",

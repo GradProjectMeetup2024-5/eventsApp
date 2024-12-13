@@ -106,12 +106,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#000000',
+    backgroundColor: Colors.background.base,
   },
   headerContainer: {
     backgroundColor: Colors.background.elevated,
     paddingHorizontal: 15,
     borderBottomWidth: 1,
-    borderColor: Colors.gray.darkest,
+    borderColor: Colors.background.base,
   },
   searchBarContainer: {
     flexDirection: "row",
