@@ -8,9 +8,10 @@ import store from "./Configure";
 
 import Colors from "./src/constants/Colors";
 
-import Tabs from "./navigators/Tabs.js";
+import Tabs from "./navigators/Tabs";
 import Profile from "./screens/Profile";
 import ClubDetails from "./screens/ClubDetails";
+import EventDetails from "./screens/EventDetails";
 
 import { useContext, useState, useEffect } from "react";
 import AllEventsPage from "./screens/AllEventsPage";
@@ -33,7 +34,12 @@ function AppNavigator() {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: false,
+          // animation: "reveal_from_bottom",
+        }}
+      >
         {/* {!user?.access_token ? (
           <>
             <Stack.Screen name="LogIn" component={LogIn} />
@@ -46,6 +52,7 @@ function AppNavigator() {
           <Stack.Screen name="Profile" component={Profile} />
           <Stack.Screen name="ClubDetails" component={ClubDetails} />
           <Stack.Screen name="AllEvents" component={AllEventsPage} />
+          <Stack.Screen name="EventDetails" component={EventDetails} />
         </>
         {/* )} */}
       </Stack.Navigator>

@@ -12,10 +12,17 @@ import { useNavigation } from "@react-navigation/native";
 
 import ClubDetailsHeader from "../components/ClubDetailsHeader";
 import AltClubCard from "../components/AltClubCard";
+import { Ionicons } from "@expo/vector-icons";
 
 import Colors from "../src/constants/Colors";
 
 function ClubDetails() {
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  function toggleExpanded() {
+    setIsExpanded(!isExpanded);
+  }
+
   const navigation = useNavigation();
   const pressHandler = (route) => {
     navigation.navigate(route);
@@ -24,9 +31,22 @@ function ClubDetails() {
   function joinHandler() {
     setJoinState(!joinState);
   }
+
+  const aboutText = `Nam at imperdiet tortor. Morbi lacinia efficitur sem, quis elem nulla convallis quis. Pellentesque nec sapien auctor, ornare diam id, sodales elit.\n
+1. Curabitur consequat erat lorem.
+2. vitae aliquam tellus posuere ut.
+3. Donec ultrices sapien non vulputate dictum.
+Nam at imperdiet tortor. Morbi lacinia efficitur sem, quis elem nulla convallis quis. Pellentesque nec sapien auctor, ornare diam id, sodales elit.\n
+1. Curabitur consequat erat lorem.
+2. vitae aliquam tellus posuere ut.
+3. Donec ultrices sapien non vulputate dictum.
+`;
+
   return (
     <SafeAreaView style={styles.container}>
-      <ClubDetailsHeader />
+      {/* CLUB HEADER */}
+      <ClubDetailsHeader title="Art Club" />
+      {/* CLUB HEAD SECTION */}
       <View style={styles.clubHead}>
         <Image
           style={styles.clubImg}
@@ -56,7 +76,9 @@ function ClubDetails() {
         </View>
       </View>
 
-      <View style={styles.clubBody}>
+      {/* CLUB BODY SECTION */}
+      <ScrollView style={styles.clubBody} overScrollMode="never">
+        {/* EVENT CARDS SECTION */}
         <View style={styles.sectionRow}>
           <Text style={styles.sectionTitle}>Events</Text>
           <Pressable onPress={() => pressHandler("AllEvents")}>
@@ -71,14 +93,56 @@ function ClubDetails() {
           <ScrollView
             horizontal={true}
             showsHorizontalScrollIndicator={false}
-            alwaysBounceHorizontal={false}
-            bounces={false}
+            overScrollMode="never"
           >
-            <AltClubCard />
+            <AltClubCard onPress={() => pressHandler("EventDetails")} />
             <AltClubCard />
           </ScrollView>
         </View>
-      </View>
+        {/* ABOUT US SECTION */}
+        <View style={[styles.sectionRow, { marginTop: 20 }]}>
+          <Text style={[styles.sectionTitle, { color: Colors.accent.primary }]}>
+            About Us
+          </Text>
+        </View>
+        <View style={styles.aboutSection}>
+          <Text
+            style={styles.aboutText}
+            numberOfLines={isExpanded ? undefined : 6}
+          >
+            {aboutText}
+          </Text>
+          <Pressable onPress={toggleExpanded}>
+            <Text
+              style={[styles.readMoreButton, { marginTop: isExpanded ? 0 : 5 }]}
+            >
+              {isExpanded ? "Read Less" : "Read More"}
+            </Text>
+          </Pressable>
+        </View>
+        {/* CONTACT US SECTION */}
+        <View style={styles.sectionRow}>
+          <Text style={[styles.sectionTitle, { color: Colors.accent.primary }]}>
+            Contact Us
+          </Text>
+        </View>
+        <View style={styles.buttonsContainer}>
+          <View style={[styles.buttonContainer, { marginLeft: 0 }]}>
+            <Ionicons
+              name="logo-instagram"
+              color={Colors.accent.secondary}
+              size={38}
+            />
+          </View>
+          <View style={styles.buttonContainer}>
+            <Ionicons
+              name="logo-whatsapp"
+              color={Colors.accent.secondary}
+              size={38}
+            />
+          </View>
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -106,7 +170,7 @@ const styles = StyleSheet.create({
   countContainer: {
     flexDirection: "row",
     justifyContent: "space-evenly",
-    // borderWidth: 1,
+
     paddingBottom: 15,
   },
   count: {
@@ -117,14 +181,13 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "500",
     color: Colors.gray.light,
-    // borderWidth: 1,
+
     marginBottom: -3,
   },
   countLabel: {
     fontSize: 14,
     color: Colors.gray.light,
     fontWeight: "400",
-    // borderWidth: 1,
   },
   clubInfo: {
     width: 180,
@@ -157,15 +220,12 @@ const styles = StyleSheet.create({
   },
   clubBody: {
     flex: 1,
-    // alignItems: "center",
   },
   sectionRow: {
     flexDirection: "row",
     justifyContent: "space-between",
-    // alignItems: "center",
-    paddingVertical: 15,
-    paddingHorizontal: 22,
-    // width: "100%",
+    marginVertical: 15,
+    marginHorizontal: 22,
   },
   sectionTitle: {
     fontSize: 22,
@@ -174,5 +234,33 @@ const styles = StyleSheet.create({
   eventScrollView: {
     alignItems: "center",
     flexDirection: "row",
+  },
+  aboutSection: {
+    marginHorizontal: 27,
+    marginTop: -5,
+  },
+  aboutText: {
+    color: Colors.gray.light,
+    fontSize: 14,
+    lineHeight: 20,
+  },
+  readMoreButton: {
+    color: Colors.accent.secondary,
+    fontWeight: 600,
+  },
+  buttonsContainer: {
+    flexDirection: "row",
+    marginHorizontal: 22,
+    marginBottom: 25,
+    // borderWidth: 1,
+  },
+  buttonContainer: {
+    backgroundColor: Colors.background.surface,
+    height: 50,
+    width: 50,
+    borderRadius: 8,
+    marginHorizontal: 8,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });

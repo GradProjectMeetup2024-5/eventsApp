@@ -4,7 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import Colors from "../src/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 
-function ClubDetailsHeader() {
+function ClubDetailsHeader({ title }) {
   const navigation = useNavigation();
   const goBack = () => {
     navigation.goBack();
@@ -20,7 +20,7 @@ function ClubDetailsHeader() {
         />
       </Pressable>
 
-      <Text style={styles.title}>Art Club</Text>
+      <Text style={styles.title}>{title}</Text>
 
       <Pressable>
         <Ionicons

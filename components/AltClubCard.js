@@ -4,8 +4,6 @@ import Colors from "../src/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 import { Shadow } from "react-native-shadow-2";
 
-import BoldText from "./ui/BoldText";
-
 function AltClubCard({ onPress }) {
   return (
     <View style={styles.container}>
@@ -61,9 +59,7 @@ function AltClubCard({ onPress }) {
                 ]}
               />
             </View>
-            <Text style={styles.attendingCount}>
-              <BoldText>4 </BoldText>going
-            </Text>
+            <Text style={styles.attendingCount}>4 att.</Text>
           </View>
         </Pressable>
       </Shadow>

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { View, Pressable, Text, Image, StyleSheet } from "react-native";
 
 import { Shadow } from "react-native-shadow-2";
@@ -6,6 +7,12 @@ import { Ionicons } from "@expo/vector-icons";
 import Colors from "../src/constants/Colors";
 
 function ClubCard({ image, title, description, onPress }) {
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  function toggleExpanded() {
+    setIsExpanded(!isExpanded);
+  }
+
   return (
     <View style={styles.container}>
       <Shadow
@@ -21,7 +28,16 @@ function ClubCard({ image, title, description, onPress }) {
         startColor="rgba(0, 0, 0, 0.20)"
         endColor="rgba(0, 0, 0, 0.05)"
       >
-        <Pressable style={styles.cardInfo} onPress={onPress}>
+        <Pressable
+          style={styles.cardInfo}
+          onPress={onPress}
+          // onPress={() => {
+          //   onPress?.();
+          //   if (isExpanded) {
+          //     toggleExpanded();
+          //   }
+          // }}
+        >
           <Image
             style={styles.clubImg}
             source={{
@@ -29,8 +45,30 @@ function ClubCard({ image, title, description, onPress }) {
             }}
           />
           <View style={styles.textContent}>
-            <View style={styles.titleRow}>
-              <Text style={styles.clubTitle}>{title}</Text>
+            <Text style={styles.clubTitle}>{title}</Text>
+
+            <Text
+              style={styles.clubDescription}
+              numberOfLines={isExpanded ? undefined : 6}
+            >
+              {description}
+            </Text>
+            <View style={styles.pressableRow}>
+              <Pressable onPress={toggleExpanded} hitSlop={20}>
+                <Text
+                  style={[
+                    styles.readMoreButton,
+                    { marginTop: isExpanded ? 0 : 5 },
+                    {
+                      color: isExpanded
+                        ? Colors.gray.dark
+                        : Colors.accent.secondary,
+                    },
+                  ]}
+                >
+                  {isExpanded ? "Read Less" : "Read More"}
+                </Text>
+              </Pressable>
               <Ionicons
                 name="chevron-forward-outline"
                 color={Colors.gray.light}
@@ -38,7 +76,6 @@ function ClubCard({ image, title, description, onPress }) {
                 style={styles.chevronIcon}
               />
             </View>
-            <Text style={styles.clubDescription}>{description}</Text>
           </View>
         </Pressable>
       </Shadow>
@@ -54,11 +91,11 @@ const styles = StyleSheet.create({
   },
   cardInfo: {
     flexDirection: "row",
-    height: 160,
     width: 370,
     backgroundColor: Colors.background.surface,
     borderRadius: 8,
     padding: 12,
+    // alignItems: "center",
   },
   clubImg: {
     height: 84,
@@ -67,7 +104,7 @@ const styles = StyleSheet.create({
   },
   clubDescription: {
     color: Colors.gray.light,
-    width: 240,
+    // width: 240,
     fontSize: 14,
     fontWeight: "400",
   },
@@ -75,7 +112,7 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     width: 270,
   },
-  titleRow: {
+  pressableRow: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
@@ -86,5 +123,9 @@ const styles = StyleSheet.create({
   clubTitle: {
     fontSize: 24,
     color: Colors.accent.primary,
+  },
+  readMoreButton: {
+    color: Colors.accent.secondary,
+    fontWeight: 600,
   },
 });
