@@ -1,17 +1,9 @@
-import React, { useState } from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  Pressable,
-  StyleSheet,
-  ScrollView,
-  Alert,
-} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { StyleSheet } from "react-native";
+import { useDispatch } from "react-redux";
+import { createEvent } from "../../API/action/event";
 
-import { useDispatch } from 'react-redux';
-import { createEvent } from '../../API/action/event'
+import Colors from "../../src/constants/Colors";
 
 export default function Create() {
   const dispatch = useDispatch();
@@ -20,43 +12,54 @@ export default function Create() {
   const [eventDay, setEventDay] = useState("");
   const [eventYear, setEventYear] = useState("");
   const [eventTime, setEventTime] = useState("");
-  const [eventFaculty,setEventFaculty] = useState("");
-  const [eventFloor,setEventFloor] = useState("");
-  const [eventRoom,setEventRoom] = useState("");
+  const [eventFaculty, setEventFaculty] = useState("");
+  const [eventFloor, setEventFloor] = useState("");
+  const [eventRoom, setEventRoom] = useState("");
   const [eventDescription, setEventDescription] = useState("");
   const [eventImage, setEventImage] = useState("");
   const [amPm, setAmPm] = useState("AM");
 
-  const [eventData, setEventData] = useState({ event_name: '', event_desc: '', event_image: '',
-    faculty: '',floor: '', room: '', image:''})
+  const [eventData, setEventData] = useState({
+    event_name: "",
+    event_desc: "",
+    event_image: "",
+    faculty: "",
+    floor: "",
+    room: "",
+    image: "",
+  });
 
-    const handleSubmit = () => {
-      if (!eventName || !eventMonth || !eventDay || !eventYear || !eventTime ) {
-        Alert.alert("Error", "All fields are required.");
-        return;
-      }
-      let [hours, minutes] = eventTime.split(":").map(Number);
+  const handleSubmit = () => {
+    if (!eventName || !eventMonth || !eventDay || !eventYear || !eventTime) {
+      Alert.alert("Error", "All fields are required.");
+      return;
+    }
+    let [hours, minutes] = eventTime.split(":").map(Number);
 
-      if (amPm === "PM" && hours < 12) hours += 12; 
-      if (amPm === "AM" && hours === 12) hours = 0; 
-     
-      const eventDate = new Date(
-        `${eventYear}-${eventMonth.padStart(2, '0')}-${eventDay.padStart(2, '0')}T${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`
-      );
-      const newEventData = {
-        event_name: eventName,
-        event_desc: eventDescription,
-        event_date: eventDate,
-        event_time: eventTime,
-        event_image: eventImage,
-        faculty:eventFaculty,
-        floor:eventFloor,
-        room:eventRoom
-      };
-    
-      
-      dispatch(createEvent(newEventData));
+    if (amPm === "PM" && hours < 12) hours += 12;
+    if (amPm === "AM" && hours === 12) hours = 0;
+
+    const eventDate = new Date(
+      `${eventYear}-${eventMonth.padStart(2, "0")}-${eventDay.padStart(
+        2,
+        "0"
+      )}T${hours.toString().padStart(2, "0")}:${minutes
+        .toString()
+        .padStart(2, "0")}`
+    );
+    const newEventData = {
+      event_name: eventName,
+      event_desc: eventDescription,
+      event_date: eventDate,
+      event_time: eventTime,
+      event_image: eventImage,
+      faculty: eventFaculty,
+      floor: eventFloor,
+      room: eventRoom,
     };
+
+    dispatch(createEvent(newEventData));
+  };
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -69,7 +72,7 @@ export default function Create() {
             <TextInput
               style={styles.input}
               value={eventName}
-               onChangeText={setEventName}
+              onChangeText={setEventName}
               placeholder="Enter event name"
               placeholderTextColor="#808080"
             />
@@ -165,7 +168,9 @@ export default function Create() {
             <TextInput
               style={styles.input}
               value={eventData.event_image}
-              onChangeText={(text) => setEventData({ ...eventData, event_image: text })}
+              onChangeText={(text) =>
+                setEventData({ ...eventData, event_image: text })
+              }
               placeholder="Enter image URL"
               placeholderTextColor="#808080"
             />
@@ -287,5 +292,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 24,
     color: "#FFFFFF",
+    backgroundColor: Colors.background.base,
   },
 });
