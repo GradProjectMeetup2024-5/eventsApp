@@ -70,11 +70,11 @@ function ClubDetails() {
         <View style={styles.clubInfo}>
           <View style={styles.countContainer}>
             <View style={styles.count}>
-              <Text style={styles.countNum}>235</Text>
+              <Text style={styles.countNum}>{club?.membersCount}</Text>
               <Text style={styles.countLabel}>members</Text>
             </View>
             <View style={styles.count}>
-              <Text style={styles.countNum}>25</Text>
+              <Text style={styles.countNum}>{club?.eventsCount}</Text>
               <Text style={styles.countLabel}>events</Text>
             </View>
           </View>
