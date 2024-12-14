@@ -8,7 +8,6 @@ import { FETCH_ALL_CLUBS} from '../actionTypes';
         //         return [...event,action.payload]
 
                 case FETCH_ALL_CLUBS:
-                    console.log("DATA IN ACTION",action.payload)
                   return action.payload 
 
         

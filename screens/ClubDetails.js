@@ -16,9 +16,13 @@ import { Ionicons } from "@expo/vector-icons";
 
 import Colors from "../src/constants/Colors";
 
-function ClubDetails({clubId}) {
+import { useRoute } from "@react-navigation/native";
+
+function ClubDetails() {
   const [isExpanded, setIsExpanded] = useState(false);
-  console.log("Club Id ",clubId)
+  const route = useRoute();
+  const { clubId } = route.params;
+
   function toggleExpanded() {
     setIsExpanded(!isExpanded);
   }
@@ -27,6 +31,7 @@ function ClubDetails({clubId}) {
   const pressHandler = (route) => {
     navigation.navigate(route);
   };
+  
   const [joinState, setJoinState] = useState(false);
   function joinHandler() {
     setJoinState(!joinState);

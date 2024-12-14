@@ -41,7 +41,6 @@ useEffect(() => {
         image="https://d1csarkz8obe9u.cloudfront.net/posterpreviews/art-club-logo-design-template-7363f499d408b8d5aa636f25e135ce56_screen.jpg?ts=1688208799"
         title={club.name} 
         description={club.desc}
-        clubId={club.id}
         onPress={() => navigation.navigate("ClubDetails", { clubId: club.id })}
       />
     ))

@@ -4,7 +4,6 @@ import * as api from './API'
 export const allClubs = (formData)=>async(dispatch)=>{
     try {
         const {data} =await api.allClubs(formData)
-        console.log("DATA",data)
          dispatch({type:FETCH_ALL_CLUBS,payload:data})
          return data;
     } catch (error) {
