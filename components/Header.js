@@ -8,15 +8,10 @@ import Colors from "../src/constants/Colors";
 
 const Header = ({ onPress }) => {
   return (
-    <View
-      style={[
-        styles.headerContainer,
-        { backgroundColor: "#000000", paddingBottom: 10 },
-      ]}
-    >
+    <View style={styles.headerContainer}>
       <View style={styles.searchBarContainer}>
         <TextInput
-          style={[styles.searchbar, { color: "#FFFFFF" }]}
+          style={styles.searchbar}
           placeholder="Search"
           placeholderTextColor="#FFFFFF"
         />
@@ -39,7 +34,7 @@ export default Header;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#000000",
+    // backgroundColor: "#000000",
   },
   headerContainer: {
     backgroundColor: Colors.background.elevated,
@@ -59,7 +54,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: Colors.background.surface,
     paddingLeft: 15,
-    color: "#FFFFFF",
+    // color: "#FFFFFF",
   },
   iconContainer: {
     padding: 5,
