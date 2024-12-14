@@ -13,12 +13,15 @@ import { useNavigation } from "@react-navigation/native";
 import ClubDetailsHeader from "../components/ClubDetailsHeader";
 import AltClubCard from "../components/AltClubCard";
 import { Ionicons } from "@expo/vector-icons";
-
+import { useRoute } from '@react-navigation/native';
 import Colors from "../src/constants/Colors";
 
 function ClubDetails() {
   const [isExpanded, setIsExpanded] = useState(false);
+  const route = useRoute();
+  const { clubId } = route.params;
 
+  console.log("Received Club ID:", clubId);
   function toggleExpanded() {
     setIsExpanded(!isExpanded);
   }

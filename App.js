@@ -29,12 +29,9 @@ const Stack = createNativeStackNavigator();
 const AppNavigator = () => {
   const dispatch = useDispatch();
   const isLoggedIn = useSelector((state) => state.auth.authData !== null);
-  console.log("dw", isLoggedIn);
-
 
    const fetchProfile = () => async (dispatch) => {
     try {
-      console.log('Inside thunk action');
       const storedProfile = await SecureStore.getItemAsync('profile');
       if (storedProfile) {
       await  dispatch({
