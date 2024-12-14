@@ -14,5 +14,10 @@ export const ADD_SUBJECT_STUDENT='ADD_SUBJECT_STUDENT'
 export const MY_CREATED_EVENT='MY_CREATED_EVENT'
 export const MY_JOINED_EVENTS='MY_JOINED_EVENTS'
 
+
+// auth
 export const AUTH = 'AUTH';
 export const LOGOUT = 'LOGOUT';
+
+// club
+export const FETCH_ALL_CLUBS='FETCH_ALL_CLUBS'

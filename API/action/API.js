@@ -33,3 +33,6 @@ export const createEvent = (formData)=>API.post('/event',formData)
 // my events
 export const myJoinedEvents =()=>API.get('/event-user/show-my-joined-events')
 export const showMyCreatedEvents =()=>API.get('/event-user/show-my-created-events')
+
+// Club
+export const allClubs =()=>API.get('/club')

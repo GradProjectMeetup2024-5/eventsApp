@@ -10,7 +10,7 @@ export default (event = [], action) => {
 
               case FETCH_ALL:
                 console.log('Updating events state:', action.payload);
-                return action.payload // Update only allEvents
+                return action.payload 
 
         case FETCH_ID:
           return [action.payload]
