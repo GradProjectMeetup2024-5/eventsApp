@@ -30,7 +30,9 @@ function ClubDetails() {
   const { clubId } = route.params;
   const clubIdNumber = Number(clubId);
   
-  const club = useSelector((state) => state.clubReducer);
+  const club = useSelector((state) => state.clubReducer.club);
+
+  console.log("club details",club)
 
   const dispatch = useDispatch();
 
@@ -53,20 +55,10 @@ function ClubDetails() {
     setJoinState(!joinState);
   }
 
-  const aboutText = `Nam at imperdiet tortor. Morbi lacinia efficitur sem, quis elem nulla convallis quis. Pellentesque nec sapien auctor, ornare diam id, sodales elit.\n
-1. Curabitur consequat erat lorem.
-2. vitae aliquam tellus posuere ut.
-3. Donec ultrices sapien non vulputate dictum.
-Nam at imperdiet tortor. Morbi lacinia efficitur sem, quis elem nulla convallis quis. Pellentesque nec sapien auctor, ornare diam id, sodales elit.\n
-1. Curabitur consequat erat lorem.
-2. vitae aliquam tellus posuere ut.
-3. Donec ultrices sapien non vulputate dictum.
-`;
-
   return (
     <SafeAreaView style={styles.container}>
       {/* CLUB HEADER */}
-      <ClubDetailsHeader title="Art Club" />
+      <ClubDetailsHeader title={club?.name} />
       {/* CLUB HEAD SECTION */}
       <View style={styles.clubHead}>
         <Image
@@ -131,7 +123,7 @@ Nam at imperdiet tortor. Morbi lacinia efficitur sem, quis elem nulla convallis 
             style={styles.aboutText}
             numberOfLines={isExpanded ? undefined : 6}
           >
-            {aboutText}
+            {club?.desc}
           </Text>
           <Pressable onPress={toggleExpanded}>
             <Text
