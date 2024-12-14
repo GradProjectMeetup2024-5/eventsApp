@@ -20,7 +20,7 @@ function AttendingPage() {
   const [loading, setLoading] = useState(true);
   const events = useSelector((state) => state.eventUser);
   const navigation = useNavigation();
-  console.log(events)
+  // console.log(events)
   useEffect(() => {
     const timer = setTimeout(() => {
       dispatch(myJoinedEvents({ type: actionType.MY_JOINED_EVENTS }));

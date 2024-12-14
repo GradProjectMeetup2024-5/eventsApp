@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
   View,
@@ -16,8 +15,30 @@ import { Ionicons } from "@expo/vector-icons";
 
 import Colors from "../src/constants/Colors";
 
+import { useContext, useState, useEffect } from "react";
+import { Provider, useSelector, useDispatch } from "react-redux";
+
+import { findOneClub } from '../API/action/club'
+import * as actionType from "../API/actionTypes";
+
+import { useRoute } from "@react-navigation/native";
+
 function ClubDetails() {
+
   const [isExpanded, setIsExpanded] = useState(false);
+  const route = useRoute();
+  const { clubId } = route.params;
+  const clubIdNumber = Number(clubId);
+  
+  const club = useSelector((state) => state.clubReducer.club);
+
+  console.log("club details",club)
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(findOneClub(clubIdNumber));
+  }, [dispatch, clubIdNumber]); 
 
   function toggleExpanded() {
     setIsExpanded(!isExpanded);
@@ -27,25 +48,17 @@ function ClubDetails() {
   const pressHandler = (route) => {
     navigation.navigate(route);
   };
+
   const [joinState, setJoinState] = useState(false);
+
   function joinHandler() {
     setJoinState(!joinState);
   }
 
-  const aboutText = `Nam at imperdiet tortor. Morbi lacinia efficitur sem, quis elem nulla convallis quis. Pellentesque nec sapien auctor, ornare diam id, sodales elit.\n
-1. Curabitur consequat erat lorem.
-2. vitae aliquam tellus posuere ut.
-3. Donec ultrices sapien non vulputate dictum.
-Nam at imperdiet tortor. Morbi lacinia efficitur sem, quis elem nulla convallis quis. Pellentesque nec sapien auctor, ornare diam id, sodales elit.\n
-1. Curabitur consequat erat lorem.
-2. vitae aliquam tellus posuere ut.
-3. Donec ultrices sapien non vulputate dictum.
-`;
-
   return (
     <SafeAreaView style={styles.container}>
       {/* CLUB HEADER */}
-      <ClubDetailsHeader title="Art Club" />
+      <ClubDetailsHeader title={club?.name} />
       {/* CLUB HEAD SECTION */}
       <View style={styles.clubHead}>
         <Image
@@ -57,11 +70,11 @@ Nam at imperdiet tortor. Morbi lacinia efficitur sem, quis elem nulla convallis 
         <View style={styles.clubInfo}>
           <View style={styles.countContainer}>
             <View style={styles.count}>
-              <Text style={styles.countNum}>235</Text>
+              <Text style={styles.countNum}>{club?.membersCount}</Text>
               <Text style={styles.countLabel}>members</Text>
             </View>
             <View style={styles.count}>
-              <Text style={styles.countNum}>25</Text>
+              <Text style={styles.countNum}>{club?.eventsCount}</Text>
               <Text style={styles.countLabel}>events</Text>
             </View>
           </View>
@@ -110,7 +123,7 @@ Nam at imperdiet tortor. Morbi lacinia efficitur sem, quis elem nulla convallis 
             style={styles.aboutText}
             numberOfLines={isExpanded ? undefined : 6}
           >
-            {aboutText}
+            {club?.desc}
           </Text>
           <Pressable onPress={toggleExpanded}>
             <Text

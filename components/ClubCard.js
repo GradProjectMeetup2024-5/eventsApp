@@ -6,7 +6,7 @@ import { Ionicons } from "@expo/vector-icons";
 
 import Colors from "../src/constants/Colors";
 
-function ClubCard({ image, title, description, onPress }) {
+function ClubCard({ image, title, description, onPress, clubId }) {
   const [isExpanded, setIsExpanded] = useState(false);
 
   function toggleExpanded() {
