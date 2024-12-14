@@ -17,7 +17,7 @@ const clubs = useSelector((state)=>state.clubReducer)
 const dispatch = useDispatch();
   
 useEffect(() => {
-  dispatch(allClubs());
+  dispatch(allClubs({type:actionType.FETCH_ALL_CLUBS}));
 }, [dispatch]);
 
   const navigation = useNavigation();
