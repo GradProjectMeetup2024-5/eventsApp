@@ -4,7 +4,6 @@ import * as api from './API'
 const myJoinedEvents = ()=>async(dispatch)=>{
     try {
         const {data} =await api.myJoinedEvents();
-        
          dispatch({type:MY_JOINED_EVENTS,payload:data});
     } catch (error) {
         console.log(error);
@@ -14,7 +13,6 @@ const myJoinedEvents = ()=>async(dispatch)=>{
 const showMyCreatedEvents = ()=>async(dispatch)=>{
     try {
         const {data} =await api.showMyCreatedEvents();
-        // console.log("MY_CREATED_EVENT",{data})
          dispatch({type:MY_CREATED_EVENT,payload:data});
     } catch (error) {
         console.log(error);

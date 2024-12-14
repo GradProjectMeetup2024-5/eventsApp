@@ -9,7 +9,7 @@ import {
   Alert,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-
+import Colors from "../../src/constants/Colors";
 import { useDispatch } from 'react-redux';
 import { createEvent } from '../../API/action/event'
 
@@ -198,6 +198,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#000000",
     paddingHorizontal: 20,
     justifyContent: "center",
+    backgroundColor: Colors.background.base,
   },
   scrollViewContent: {
     flexGrow: 1,

@@ -14,7 +14,7 @@ const Colors = {
   },
 
   background: {
-    base: "#2E2E2E", // Default page background
+    base: "#2C2C2C", // Default page background
     elevated: "#323232", // Headers, footers, the Statusbar or slightly raised surfaces
     surface: "#1D1D1D", // Cards and pressed buttons
     muted: "#3D3D3D", // Buttons in sectioned pages
