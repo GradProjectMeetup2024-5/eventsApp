@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
   View,
@@ -16,12 +15,28 @@ import { Ionicons } from "@expo/vector-icons";
 
 import Colors from "../src/constants/Colors";
 
+import { useContext, useState, useEffect } from "react";
+import { Provider, useSelector, useDispatch } from "react-redux";
+
+import { findOneClub } from '../API/action/club'
+import * as actionType from "../API/actionTypes";
+
 import { useRoute } from "@react-navigation/native";
 
 function ClubDetails() {
+
   const [isExpanded, setIsExpanded] = useState(false);
   const route = useRoute();
   const { clubId } = route.params;
+  const clubIdNumber = Number(clubId);
+  
+  const club = useSelector((state) => state.clubReducer);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(findOneClub(clubIdNumber));
+  }, [dispatch, clubIdNumber]); 
 
   function toggleExpanded() {
     setIsExpanded(!isExpanded);
@@ -31,8 +46,9 @@ function ClubDetails() {
   const pressHandler = (route) => {
     navigation.navigate(route);
   };
-  
+
   const [joinState, setJoinState] = useState(false);
+
   function joinHandler() {
     setJoinState(!joinState);
   }

@@ -21,3 +21,4 @@ export const LOGOUT = 'LOGOUT';
 
 // club
 export const FETCH_ALL_CLUBS='FETCH_ALL_CLUBS'
+export const FETCH_ONE_CLUB='FETCH_ONE_CLUB'

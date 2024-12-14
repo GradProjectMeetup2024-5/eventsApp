@@ -1,17 +1,11 @@
-import { FETCH_ALL_CLUBS} from '../actionTypes';
+import { FETCH_ALL_CLUBS,FETCH_ONE_CLUB} from '../actionTypes';
   
   export default (club = [], action) => {
     switch (action.type) {
-        //   case CREATE:
-        //       return [...event,action.payload]
-        //       case CREATE_EVENT:
-        //         return [...event,action.payload]
-
-                case FETCH_ALL_CLUBS:
-                  return action.payload 
-
-        
-              
+          case FETCH_ALL_CLUBS:
+            return  { ...club, clubs: action.payload };
+          case FETCH_ONE_CLUB:
+            return { ...club,club:action.payload }
       default:
         return club;
     }

@@ -12,47 +12,53 @@ import { allClubs } from '../../API/action/club'
 import * as actionType from "../../API/actionTypes";
 
 function ClubList() {
-
-const clubs = useSelector((state)=>state.clubReducer)
-const dispatch = useDispatch();
-  
-useEffect(() => {
-  dispatch(allClubs({type:actionType.FETCH_ALL_CLUBS}));
-}, [dispatch]);
-
+  const [loading, setLoading] = useState(true);
+  const clubs = useSelector((state) => state.clubReducer.clubs); // Ensure to access clubs property
+  const dispatch = useDispatch();
   const navigation = useNavigation();
+
+  useEffect(() => {
+    const fetchClubs = async () => {
+      try {
+        await dispatch(allClubs()); 
+      } catch (error) {
+        console.error('Failed to fetch clubs:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+ 
+    fetchClubs();
+  }, [dispatch]); 
+
   const pressHandler = (route) => {
     navigation.navigate(route);
   };
 
   return (
-<SafeAreaView style={styles.container}>
-  <Header onPress={() => pressHandler("Profile")} />
-
-  <ScrollView
-    contentContainerStyle={styles.clubListContainer}
-    overScrollMode="never"
-  >
-    {
-    clubs.length>0 ?(
-    clubs.map((club) => (
-      <ClubCard
-        key={club.id}
-        image="https://d1csarkz8obe9u.cloudfront.net/posterpreviews/art-club-logo-design-template-7363f499d408b8d5aa636f25e135ce56_screen.jpg?ts=1688208799"
-        title={club.name} 
-        description={club.desc}
-        onPress={() => navigation.navigate("ClubDetails", { clubId: club.id })}
-      />
-    ))
-    ):(
-      <Text> No clubs where found</Text>
-    )
-  }
-  </ScrollView>
-</SafeAreaView>
-
+    <SafeAreaView style={styles.container}>
+      <Header onPress={() => pressHandler("Profile")} />
+      <ScrollView contentContainerStyle={styles.clubListContainer} overScrollMode="never">
+        {loading ? (
+          <Text>Loading...</Text>
+        ) : clubs.length > 0 ? (
+          clubs.map((club) => (
+            <ClubCard
+              key={club.id}
+              image="https://d1csarkz8obe9u.cloudfront.net/posterpreviews/art-club-logo-design-template-7363f499d408b8d5aa636f25e135ce56_screen.jpg?ts=1688208799"
+              title={club.name}
+              description={club.desc}
+              onPress={() => navigation.navigate("ClubDetails", { clubId: club.id })}
+            />
+          ))
+        ) : (
+          <Text>No clubs were found</Text>
+        )}
+      </ScrollView>
+    </SafeAreaView>
   );
 }
+
 export default ClubList;
 
 const styles = StyleSheet.create({
