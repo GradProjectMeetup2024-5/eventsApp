@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
   authButton: {
     width: width - 32,
     height: 47,
-    backgroundColor: "#19191B",
+    backgroundColor: "#FF0000",
     borderRadius: 24,
     justifyContent: "center",
     alignItems: "center",

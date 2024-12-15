@@ -7,7 +7,7 @@ function AuthTextInput({
   placeholderTextColor = "#FFFFFF",
   secureTextEntry = false,
   value,
-  onChangeText, 
+  onChangeText,
 }) {
   return (
     <TextInput
@@ -15,8 +15,8 @@ function AuthTextInput({
       placeholder={placeholder}
       placeholderTextColor={placeholderTextColor}
       secureTextEntry={secureTextEntry}
-      value={value} 
-      onChangeText={onChangeText} 
+      value={value}
+      onChangeText={onChangeText}
     />
   );
 }
@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
   input: {
     width: width - 32,
     height: 47,
-    backgroundColor: "#AFB1B6",
+    backgroundColor: "#FFFFFF",
     borderRadius: 24,
     paddingHorizontal: 20,
     marginBottom: 10,

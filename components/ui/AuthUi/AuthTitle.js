@@ -8,8 +8,9 @@ export default AuthTitle;
 
 const styles = StyleSheet.create({
   title: {
-    fontSize: 24,
+    fontSize: 22,
     fontWeight: "bold",
-    marginBottom: 20,
+    marginBottom: 10,
+    color: "#FFFFFF",
   },
 });

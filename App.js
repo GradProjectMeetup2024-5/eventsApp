@@ -31,7 +31,7 @@ const AppNavigator = () => {
   const isLoggedIn = useSelector((state) => state.auth.authData !== null);
 
 
-   const fetchProfile = () => async (dispatch) => {
+  const fetchProfile = () => async (dispatch) => {
     try {
       const storedProfile = await SecureStore.getItemAsync('profile');
 

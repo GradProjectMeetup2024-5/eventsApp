@@ -1,6 +1,5 @@
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, ImageBackground, Image } from "react-native";
 
-import PlaceHolderIcon from "../../components/ui/PlaceHolderIcon";
 import AuthTitle from "../../components/ui/AuthUi/AuthTitle";
 import AuthTextInput from "../../components/ui/AuthUi/AuthTextInput";
 import AuthButton from "../../components/ui/AuthUi/AuthButton";
@@ -12,21 +11,22 @@ function ForgotPass({ navigation }) {
     navigation.goBack("SignUp");
   }
   return (
-    <View style={styles.container}>
-      <PlaceHolderIcon />
-      <AuthTitle>Forgot Password</AuthTitle>
+    <ImageBackground source={require('../../assets/BG.png')} style={styles.container}>
+      <View style={styles.contentContainer}>
+        <Image source={require('../../assets/icon.png')} style={[styles.icon, { width: 300, height: 300 }]} resizeMode="contain" />
 
-      <Text style={styles.instructions}>
-        Please enter your email for instructions on resetting your password.
-      </Text>
+        <Text style={styles.instructions}>
+          Please enter your email for instructions on resetting your password.
+        </Text>
 
-      <AuthTextInput placeholder="Email" />
-      <AuthButton>Send</AuthButton>
+        <AuthTextInput placeholder="Email" placeholderTextColor="#000000" />
+        <AuthButton>Send</AuthButton>
 
-      <AuthRedirectButton onPress={handleBackToLogin}>
-        Remembered your password? <BoldText>Log In</BoldText>
-      </AuthRedirectButton>
-    </View>
+        <AuthRedirectButton onPress={handleBackToLogin}>
+          Already have an account? <BoldText>Log In</BoldText>
+        </AuthRedirectButton>
+      </View>
+    </ImageBackground>
   );
 }
 
@@ -35,17 +35,24 @@ export default ForgotPass;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FFFFFF",
     borderRadius: 0,
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "flex-end",
     padding: 16,
+  },
+  contentContainer: {
+    alignItems: "center",
   },
   instructions: {
     fontSize: 16,
-    color: "#19191B",
+    color: "#FFFFFF",
     textAlign: "center",
     marginBottom: 20,
     paddingHorizontal: 20,
+  },
+  icon: {
+    width: 100,
+    height: 100,
+    marginBottom: -80,
   },
 });
