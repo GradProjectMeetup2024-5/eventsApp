@@ -11,7 +11,8 @@ function AltClubCard({
   floor,
   room,
   image,
-  eventDate
+  eventDate,
+  eventId
   }) {
   return (
     <View style={styles.container}>

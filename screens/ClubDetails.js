@@ -36,8 +36,6 @@ function ClubDetails() {
   const club = useSelector((state) => state.clubReducer.club);
   const clubEvent = useSelector((state) => state.clubEventsReducer.clubEvent);
 
-  console.log("club events",clubEvent[0])
-
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -116,13 +114,14 @@ function ClubDetails() {
           {
             clubEvent?.length > 0 ? (
               clubEvent?.map((event) =>
-                <AltClubCard 
-                eventDate={event.event_date}
-                eventName={event.event_name}
-                faculty={event.faculty}
-                floor={event.floor}
-                room={event.room}
-                image={event.image}
+                <AltClubCard
+                key={event?.id} 
+                eventDate={event?.event_date}
+                eventName={event?.event_name}
+                faculty={event?.faculty}
+                floor={event?.floor}
+                room={event?.room}
+                image={event?.image}
                 onPress={() => pressHandler("EventDetails")} 
                 />
               )
