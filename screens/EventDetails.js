@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
   View,
@@ -17,35 +17,58 @@ import EventDetailsHeader from "../components/EventDetailsHeader";
 
 import { useRoute } from '@react-navigation/native';
 
+import { useDispatch, useSelector } from "react-redux";
+
+import { joinEvent, checkIfUserJoinedEvent, myJoinedEvents } from "../API/action/eventUser";
+
+import * as actionType from "../API/actionTypes";
+
 function EventDetails() {
+
+  const dispatch = useDispatch();
 
   const route = useRoute(); 
 
-  const { eventName, eventDate, floor, room, about, image, clubName, faculty, creatorName } = route.params;
+  const [joinState, setJoinState] = useState(false);
+  const [isApproved, setisApproved] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  const { eventName, eventDate, floor, room, about, image, clubName, faculty, creatorName, eventId } = route.params;
 
   const [isExpanded, setIsExpanded] = useState(false);
 
+  const join = useSelector((state) => state.eventUser.myJoinedEvents);
+  const checkIfUserJoined  = useSelector((state) => state.eventUser.checkIfUserJoinedEvent);
+  const leaveEvent  = useSelector((state) => state.eventUser.leaveEvent);
+
+
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      dispatch(checkIfUserJoinedEvent(eventId));
+      setLoading(false);
+    }, 2);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+    if(checkIfUserJoined == true){
+      setJoinState(true);
+      
+    }
   function toggleExpanded() {
     setIsExpanded(!isExpanded);
   }
-  console.log("club name ",clubName)
-  const [joinState, setJoinState] = useState(false);
-  const [isApproved, setisApproved] = useState(false);
 
-  function joinHandler() {
-    setJoinState(!joinState);
+ async function joinHandler() {
+    if(joinState == false){
+       await dispatch(joinEvent(eventId))
+        setJoinState(true);
+    }
+  await dispatch(leaveEvent(eventId))
+        setJoinState(false);
+
   }
-
-  const aboutText = `Nam at imperdiet tortor. Morbi lacinia efficitur sem, quis elem nulla convallis quis. Pellentesque nec sapien auctor, ornare diam id, sodales elit.\n
-1. Curabitur consequat erat lorem.
-2. vitae aliquam tellus posuere ut.
-3. Donec ultrices sapien non vulputate dictum.
-Nam at imperdiet tortor. Morbi lacinia efficitur sem, quis elem nulla convallis quis. Pellentesque nec sapien auctor, ornare diam id, sodales elit.\n
-1. Curabitur consequat erat lorem.
-2. vitae aliquam tellus posuere ut.
-3. Donec ultrices sapien non vulputate dictum.
-`;
-
   const num = 6;
   return (
     <SafeAreaView style={styles.container}>

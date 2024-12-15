@@ -93,6 +93,7 @@ export default function Explore() {
         onPress={() =>
           navigation.navigate("EventDetails", {
             // clubName: club?.name,
+            eventId:event?.id,
             creatorName:event?.createrName,
             eventName: event?.event_name,
             eventDate: event?.event_date,

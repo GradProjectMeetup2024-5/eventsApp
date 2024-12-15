@@ -29,10 +29,12 @@ export const signup  =(formData)=>API.post('/auth/signup',formData)
 export const  showEvents =()=>API.get('/event')
 export const createEvent = (formData)=>API.post('/event',formData)
 
-
-// my events
+// Event user
+export const joinEvent = (id)=>API.patch(`/event-user/${id}`)
 export const myJoinedEvents =()=>API.get('/event-user/show-my-joined-events')
 export const showMyCreatedEvents =()=>API.get('/event-user/show-my-created-events')
+export const checkIfUserJoinedEvent = (eventId)=>API.get(`/event-user/joined/${eventId}`)
+export const leaveEvent = (eventId)=>API.delete(`/event-user/${eventId}`)
 
 // Club
 export const allClubs =()=>API.get('/club')
@@ -40,3 +42,4 @@ export const findOneClub =(id)=>API.get(`/club/${id}`)
 
 // Club Events
 export const showClubEvents =(clubId)=>API.get(`/club-event/${clubId}`)
+
