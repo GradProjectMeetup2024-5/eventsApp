@@ -57,7 +57,7 @@ function ClubDetails() {
   function joinHandler() {
     setJoinState(!joinState);
   }
-
+  console.log("club name from club",club?.name)
   return (
     <SafeAreaView style={styles.container}>
       {/* CLUB HEADER */}
@@ -122,7 +122,16 @@ function ClubDetails() {
                 floor={event?.floor}
                 room={event?.room}
                 image={event?.image}
-                onPress={() => pressHandler("EventDetails")} 
+                onPress={() => navigation.navigate("EventDetails", {
+                   clubName: club?.name,
+                   eventName: event?.event_name,
+                   eventDate: event?.event_date,
+                   floor: event?.floor,
+                   room:  event?.room,
+                   about: event?.event_desc,
+                   image: event?.image,
+                   faculty: event?.faculty
+                  })}
                 />
               )
                 ) :(
