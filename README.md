@@ -1,4 +1,4 @@
-# University Events Hub (placeholder name)
+# Eventat
 
 University students often miss out on important events due to a lack of a central platform for event notifications. This app aims to bridge that gap by providing students with a streamlined, reliable platform to stay informed and connected.
 
