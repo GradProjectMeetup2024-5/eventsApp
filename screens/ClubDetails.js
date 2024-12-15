@@ -6,6 +6,7 @@ import {
   Text,
   StyleSheet,
   ScrollView,
+  Linking 
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
@@ -19,6 +20,8 @@ import { useContext, useState, useEffect } from "react";
 import { Provider, useSelector, useDispatch } from "react-redux";
 
 import { findOneClub } from '../API/action/club'
+import { showClubEvents } from '../API/action/clubEvent'
+
 import * as actionType from "../API/actionTypes";
 
 import { useRoute } from "@react-navigation/native";
@@ -31,13 +34,15 @@ function ClubDetails() {
   const clubIdNumber = Number(clubId);
   
   const club = useSelector((state) => state.clubReducer.club);
+  const clubEvent = useSelector((state) => state.clubEventsReducer.clubEvent);
 
-  console.log("club details",club)
+  console.log("club events",clubEvent[0])
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(findOneClub(clubIdNumber));
+    dispatch(showClubEvents(clubIdNumber));
   }, [dispatch, clubIdNumber]); 
 
   function toggleExpanded() {
@@ -108,8 +113,23 @@ function ClubDetails() {
             showsHorizontalScrollIndicator={false}
             overScrollMode="never"
           >
-            <AltClubCard onPress={() => pressHandler("EventDetails")} />
-            <AltClubCard />
+          {
+            clubEvent?.length > 0 ? (
+              clubEvent?.map((event) =>
+                <AltClubCard 
+                eventDate={event.event_date}
+                eventName={event.event_name}
+                faculty={event.faculty}
+                floor={event.floor}
+                room={event.room}
+                image={event.image}
+                onPress={() => pressHandler("EventDetails")} 
+                />
+              )
+                ) :(
+                  <Text> This club has no events</Text>
+                )
+              }
           </ScrollView>
         </View>
         {/* ABOUT US SECTION */}
@@ -141,18 +161,40 @@ function ClubDetails() {
         </View>
         <View style={styles.buttonsContainer}>
           <View style={[styles.buttonContainer, { marginLeft: 0 }]}>
+          <Pressable onPress={() => Linking.openURL(`${club?.instagram}`)}>
             <Ionicons
               name="logo-instagram"
               color={Colors.accent.secondary}
               size={38}
             />
+           </Pressable>
           </View>
           <View style={styles.buttonContainer}>
+          <Pressable onPress={() => Linking.openURL(`${club?.facebook}`)}>
+            <Ionicons
+              name="logo-facebook"
+              color={Colors.accent.secondary}
+              size={38}
+            />
+           </Pressable>
+          </View>
+          <View style={styles.buttonContainer}>
+          <Pressable onPress={() => Linking.openURL(`${club?.whatsapp}`)}>
             <Ionicons
               name="logo-whatsapp"
               color={Colors.accent.secondary}
               size={38}
             />
+           </Pressable>
+          </View>
+          <View style={styles.buttonContainer}>
+          <Pressable onPress={() => Linking.openURL(`${club?.linkedIn}`)}>
+            <Ionicons
+              name="logo-linkedin"
+              color={Colors.accent.secondary}
+              size={38}
+            />
+           </Pressable>
           </View>
         </View>
       </ScrollView>

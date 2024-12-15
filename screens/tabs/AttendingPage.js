@@ -65,8 +65,6 @@ function AttendingPage() {
           </ScrollView>
         )}
       </>
-
-
       <View style={styles.footer}>
         <Pressable
           style={styles.button}
