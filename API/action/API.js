@@ -38,4 +38,5 @@ export const showMyCreatedEvents =()=>API.get('/event-user/show-my-created-event
 export const allClubs =()=>API.get('/club')
 export const findOneClub =(id)=>API.get(`/club/${id}`)
 
-console.log("API ",findOneClub)
+// Club Events
+export const showClubEvents =()=>API.get(`/club-event/${clubId}`)

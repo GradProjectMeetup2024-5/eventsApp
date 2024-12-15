@@ -20,6 +20,8 @@ import { useContext, useState, useEffect } from "react";
 import { Provider, useSelector, useDispatch } from "react-redux";
 
 import { findOneClub } from '../API/action/club'
+import { showClubEvents } from '../API/action/clubEvent'
+
 import * as actionType from "../API/actionTypes";
 
 import { useRoute } from "@react-navigation/native";
@@ -32,13 +34,15 @@ function ClubDetails() {
   const clubIdNumber = Number(clubId);
   
   const club = useSelector((state) => state.clubReducer.club);
+  const clubEvent = useSelector((state) => state.clubEventReducer);
 
-  console.log("club details",club)
+  console.log("club events",clubEvent)
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(findOneClub(clubIdNumber));
+    // dispatch(findOneClub(clubIdNumber));
+    dispatch(showClubEvents(clubIdNumber));
   }, [dispatch, clubIdNumber]); 
 
   function toggleExpanded() {
