@@ -34,14 +34,14 @@ function ClubDetails() {
   const clubIdNumber = Number(clubId);
   
   const club = useSelector((state) => state.clubReducer.club);
-  const clubEvent = useSelector((state) => state.clubEventReducer);
+  const clubEvent = useSelector((state) => state.clubEventsReducer.clubEvent);
 
-  console.log("club events",clubEvent)
+  console.log("club events",clubEvent[0])
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // dispatch(findOneClub(clubIdNumber));
+    dispatch(findOneClub(clubIdNumber));
     dispatch(showClubEvents(clubIdNumber));
   }, [dispatch, clubIdNumber]); 
 
@@ -113,8 +113,23 @@ function ClubDetails() {
             showsHorizontalScrollIndicator={false}
             overScrollMode="never"
           >
-            <AltClubCard onPress={() => pressHandler("EventDetails")} />
-            <AltClubCard />
+          {
+            clubEvent?.length > 0 ? (
+              clubEvent?.map((event) =>
+                <AltClubCard 
+                eventDate={event.event_date}
+                eventName={event.event_name}
+                faculty={event.faculty}
+                floor={event.floor}
+                room={event.room}
+                image={event.image}
+                onPress={() => pressHandler("EventDetails")} 
+                />
+              )
+                ) :(
+                  <Text> This club has no events</Text>
+                )
+              }
           </ScrollView>
         </View>
         {/* ABOUT US SECTION */}

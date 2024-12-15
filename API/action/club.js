@@ -14,7 +14,6 @@ export const allClubs = ()=>async(dispatch)=>{
 export const findOneClub = (id)=>async(dispatch)=>{
     try {
         const {data} =await api.findOneClub(id)
-        console.log("ONE CLUB ",data)
          dispatch({type:FETCH_ONE_CLUB,payload:data})
          return data;
     } catch (error) {

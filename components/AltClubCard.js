@@ -4,7 +4,15 @@ import Colors from "../src/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 import { Shadow } from "react-native-shadow-2";
 
-function AltClubCard({ onPress }) {
+function AltClubCard({ 
+  onPress,
+  eventName, 
+  faculty,
+  floor,
+  room,
+  image,
+  eventDate
+  }) {
   return (
     <View style={styles.container}>
       <Shadow
@@ -22,8 +30,8 @@ function AltClubCard({ onPress }) {
       >
         <Pressable style={styles.card} onPress={onPress}>
           <View style={styles.cardInfo}>
-            <Text style={styles.time}>Today · 9:00 AM</Text>
-            <Text style={styles.title}>Art Exhibition</Text>
+            <Text style={styles.time}>{eventDate}</Text>
+            <Text style={styles.title}>{eventName}</Text>
             <View style={styles.location}>
               <Ionicons
                 name="location-outline"
@@ -31,7 +39,8 @@ function AltClubCard({ onPress }) {
                 color={Colors.gray.dark}
               />
               <Text style={styles.locationText}>
-                Art's Faculty, Gallery - GF
+                {/* Art's Faculty, Gallery - GF */}
+                {faculty+'-'+floor+'-'+room}
               </Text>
             </View>
           </View>

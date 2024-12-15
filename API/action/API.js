@@ -39,4 +39,4 @@ export const allClubs =()=>API.get('/club')
 export const findOneClub =(id)=>API.get(`/club/${id}`)
 
 // Club Events
-export const showClubEvents =()=>API.get(`/club-event/${clubId}`)
+export const showClubEvents =(clubId)=>API.get(`/club-event/${clubId}`)
