@@ -6,6 +6,7 @@ import {
   Text,
   StyleSheet,
   ScrollView,
+  Linking 
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
@@ -141,18 +142,40 @@ function ClubDetails() {
         </View>
         <View style={styles.buttonsContainer}>
           <View style={[styles.buttonContainer, { marginLeft: 0 }]}>
+          <Pressable onPress={() => Linking.openURL(`${club?.instagram}`)}>
             <Ionicons
               name="logo-instagram"
               color={Colors.accent.secondary}
               size={38}
             />
+           </Pressable>
           </View>
           <View style={styles.buttonContainer}>
+          <Pressable onPress={() => Linking.openURL(`${club?.facebook}`)}>
+            <Ionicons
+              name="logo-facebook"
+              color={Colors.accent.secondary}
+              size={38}
+            />
+           </Pressable>
+          </View>
+          <View style={styles.buttonContainer}>
+          <Pressable onPress={() => Linking.openURL(`${club?.whatsapp}`)}>
             <Ionicons
               name="logo-whatsapp"
               color={Colors.accent.secondary}
               size={38}
             />
+           </Pressable>
+          </View>
+          <View style={styles.buttonContainer}>
+          <Pressable onPress={() => Linking.openURL(`${club?.linkedIn}`)}>
+            <Ionicons
+              name="logo-linkedin"
+              color={Colors.accent.secondary}
+              size={38}
+            />
+           </Pressable>
           </View>
         </View>
       </ScrollView>

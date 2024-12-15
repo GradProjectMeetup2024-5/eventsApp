@@ -26,7 +26,7 @@ export const signin =(formData)=>API.post('/auth/login',formData)
 export const signup  =(formData)=>API.post('/auth/signup',formData)
 
 // Event
-export const  showEvents =()=>  API.get('/event')
+export const  showEvents =()=>API.get('/event')
 export const createEvent = (formData)=>API.post('/event',formData)
 
 
