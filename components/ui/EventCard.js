@@ -13,9 +13,15 @@ export default function EventCard({
   eventLocation,
   eventOrganizer,
   eventImage,
+  onPress
 }) {
   const [imageError, setImageError] = useState(false);
 
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  function toggleExpanded() {
+    setIsExpanded(!isExpanded);
+  }
 
 
   const handleImageError = (e) => {
@@ -25,6 +31,7 @@ export default function EventCard({
   return (
     <View style={styles.cardContainer}>
       <Pressable
+      onPress={onPress}
         style={({ pressed }) => [
           styles.cardContent,
           { opacity: pressed ? 0.8 : 1 },

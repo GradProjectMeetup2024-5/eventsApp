@@ -53,12 +53,12 @@ export default function Explore() {
   const [loading, setLoading] = useState(true);
 
   const allEvents = useSelector((state) => state.event);
-
+  console.log(allEvents[4])
   const [user, setUser] = useState(SecureStore.getItemAsync("profile"));
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      dispatch(showEvents({ type: actionType.FETCH_ALL }));
+      dispatch(showEvents({ type: actionType.FETCH_ALL })); 
       setLoading(false);
     }, 2);
 
@@ -79,22 +79,36 @@ export default function Explore() {
     <SafeAreaView style={styles.container}>
       <Header onPress={pressHandler} />
       <ScrollView contentContainerStyle={styles.scrollViewContent}>
-        {allEvents?.map((event, index) => (
-          <View key={event.id}>
-            <EventCard
-              eventName={event.event_name}
-              eventDate={event.created_time}
-              eventTime={event.eventTime}
-              eventLocation={event.event_desc}
-              eventOrganizer={event.userId}
-              eventImage={back}
-              profileImageSource={back}
-              textColor="#FFFFFF"
-            />
-            {index < mockEvents.length - 1 && <View style={styles.separator} />}
-          </View>
-        ))}
-      </ScrollView>
+  {allEvents?.map((event, index) => (
+    <View key={event.id}>
+      <EventCard
+        eventName={event?.event_name}
+        eventDate={event?.event_date}
+        eventTime={event?.created_time}
+        eventLocation={event?.event_desc}
+        eventOrganizer={event?.userId}
+        eventImage={back}
+        profileImageSource={back}
+        textColor="#FFFFFF"
+        onPress={() =>
+          navigation.navigate("EventDetails", {
+            // clubName: club?.name,
+            creatorName:event?.createrName,
+            eventName: event?.event_name,
+            eventDate: event?.event_date,
+            floor: event?.floor,
+            room: event?.room,
+            about: event?.event_desc,
+            image: event?.image,
+            faculty: event?.faculty,
+          })
+        }
+      />
+      {index < allEvents.length - 1 && <View style={styles.separator} />}
+    </View>
+  ))}
+</ScrollView>
+
     </SafeAreaView>
   );
 }

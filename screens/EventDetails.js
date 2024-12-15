@@ -15,13 +15,20 @@ import { Ionicons } from "@expo/vector-icons";
 import Colors from "../src/constants/Colors";
 import EventDetailsHeader from "../components/EventDetailsHeader";
 
+import { useRoute } from '@react-navigation/native';
+
 function EventDetails() {
+
+  const route = useRoute(); 
+
+  const { eventName, eventDate, floor, room, about, image, clubName, faculty, creatorName } = route.params;
+
   const [isExpanded, setIsExpanded] = useState(false);
 
   function toggleExpanded() {
     setIsExpanded(!isExpanded);
   }
-
+  console.log("club name ",clubName)
   const [joinState, setJoinState] = useState(false);
   const [isApproved, setisApproved] = useState(false);
 
@@ -72,7 +79,7 @@ Nam at imperdiet tortor. Morbi lacinia efficitur sem, quis elem nulla convallis 
         </Shadow>
 
         <View style={styles.titleContainer}>
-          <Text style={styles.titleText}>Art Exhibition</Text>
+          <Text style={styles.titleText}>{eventName}</Text>
         </View>
         <View style={styles.posterContainer}>
           <Pressable style={styles.navigationContainer}>
@@ -83,7 +90,7 @@ Nam at imperdiet tortor. Morbi lacinia efficitur sem, quis elem nulla convallis 
                 uri: "https://d1csarkz8obe9u.cloudfront.net/posterpreviews/art-club-logo-design-template-7363f499d408b8d5aa636f25e135ce56_screen.jpg?ts=1688208799",
               }}
             />
-            <Text style={styles.posterName}>Art Club</Text>
+            <Text style={styles.posterName}>{creatorName}</Text>
 
             {isApproved ? (
               <Ionicons
@@ -130,7 +137,7 @@ Nam at imperdiet tortor. Morbi lacinia efficitur sem, quis elem nulla convallis 
                   />
                 </View>
                 <View style={styles.infoContainer}>
-                  <Text style={styles.primary}>Friday, 24 January 2025</Text>
+                  <Text style={styles.primary}>{eventDate}</Text>
                   <Text style={styles.secondary}>1:00 PM - 3:00 PM</Text>
                 </View>
                 <View style={styles.endItemContainer}>
@@ -161,8 +168,8 @@ Nam at imperdiet tortor. Morbi lacinia efficitur sem, quis elem nulla convallis 
                   />
                 </View>
                 <View style={styles.infoContainer}>
-                  <Text style={styles.primary}>Art's Faculty</Text>
-                  <Text style={styles.secondary}>Art Gallery, GF</Text>
+                  <Text style={styles.primary}>{faculty}</Text>
+                  <Text style={styles.secondary}>{room},{floor}</Text>
                 </View>
                 <View style={styles.endItemContainer}>
                   <Ionicons
@@ -237,7 +244,7 @@ Nam at imperdiet tortor. Morbi lacinia efficitur sem, quis elem nulla convallis 
             style={styles.sectionText}
             numberOfLines={isExpanded ? undefined : 6}
           >
-            {aboutText}
+            {about}
           </Text>
           <Pressable onPress={toggleExpanded}>
             <Text
