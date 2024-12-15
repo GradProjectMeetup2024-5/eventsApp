@@ -21,7 +21,7 @@ function EventDetails() {
 
   const route = useRoute(); 
 
-  const { eventName, eventDate, floor, room, about, image, clubName, faculty } = route.params;
+  const { eventName, eventDate, floor, room, about, image, clubName, faculty, creatorName } = route.params;
 
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -90,7 +90,7 @@ Nam at imperdiet tortor. Morbi lacinia efficitur sem, quis elem nulla convallis 
                 uri: "https://d1csarkz8obe9u.cloudfront.net/posterpreviews/art-club-logo-design-template-7363f499d408b8d5aa636f25e135ce56_screen.jpg?ts=1688208799",
               }}
             />
-            <Text style={styles.posterName}>{clubName}</Text>
+            <Text style={styles.posterName}>{creatorName}</Text>
 
             {isApproved ? (
               <Ionicons
