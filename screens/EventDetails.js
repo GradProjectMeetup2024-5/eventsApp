@@ -15,20 +15,30 @@ import { Ionicons } from "@expo/vector-icons";
 import Colors from "../src/constants/Colors";
 import EventDetailsHeader from "../components/EventDetailsHeader";
 
-import { useRoute } from '@react-navigation/native';
+import { useRoute } from "@react-navigation/native";
+import TextDetails from "../components/TextDetails";
 
 function EventDetails() {
+  const route = useRoute();
 
-  const route = useRoute(); 
-
-  const { eventName, eventDate, floor, room, about, image, clubName, faculty, creatorName } = route.params;
+  const {
+    eventName,
+    eventDate,
+    floor,
+    room,
+    about,
+    image,
+    clubName,
+    faculty,
+    creatorName,
+  } = route.params;
 
   const [isExpanded, setIsExpanded] = useState(false);
 
   function toggleExpanded() {
     setIsExpanded(!isExpanded);
   }
-  console.log("club name ",clubName)
+  console.log("club name ", clubName);
   const [joinState, setJoinState] = useState(false);
   const [isApproved, setisApproved] = useState(false);
 
@@ -90,7 +100,8 @@ Nam at imperdiet tortor. Morbi lacinia efficitur sem, quis elem nulla convallis 
                 uri: "https://d1csarkz8obe9u.cloudfront.net/posterpreviews/art-club-logo-design-template-7363f499d408b8d5aa636f25e135ce56_screen.jpg?ts=1688208799",
               }}
             />
-            <Text style={styles.posterName}>{creatorName}</Text>
+            {/* <Text style={styles.posterName}>{creatorName}</Text> */}
+            <Text style={styles.posterName}>zalameh rajol</Text>
 
             {isApproved ? (
               <Ionicons
@@ -169,7 +180,9 @@ Nam at imperdiet tortor. Morbi lacinia efficitur sem, quis elem nulla convallis 
                 </View>
                 <View style={styles.infoContainer}>
                   <Text style={styles.primary}>{faculty}</Text>
-                  <Text style={styles.secondary}>{room},{floor}</Text>
+                  <Text style={styles.secondary}>
+                    {room},{floor}
+                  </Text>
                 </View>
                 <View style={styles.endItemContainer}>
                   <Ionicons
@@ -240,19 +253,11 @@ Nam at imperdiet tortor. Morbi lacinia efficitur sem, quis elem nulla convallis 
         </View>
         <View style={styles.aboutContainer}>
           <Text style={styles.sectionTitle}>About</Text>
-          <Text
-            style={styles.sectionText}
-            numberOfLines={isExpanded ? undefined : 6}
-          >
-            {about}
-          </Text>
-          <Pressable onPress={toggleExpanded}>
-            <Text
-              style={[styles.readMoreButton, { marginTop: isExpanded ? 0 : 5 }]}
-            >
-              {isExpanded ? "Read Less" : "Read More"}
-            </Text>
-          </Pressable>
+          <TextDetails
+            description="asjdasjdasjdasdjhasgda"
+            textStyle={styles.sectionText}
+            maxLines={2}
+          />
         </View>
         <View style={styles.commentsContainer}></View>
       </ScrollView>
@@ -265,8 +270,9 @@ export default EventDetails;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
+    // alignItems: "center",
     backgroundColor: Colors.background.base,
+    // borderWidth: 1,
   },
   imagesContainer: {
     marginHorizontal: 50,

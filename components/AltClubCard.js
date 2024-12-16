@@ -4,16 +4,16 @@ import Colors from "../src/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 import { Shadow } from "react-native-shadow-2";
 
-function AltClubCard({ 
+function AltClubCard({
   onPress,
-  eventName, 
+  eventName,
   faculty,
   floor,
   room,
   image,
   eventDate,
-  eventId
-  }) {
+  eventId,
+}) {
   return (
     <View style={styles.container}>
       <Shadow
@@ -41,7 +41,7 @@ function AltClubCard({
               />
               <Text style={styles.locationText}>
                 {/* Art's Faculty, Gallery - GF */}
-                {faculty+'-'+floor+'-'+room}
+                {faculty + "-" + floor + "-" + room}
               </Text>
             </View>
           </View>
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
   },
   card: {
     flexDirection: "row",
-    height: 136,
+    minHeight: 136,
     width: 380,
     borderRadius: 8,
     justifyContent: "space-between",
