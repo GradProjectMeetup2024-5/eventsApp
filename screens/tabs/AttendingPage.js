@@ -1,21 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
 import PlaceHolderIcon from "../../components/ui/PlaceHolderIcon";
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from "@react-navigation/native";
 
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import { useDispatch, useSelector } from 'react-redux';
-import { myJoinedEvents, showMyCreatedEvents } from '../../API/action/eventUser'
+import { useDispatch, useSelector } from "react-redux";
+import {
+  myJoinedEvents,
+  showMyCreatedEvents,
+} from "../../API/action/eventUser";
 
 import EventCard from "../../components/ui/EventCard";
-import * as actionType from '../../API/actionTypes';
+import * as actionType from "../../API/actionTypes";
 
 import Colors from "../../src/constants/Colors";
-
+import AttendingHeader from "../../components/AttendingHeader";
 
 function AttendingPage() {
-
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
   const events = useSelector((state) => state.eventUser);
@@ -35,48 +37,67 @@ function AttendingPage() {
     setSelected(section);
   };
 
+  const [oneIsSelected, setOneIsSelected] = useState(true);
+
+  function handlePressOne() {
+    setOneIsSelected(true);
+  }
+  function handlePressTwo() {
+    setOneIsSelected(false);
+  }
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>My Events</Text>
-      </View>
-      <>
-        {events?.length > 0 ? (
-          <ScrollView contentContainerStyle={{ padding: 16 }}>
-            {events.map((event, index) => (
-              <View key={index} style={{ marginBottom: 16 }}>
-                <EventCard
-                  eventName={event.event_name}
-                  eventDescription={event.event_desc}
-                />
-              </View>
-            ))}
-          </ScrollView>
-        ) : (
-          <ScrollView contentContainerStyle={styles.content}>
-            <View style={styles.emptyState}>
-              <PlaceHolderIcon />
-              <Text style={styles.emptyStateTitle}>No Trips Scheduled</Text>
-              <Text style={styles.emptyStateDescription}>
-                You have no upcoming Events. Add a trip or browse events.
-              </Text>
-            </View>
-          </ScrollView>
-        )}
-      </>
-      <View style={styles.footer}>
+      <AttendingHeader
+        oneIsSelected={oneIsSelected}
+        handlePressOne={handlePressOne}
+        handlePressTwo={handlePressTwo}
+      />
+      <ScrollView style={styles.container}>
+        {/*turn this into a flatlist*/}
+
+        {
+          !oneIsSelected ? (
+            events?.length > 0 ? (
+              <ScrollView contentContainerStyle={{ padding: 16 }}>
+                {events.map((event, index) => (
+                  <View key={index} style={{ marginBottom: 16 }}>
+                    <EventCard
+                      eventName={event.event_name}
+                      eventDescription={event.event_desc}
+                    />
+                  </View>
+                ))}
+              </ScrollView>
+            ) : (
+              <ScrollView contentContainerStyle={styles.content}>
+                <View style={styles.emptyState}>
+                  <PlaceHolderIcon />
+                  <Text style={styles.emptyStateTitle}>
+                    No Events Scheduled
+                  </Text>
+                  <Text style={styles.emptyStateDescription}>
+                    You don't have any listed events.
+                  </Text>
+                </View>
+              </ScrollView>
+            )
+          ) : null
+          // this is where attending page rendering goes
+        }
+
+        {/*
+         <View style={styles.footer}>
         <Pressable
           style={styles.button}
-          onPress={() => navigation.navigate('Home')} // Navigate to Home screen
+          onPress={() => navigation.navigate('Home')}
         >
           <Text style={styles.buttonText}>Browse</Text>
         </Pressable>
-      </View>
-    </View>
-  </SafeAreaView>
-);
-
+      </View> */}
+      </ScrollView>
+    </SafeAreaView>
+  );
 }
 export default AttendingPage;
 
@@ -86,21 +107,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#000000",
     paddingBottom: 80,
     backgroundColor: Colors.background.base,
-  },
-  header: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 16,
-    height: 60,
-  },
-  headerTitle: {
-    fontFamily: "Roboto",
-    fontWeight: "700",
-    fontSize: 24,
-    lineHeight: 28,
-    letterSpacing: -0.2,
-    color: "#FFFFFF",
   },
   content: {
     flexGrow: 1,
