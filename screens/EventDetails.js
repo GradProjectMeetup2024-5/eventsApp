@@ -38,17 +38,17 @@ function EventDetails() {
     clubName,
     faculty,
     creatorName,
+    eventId,
+    joinedUsers
   } = route.params;
 
   const dispatch = useDispatch();
 
-  const route = useRoute(); 
 
   const [joinState, setJoinState] = useState(false);
   const [isApproved, setisApproved] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  const { eventName, eventDate, floor, room, about, image, clubName, faculty, creatorName, eventId, joinedUsers } = route.params;
 
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -73,12 +73,10 @@ function EventDetails() {
     setIsExpanded(!isExpanded);
   }
 
-  const [joinState, setJoinState] = useState(false);
-  const [isApproved, setisApproved] = useState(false);
 
   function joinHandler() {
     setJoinState(!joinState);
-
+  }
   
   async function joinHandler() {
     if (!joinState) {
@@ -248,7 +246,7 @@ function EventDetails() {
                 </View>
                 <View style={styles.infoContainer}>
                   <Text style={styles.primary}>Attendees</Text>
-                  <Text style={styles.secondary}>{joinedUsers?.length} people</Text>
+                  <Text style={styles.secondary}>{ joinedUsers?.length == 0 ? "No Attendees" : joinedUsers?.length  }</Text>
                 </View>
                 <View style={styles.endItemContainer}>
                   <View style={styles.attendingImages}>
