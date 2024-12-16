@@ -6,7 +6,7 @@ import {
   Text,
   StyleSheet,
   ScrollView,
-  Linking 
+  Linking,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
@@ -19,20 +19,20 @@ import Colors from "../src/constants/Colors";
 import { useContext, useState, useEffect } from "react";
 import { Provider, useSelector, useDispatch } from "react-redux";
 
-import { findOneClub } from '../API/action/club'
-import { showClubEvents } from '../API/action/clubEvent'
+import { findOneClub } from "../API/action/club";
+import { showClubEvents } from "../API/action/clubEvent";
 
 import * as actionType from "../API/actionTypes";
 
 import { useRoute } from "@react-navigation/native";
+import TextDetails from "../components/TextDetails";
 
 function ClubDetails() {
-
   const [isExpanded, setIsExpanded] = useState(false);
   const route = useRoute();
   const { clubId } = route.params;
   const clubIdNumber = Number(clubId);
-  
+
   const club = useSelector((state) => state.clubReducer.club);
   const clubEvent = useSelector((state) => state.clubEventsReducer.clubEvent);
 
@@ -41,7 +41,7 @@ function ClubDetails() {
   useEffect(() => {
     dispatch(findOneClub(clubIdNumber));
     dispatch(showClubEvents(clubIdNumber));
-  }, [dispatch, clubIdNumber]); 
+  }, [dispatch, clubIdNumber]);
 
   function toggleExpanded() {
     setIsExpanded(!isExpanded);
@@ -57,7 +57,7 @@ function ClubDetails() {
   function joinHandler() {
     setJoinState(!joinState);
   }
-  console.log("club name from club",club?.name)
+  console.log("club name from club", club?.name);
   return (
     <SafeAreaView style={styles.container}>
       {/* CLUB HEADER */}
@@ -111,33 +111,33 @@ function ClubDetails() {
             showsHorizontalScrollIndicator={false}
             overScrollMode="never"
           >
-          {
-            clubEvent?.length > 0 ? (
-              clubEvent?.map((event) =>
+            {clubEvent?.length > 0 ? (
+              clubEvent?.map((event) => (
                 <AltClubCard
-                key={event?.id} 
-                eventDate={event?.event_date}
-                eventName={event?.event_name}
-                faculty={event?.faculty}
-                floor={event?.floor}
-                room={event?.room}
-                image={event?.image}
-                onPress={() => navigation.navigate("EventDetails", {
-                   clubName: club?.name,
-                   eventName: event?.event_name,
-                   eventDate: event?.event_date,
-                   floor: event?.floor,
-                   room:  event?.room,
-                   about: event?.event_desc,
-                   image: event?.image,
-                   faculty: event?.faculty
-                  })}
+                  key={event?.id}
+                  eventDate={event?.event_date}
+                  eventName={event?.event_name}
+                  faculty={event?.faculty}
+                  floor={event?.floor}
+                  room={event?.room}
+                  image={event?.image}
+                  onPress={() =>
+                    navigation.navigate("EventDetails", {
+                      clubName: club?.name,
+                      eventName: event?.event_name,
+                      eventDate: event?.event_date,
+                      floor: event?.floor,
+                      room: event?.room,
+                      about: event?.event_desc,
+                      image: event?.image,
+                      faculty: event?.faculty,
+                    })
+                  }
                 />
-              )
-                ) :(
-                  <Text> This club has no events</Text>
-                )
-              }
+              ))
+            ) : (
+              <Text> This club has no events</Text>
+            )}
           </ScrollView>
         </View>
         {/* ABOUT US SECTION */}
@@ -147,19 +147,11 @@ function ClubDetails() {
           </Text>
         </View>
         <View style={styles.aboutSection}>
-          <Text
-            style={styles.aboutText}
-            numberOfLines={isExpanded ? undefined : 6}
-          >
-            {club?.desc}
-          </Text>
-          <Pressable onPress={toggleExpanded}>
-            <Text
-              style={[styles.readMoreButton, { marginTop: isExpanded ? 0 : 5 }]}
-            >
-              {isExpanded ? "Read Less" : "Read More"}
-            </Text>
-          </Pressable>
+          <TextDetails
+            textStyle={styles.aboutText}
+            description={club?.desc}
+            maxLines={6}
+          />
         </View>
         {/* CONTACT US SECTION */}
         <View style={styles.sectionRow}>
@@ -169,40 +161,40 @@ function ClubDetails() {
         </View>
         <View style={styles.buttonsContainer}>
           <View style={[styles.buttonContainer, { marginLeft: 0 }]}>
-          <Pressable onPress={() => Linking.openURL(`${club?.instagram}`)}>
-            <Ionicons
-              name="logo-instagram"
-              color={Colors.accent.secondary}
-              size={38}
-            />
-           </Pressable>
+            <Pressable onPress={() => Linking.openURL(`${club?.instagram}`)}>
+              <Ionicons
+                name="logo-instagram"
+                color={Colors.accent.secondary}
+                size={38}
+              />
+            </Pressable>
           </View>
           <View style={styles.buttonContainer}>
-          <Pressable onPress={() => Linking.openURL(`${club?.facebook}`)}>
-            <Ionicons
-              name="logo-facebook"
-              color={Colors.accent.secondary}
-              size={38}
-            />
-           </Pressable>
+            <Pressable onPress={() => Linking.openURL(`${club?.facebook}`)}>
+              <Ionicons
+                name="logo-facebook"
+                color={Colors.accent.secondary}
+                size={38}
+              />
+            </Pressable>
           </View>
           <View style={styles.buttonContainer}>
-          <Pressable onPress={() => Linking.openURL(`${club?.whatsapp}`)}>
-            <Ionicons
-              name="logo-whatsapp"
-              color={Colors.accent.secondary}
-              size={38}
-            />
-           </Pressable>
+            <Pressable onPress={() => Linking.openURL(`${club?.whatsapp}`)}>
+              <Ionicons
+                name="logo-whatsapp"
+                color={Colors.accent.secondary}
+                size={38}
+              />
+            </Pressable>
           </View>
           <View style={styles.buttonContainer}>
-          <Pressable onPress={() => Linking.openURL(`${club?.linkedIn}`)}>
-            <Ionicons
-              name="logo-linkedin"
-              color={Colors.accent.secondary}
-              size={38}
-            />
-           </Pressable>
+            <Pressable onPress={() => Linking.openURL(`${club?.linkedIn}`)}>
+              <Ionicons
+                name="logo-linkedin"
+                color={Colors.accent.secondary}
+                size={38}
+              />
+            </Pressable>
           </View>
         </View>
       </ScrollView>
@@ -306,10 +298,6 @@ const styles = StyleSheet.create({
     color: Colors.gray.light,
     fontSize: 14,
     lineHeight: 20,
-  },
-  readMoreButton: {
-    color: Colors.accent.secondary,
-    fontWeight: 600,
   },
   buttonsContainer: {
     flexDirection: "row",
