@@ -1,5 +1,10 @@
-import { EDIT_ID, CREATE,FETCH_ALL, FETCH_ID ,CREATE_EVENT,
-  EDIT_SUBJECT_ID,ADD_SUBJECT_STUDENT,MY_CREATED_EVENT} from '../actionTypes';
+import { 
+    CREATE,CREATE_EVENT,
+    MY_CREATED_EVENT,JOIN_EVENT,
+    MY_JOINED_EVENTS,
+    CHECK_IF_USER_JOINED_EVENT,
+    LEAVE_EVENT
+    } from '../actionTypes';
 
 export default (eventUser = [], action) => {
   switch (action.type) {
@@ -9,16 +14,14 @@ export default (eventUser = [], action) => {
               return [...eventUser,action.payload]
               case MY_CREATED_EVENT:
                 return action.payload
-         case FETCH_ID:
-          return [action.payload]
-          case EDIT_ID:
-          return [...eventUser,action.payload]
-          case EDIT_SUBJECT_ID:
-          return [...eventUser,action.payload] 
-          case ADD_SUBJECT_STUDENT:
-            return [...eventUser,action.payload]   
-      
-            
+              case JOIN_EVENT :
+                return {...eventUser,joinEvent:action.payload} 
+              case MY_JOINED_EVENTS:
+                return {...eventUser,myJoinedEvents:action.payload}
+              case CHECK_IF_USER_JOINED_EVENT:
+                return {...eventUser,checkIfUserJoinedEvent:action.payload}
+                case LEAVE_EVENT:
+                  return {...eventUser,leaveEvent:action.payload}       
     default:
       return eventUser;
   }

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
   View,
@@ -18,8 +18,15 @@ import EventDetailsHeader from "../components/EventDetailsHeader";
 import { useRoute } from "@react-navigation/native";
 import TextDetails from "../components/TextDetails";
 
+import { useDispatch, useSelector } from "react-redux";
+
+import { joinEvent, checkIfUserJoinedEvent, leaveEvent } from "../API/action/eventUser";
+
+import * as actionType from "../API/actionTypes";
+
 function EventDetails() {
   const route = useRoute();
+
 
   const {
     eventName,
@@ -33,28 +40,56 @@ function EventDetails() {
     creatorName,
   } = route.params;
 
+  const dispatch = useDispatch();
+
+  const route = useRoute(); 
+
+  const [joinState, setJoinState] = useState(false);
+  const [isApproved, setisApproved] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  const { eventName, eventDate, floor, room, about, image, clubName, faculty, creatorName, eventId, joinedUsers } = route.params;
+
   const [isExpanded, setIsExpanded] = useState(false);
 
+  const checkIfUserJoined  = useSelector((state) => state.eventUser.checkIfUserJoinedEvent);
+
+  console.log("checkIfUserJoined",checkIfUserJoined)
+
+
+  useEffect(() => {
+    const fetchStatus = async () => {
+      setLoading(true);
+      await dispatch(checkIfUserJoinedEvent(eventId));
+      setLoading(false);
+    };
+  
+    fetchStatus();
+    
+    setJoinState(checkIfUserJoined);
+  }, [dispatch, eventId, checkIfUserJoined]);
+  
   function toggleExpanded() {
     setIsExpanded(!isExpanded);
   }
-  console.log("club name ", clubName);
+
   const [joinState, setJoinState] = useState(false);
   const [isApproved, setisApproved] = useState(false);
 
   function joinHandler() {
     setJoinState(!joinState);
-  }
 
-  const aboutText = `Nam at imperdiet tortor. Morbi lacinia efficitur sem, quis elem nulla convallis quis. Pellentesque nec sapien auctor, ornare diam id, sodales elit.\n
-1. Curabitur consequat erat lorem.
-2. vitae aliquam tellus posuere ut.
-3. Donec ultrices sapien non vulputate dictum.
-Nam at imperdiet tortor. Morbi lacinia efficitur sem, quis elem nulla convallis quis. Pellentesque nec sapien auctor, ornare diam id, sodales elit.\n
-1. Curabitur consequat erat lorem.
-2. vitae aliquam tellus posuere ut.
-3. Donec ultrices sapien non vulputate dictum.
-`;
+  
+  async function joinHandler() {
+    if (!joinState) {
+      await dispatch(joinEvent(eventId));
+      setJoinState(true);
+    } else {
+      await dispatch(leaveEvent(eventId));
+      setJoinState(false);
+    }
+
+  }
 
   const num = 6;
   return (
@@ -213,7 +248,7 @@ Nam at imperdiet tortor. Morbi lacinia efficitur sem, quis elem nulla convallis 
                 </View>
                 <View style={styles.infoContainer}>
                   <Text style={styles.primary}>Attendees</Text>
-                  <Text style={styles.secondary}>{num} people</Text>
+                  <Text style={styles.secondary}>{joinedUsers?.length} people</Text>
                 </View>
                 <View style={styles.endItemContainer}>
                   <View style={styles.attendingImages}>

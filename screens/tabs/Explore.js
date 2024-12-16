@@ -93,6 +93,7 @@ export default function Explore() {
         onPress={() =>
           navigation.navigate("EventDetails", {
             // clubName: club?.name,
+            eventId:event?.id,
             creatorName:event?.createrName,
             eventName: event?.event_name,
             eventDate: event?.event_date,
@@ -101,6 +102,7 @@ export default function Explore() {
             about: event?.event_desc,
             image: event?.image,
             faculty: event?.faculty,
+            joinedUsers:event?.joined_users
           })
         }
       />
