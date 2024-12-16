@@ -102,6 +102,7 @@ export default function Explore() {
             about: event?.event_desc,
             image: event?.image,
             faculty: event?.faculty,
+            joinedUsers:event?.joined_users
           })
         }
       />

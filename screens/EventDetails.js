@@ -19,7 +19,7 @@ import { useRoute } from '@react-navigation/native';
 
 import { useDispatch, useSelector } from "react-redux";
 
-import { joinEvent, checkIfUserJoinedEvent, myJoinedEvents } from "../API/action/eventUser";
+import { joinEvent, checkIfUserJoinedEvent, leaveEvent } from "../API/action/eventUser";
 
 import * as actionType from "../API/actionTypes";
 
@@ -33,42 +33,43 @@ function EventDetails() {
   const [isApproved, setisApproved] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  const { eventName, eventDate, floor, room, about, image, clubName, faculty, creatorName, eventId } = route.params;
+  const { eventName, eventDate, floor, room, about, image, clubName, faculty, creatorName, eventId, joinedUsers } = route.params;
+
+  console.log("joinedEvent",joinedUsers)
 
   const [isExpanded, setIsExpanded] = useState(false);
 
-  const join = useSelector((state) => state.eventUser.myJoinedEvents);
   const checkIfUserJoined  = useSelector((state) => state.eventUser.checkIfUserJoinedEvent);
-  const leaveEvent  = useSelector((state) => state.eventUser.leaveEvent);
 
+  console.log("checkIfUserJoined",checkIfUserJoined)
 
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      dispatch(checkIfUserJoinedEvent(eventId));
+    const fetchStatus = async () => {
+      setLoading(true);
+      await dispatch(checkIfUserJoinedEvent(eventId));
       setLoading(false);
-    }, 2);
-
-    return () => clearTimeout(timer);
-  }, []);
-
-    if(checkIfUserJoined == true){
-      setJoinState(true);
-      
-    }
+    };
+  
+    fetchStatus();
+    
+    setJoinState(checkIfUserJoined);
+  }, [dispatch, eventId, checkIfUserJoined]);
+  
   function toggleExpanded() {
     setIsExpanded(!isExpanded);
   }
-
- async function joinHandler() {
-    if(joinState == false){
-       await dispatch(joinEvent(eventId))
-        setJoinState(true);
+  
+  async function joinHandler() {
+    if (!joinState) {
+      await dispatch(joinEvent(eventId));
+      setJoinState(true);
+    } else {
+      await dispatch(leaveEvent(eventId));
+      setJoinState(false);
     }
-  await dispatch(leaveEvent(eventId))
-        setJoinState(false);
-
   }
+
   const num = 6;
   return (
     <SafeAreaView style={styles.container}>
@@ -223,7 +224,7 @@ function EventDetails() {
                 </View>
                 <View style={styles.infoContainer}>
                   <Text style={styles.primary}>Attendees</Text>
-                  <Text style={styles.secondary}>{num} people</Text>
+                  <Text style={styles.secondary}>{joinedUsers?.length} people</Text>
                 </View>
                 <View style={styles.endItemContainer}>
                   <View style={styles.attendingImages}>
