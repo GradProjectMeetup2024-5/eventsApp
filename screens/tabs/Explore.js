@@ -53,7 +53,7 @@ export default function Explore() {
   const [loading, setLoading] = useState(true);
 
   const allEvents = useSelector((state) => state.event);
-  console.log(allEvents[4])
+
   const [user, setUser] = useState(SecureStore.getItemAsync("profile"));
 
   useEffect(() => {
