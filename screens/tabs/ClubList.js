@@ -7,8 +7,9 @@ import { Provider, useSelector, useDispatch } from "react-redux";
 import Colors from "../../src/constants/Colors";
 import Header from "../../components/Header";
 import ClubCard from "../../components/ClubCard";
+import RefreshableScrollView from "../../components/RefreshableScrollView";
 
-import { allClubs } from '../../API/action/club'
+import { allClubs } from "../../API/action/club";
 import * as actionType from "../../API/actionTypes";
 
 function ClubList() {
@@ -17,19 +18,34 @@ function ClubList() {
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
+  // useEffect(() => {
+  //   const fetchClubs = async () => {
+  //     try {
+  //       await dispatch(allClubs());
+  //     } catch (error) {
+  //       console.error("Failed to fetch clubs:", error);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+
+  //   fetchClubs();
+  // }, [dispatch]);
+
+  const fetchClubs = async () => {
+    setLoading(true); // Set loading to true
+    try {
+      await dispatch(allClubs());
+    } catch (error) {
+      console.error("Failed to fetch clubs:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchClubs = async () => {
-      try {
-        await dispatch(allClubs()); 
-      } catch (error) {
-        console.error('Failed to fetch clubs:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
- 
     fetchClubs();
-  }, [dispatch]); 
+  }, [dispatch]);
 
   const pressHandler = (route) => {
     navigation.navigate(route);
@@ -38,23 +54,28 @@ function ClubList() {
   return (
     <SafeAreaView style={styles.container}>
       <Header onPress={() => pressHandler("Profile")} />
-      <ScrollView contentContainerStyle={styles.clubListContainer} overScrollMode="never">
+      <RefreshableScrollView
+        onRefresh={fetchClubs}
+        style={styles.clubListContainer}
+      >
         {loading ? (
           <Text>Loading...</Text>
-        ) : clubs.length > 0 ? (
-          clubs.map((club) => (
+        ) : clubs?.length > 0 ? (
+          clubs?.map((club) => (
             <ClubCard
               key={club.id}
               image="https://d1csarkz8obe9u.cloudfront.net/posterpreviews/art-club-logo-design-template-7363f499d408b8d5aa636f25e135ce56_screen.jpg?ts=1688208799"
               title={club.name}
               description={club.desc}
-              onPress={() => navigation.navigate("ClubDetails", { clubId: club.id })}
+              onPress={() =>
+                navigation.navigate("ClubDetails", { clubId: club.id })
+              }
             />
           ))
         ) : (
           <Text>No clubs were found</Text>
         )}
-      </ScrollView>
+      </RefreshableScrollView>
     </SafeAreaView>
   );
 }

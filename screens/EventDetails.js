@@ -14,19 +14,23 @@ import { Ionicons } from "@expo/vector-icons";
 
 import Colors from "../src/constants/Colors";
 import EventDetailsHeader from "../components/EventDetailsHeader";
+import JoinClubButton from "../components/JoinClubButton";
 
 import { useRoute } from "@react-navigation/native";
 import TextDetails from "../components/TextDetails";
 
 import { useDispatch, useSelector } from "react-redux";
 
-import { joinEvent, checkIfUserJoinedEvent, leaveEvent } from "../API/action/eventUser";
+import {
+  joinEvent,
+  checkIfUserJoinedEvent,
+  leaveEvent,
+} from "../API/action/eventUser";
 
 import * as actionType from "../API/actionTypes";
 
 function EventDetails() {
   const route = useRoute();
-
 
   const {
     eventName,
@@ -39,23 +43,22 @@ function EventDetails() {
     faculty,
     creatorName,
     eventId,
-    joinedUsers
+    joinedUsers,
   } = route.params;
 
   const dispatch = useDispatch();
-
 
   const [joinState, setJoinState] = useState(false);
   const [isApproved, setisApproved] = useState(false);
   const [loading, setLoading] = useState(true);
 
-
   const [isExpanded, setIsExpanded] = useState(false);
 
-  const checkIfUserJoined  = useSelector((state) => state.eventUser.checkIfUserJoinedEvent);
+  const checkIfUserJoined = useSelector(
+    (state) => state.eventUser.checkIfUserJoinedEvent
+  );
 
-  console.log("checkIfUserJoined",checkIfUserJoined)
-
+  console.log("checkIfUserJoined", checkIfUserJoined);
 
   useEffect(() => {
     const fetchStatus = async () => {
@@ -63,21 +66,20 @@ function EventDetails() {
       await dispatch(checkIfUserJoinedEvent(eventId));
       setLoading(false);
     };
-  
+
     fetchStatus();
-    
+
     setJoinState(checkIfUserJoined);
   }, [dispatch, eventId, checkIfUserJoined]);
-  
+
   function toggleExpanded() {
     setIsExpanded(!isExpanded);
   }
 
-
   function joinHandler() {
     setJoinState(!joinState);
   }
-  
+
   async function joinHandler() {
     if (!joinState) {
       await dispatch(joinEvent(eventId));
@@ -86,7 +88,6 @@ function EventDetails() {
       await dispatch(leaveEvent(eventId));
       setJoinState(false);
     }
-
   }
 
   const num = 6;
@@ -146,15 +147,10 @@ function EventDetails() {
               <View style={{ width: 24, height: 24 }} />
             )}
           </Pressable>
-          <Pressable
-            style={joinState ? styles.joinedButton : styles.joinButton}
-            onPress={joinHandler}
-          >
-            <Text style={joinState ? styles.joinedText : styles.joinText}>
-              {joinState ? "Joined" : "Join"}
-            </Text>
-          </Pressable>
-          {/* replace the join button with a component, use join button component here and at club details as well */}
+
+          <View style={{ width: 90 }}>
+            <JoinClubButton />
+          </View>
         </View>
         <View style={styles.detailsContainer}>
           <Shadow
@@ -246,7 +242,11 @@ function EventDetails() {
                 </View>
                 <View style={styles.infoContainer}>
                   <Text style={styles.primary}>Attendees</Text>
-                  <Text style={styles.secondary}>{ joinedUsers?.length == 0 ? "No Attendees" : joinedUsers?.length  }</Text>
+                  <Text style={styles.secondary}>
+                    {joinedUsers?.length == 0
+                      ? "No Attendees"
+                      : joinedUsers?.length}
+                  </Text>
                 </View>
                 <View style={styles.endItemContainer}>
                   <View style={styles.attendingImages}>
@@ -391,34 +391,6 @@ const styles = StyleSheet.create({
     resizeMode: "cover",
     height: 281,
     width: 381,
-  },
-  joinButton: {
-    backgroundColor: Colors.accent.secondary,
-    height: 28,
-    width: 90,
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 15,
-    marginLeft: 20,
-  },
-  joinedButton: {
-    backgroundColor: Colors.background.base,
-    height: 28,
-    width: 90,
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 15,
-    borderWidth: 1,
-    borderColor: Colors.accent.secondary,
-    marginLeft: 20,
-  },
-  joinText: {
-    fontSize: 16,
-    color: Colors.gray.white,
-  },
-  joinedText: {
-    fontSize: 16,
-    color: Colors.accent.secondary,
   },
   posterImage: {
     height: 50,
