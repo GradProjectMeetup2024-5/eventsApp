@@ -26,6 +26,7 @@ import * as actionType from "../API/actionTypes";
 
 import { useRoute } from "@react-navigation/native";
 import TextDetails from "../components/TextDetails";
+import JoinClubButton from "../components/JoinClubButton";
 
 function ClubDetails() {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -52,11 +53,6 @@ function ClubDetails() {
     navigation.navigate(route);
   };
 
-  const [joinState, setJoinState] = useState(false);
-
-  function joinHandler() {
-    setJoinState(!joinState);
-  }
   console.log("club name from club", club?.name);
   return (
     <SafeAreaView style={styles.container}>
@@ -81,14 +77,7 @@ function ClubDetails() {
               <Text style={styles.countLabel}>events</Text>
             </View>
           </View>
-          <Pressable
-            style={joinState ? styles.joinedButton : styles.joinButton}
-            onPress={joinHandler}
-          >
-            <Text style={joinState ? styles.joinedText : styles.joinText}>
-              {joinState ? "Joined" : "Join"}
-            </Text>
-          </Pressable>
+          <JoinClubButton />
         </View>
       </View>
 
@@ -246,32 +235,6 @@ const styles = StyleSheet.create({
   },
   clubInfo: {
     width: 180,
-  },
-  joinButton: {
-    backgroundColor: Colors.accent.secondary,
-    height: 28,
-    // width: 167,
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 15,
-  },
-  joinedButton: {
-    backgroundColor: Colors.background.base,
-    height: 28,
-    // width: 167,
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 15,
-    borderWidth: 1,
-    borderColor: Colors.accent.secondary,
-  },
-  joinText: {
-    fontSize: 16,
-    color: Colors.gray.white,
-  },
-  joinedText: {
-    fontSize: 16,
-    color: Colors.accent.secondary,
   },
   clubBody: {
     flex: 1,

@@ -1,21 +1,14 @@
 import React, { useState, useEffect } from "react";
-import {
-  View,
-  TextInput,
-  Pressable,
-  StyleSheet,
-  ScrollView,
-  StatusBar,
-} from "react-native";
+import { View, TextInput, Pressable, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 
 import Colors from "../../src/constants/Colors";
 import EventCard from "../../components/ui/EventCard";
-import mockEvents from "./mockevents";
 import TabBar from "../../components/ui/HomeTabBar";
 import BottomNavigation from "../../components/ui/BottomNavigation";
+import RefreshableScrollView from "../../components/RefreshableScrollView";
 
 import { useDispatch, useSelector } from "react-redux";
 import { showEvents } from "../../API/action/event";
@@ -56,13 +49,21 @@ export default function Explore() {
 
   const [user, setUser] = useState(SecureStore.getItemAsync("profile"));
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      dispatch(showEvents({ type: actionType.FETCH_ALL })); 
-      setLoading(false);
-    }, 2);
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
+  //     dispatch(showEvents({ type: actionType.FETCH_ALL }));
+  //     setLoading(false);
+  //   }, 2);
 
-    return () => clearTimeout(timer);
+  //   return () => clearTimeout(timer);
+  // }, []);
+
+  const fetchEvents = () => {
+    dispatch(showEvents({ type: actionType.FETCH_ALL }));
+  };
+
+  useEffect(() => {
+    fetchEvents();
   }, []);
 
   const handleSectionSelect = (section) => {
@@ -78,39 +79,41 @@ export default function Explore() {
   return (
     <SafeAreaView style={styles.container}>
       <Header onPress={pressHandler} />
-      <ScrollView contentContainerStyle={styles.scrollViewContent}>
-  {allEvents?.map((event, index) => (
-    <View key={event.id}>
-      <EventCard
-        eventName={event?.event_name}
-        eventDate={event?.event_date}
-        eventTime={event?.created_time}
-        eventLocation={event?.event_desc}
-        eventOrganizer={event?.userId}
-        eventImage={back}
-        profileImageSource={back}
-        textColor="#FFFFFF"
-        onPress={() =>
-          navigation.navigate("EventDetails", {
-            // clubName: club?.name,
-            eventId:event?.id,
-            creatorName:event?.createrName,
-            eventName: event?.event_name,
-            eventDate: event?.event_date,
-            floor: event?.floor,
-            room: event?.room,
-            about: event?.event_desc,
-            image: event?.image,
-            faculty: event?.faculty,
-            joinedUsers:event?.joined_users
-          })
-        }
-      />
-      {index < allEvents.length - 1 && <View style={styles.separator} />}
-    </View>
-  ))}
-</ScrollView>
-
+      <RefreshableScrollView
+        onRefresh={fetchEvents}
+        style={styles.scrollViewContent}
+      >
+        {allEvents?.map((event, index) => (
+          <View key={event.id}>
+            <EventCard
+              eventName={event?.event_name}
+              eventDate={event?.event_date}
+              eventTime={event?.created_time}
+              eventLocation={event?.event_desc}
+              eventOrganizer={event?.userId}
+              eventImage={back}
+              profileImageSource={back}
+              textColor="#FFFFFF"
+              onPress={() =>
+                navigation.navigate("EventDetails", {
+                  // clubName: club?.name,
+                  eventId: event?.id,
+                  creatorName: event?.createrName,
+                  eventName: event?.event_name,
+                  eventDate: event?.event_date,
+                  floor: event?.floor,
+                  room: event?.room,
+                  about: event?.event_desc,
+                  image: event?.image,
+                  faculty: event?.faculty,
+                  joinedUsers: event?.joined_users,
+                })
+              }
+            />
+            {index < allEvents.length - 1 && <View style={styles.separator} />}
+          </View>
+        ))}
+      </RefreshableScrollView>
     </SafeAreaView>
   );
 }
