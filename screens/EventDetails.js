@@ -134,8 +134,7 @@ function EventDetails() {
                 uri: "https://d1csarkz8obe9u.cloudfront.net/posterpreviews/art-club-logo-design-template-7363f499d408b8d5aa636f25e135ce56_screen.jpg?ts=1688208799",
               }}
             />
-            {/* <Text style={styles.posterName}>{creatorName}</Text> */}
-            <Text style={styles.posterName}>zalameh rajol</Text>
+            <Text style={styles.posterName}>{creatorName}</Text>
 
             {isApproved ? (
               <Ionicons
