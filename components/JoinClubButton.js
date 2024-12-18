@@ -14,7 +14,14 @@ function JoinClubButton() {
       style={joinState ? styles.joinedButton : styles.joinButton}
       onPress={joinHandler}
     >
-      <Text style={joinState ? styles.joinedText : styles.joinText}>
+      <Text
+        style={[
+          styles.text,
+          {
+            color: joinState ? Colors.accent.secondary : Colors.gray.white,
+          },
+        ]}
+      >
         {joinState ? "Joined" : "Join"}
       </Text>
     </Pressable>
@@ -42,12 +49,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: Colors.accent.secondary,
   },
-  joinText: {
+  text: {
     fontSize: 16,
-    color: Colors.gray.white,
-  },
-  joinedText: {
-    fontSize: 16,
-    color: Colors.accent.secondary,
   },
 });

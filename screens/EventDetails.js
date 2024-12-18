@@ -15,6 +15,7 @@ import { Ionicons } from "@expo/vector-icons";
 import Colors from "../src/constants/Colors";
 import EventDetailsHeader from "../components/EventDetailsHeader";
 import JoinClubButton from "../components/JoinClubButton";
+import RefreshableScrollView from "../components/RefreshableScrollView";
 
 import { useRoute } from "@react-navigation/native";
 import TextDetails from "../components/TextDetails";
@@ -60,15 +61,26 @@ function EventDetails() {
 
   console.log("checkIfUserJoined", checkIfUserJoined);
 
+  // useEffect(() => {
+  //   const fetchStatus = async () => {
+  //     setLoading(true);
+  //     await dispatch(checkIfUserJoinedEvent(eventId));
+  //     setLoading(false);
+  //   };
+
+  //   fetchStatus();
+
+  //   setJoinState(checkIfUserJoined);
+  // }, [dispatch, eventId, checkIfUserJoined]);
+
+  const fetchStatus = async () => {
+    setLoading(true);
+    await dispatch(checkIfUserJoinedEvent(eventId));
+    setLoading(false);
+  };
+
   useEffect(() => {
-    const fetchStatus = async () => {
-      setLoading(true);
-      await dispatch(checkIfUserJoinedEvent(eventId));
-      setLoading(false);
-    };
-
     fetchStatus();
-
     setJoinState(checkIfUserJoined);
   }, [dispatch, eventId, checkIfUserJoined]);
 
@@ -94,9 +106,9 @@ function EventDetails() {
   return (
     <SafeAreaView style={styles.container}>
       <EventDetailsHeader />
-      <ScrollView
-        contentContainerStyle={[{ paddingBottom: 20, alignItems: "center" }]}
-        overScrollMode="never"
+      <RefreshableScrollView
+        style={[{ paddingBottom: 20, alignItems: "center" }]}
+        onRefresh={fetchStatus}
       >
         <View style={styles.imagesContainer}></View>
         <Shadow
@@ -127,7 +139,6 @@ function EventDetails() {
         </View>
         <View style={styles.posterContainer}>
           <Pressable style={styles.navigationContainer}>
-            {/*  */}
             <Image
               style={styles.posterImage}
               source={{
@@ -147,7 +158,7 @@ function EventDetails() {
             )}
           </Pressable>
 
-          <View style={{ width: 90 }}>
+          <View style={styles.joinButtonContaienr}>
             <JoinClubButton />
           </View>
         </View>
@@ -283,16 +294,41 @@ function EventDetails() {
             </View>
           </Shadow>
         </View>
+
+        {/* ABOUT SECTION */}
         <View style={styles.aboutContainer}>
-          <Text style={styles.sectionTitle}>About</Text>
+          <Text style={styles.aboutTitle}>About</Text>
           <TextDetails
-            description="asjdasjdasjdasdjhasgda"
+            description={about}
             textStyle={styles.sectionText}
             maxLines={2}
           />
         </View>
-        <View style={styles.commentsContainer}></View>
-      </ScrollView>
+        <View style={styles.commentsContainer}>
+          <View style={styles.commentsCard}>
+            <View style={styles.commentsTitleContainer}>
+              <View style={styles.commentsTitle}>
+                <View></View>
+                <View style={styles.commentsIconContainer}>
+                  <Ionicons
+                    name="chatbubble"
+                    size={24}
+                    style={{
+                      transform: [{ scaleX: -1 }],
+                      // borderWidth: 1,
+                      alignSelf: "center",
+                    }}
+                    color={Colors.gray.dark}
+                  />
+                </View>
+                <Text style={styles.commentsTitleText}>Comments</Text>
+              </View>
+            </View>
+            <View></View>
+            <View></View>
+          </View>
+        </View>
+      </RefreshableScrollView>
     </SafeAreaView>
   );
 }
@@ -302,9 +338,8 @@ export default EventDetails;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // alignItems: "center",
+
     backgroundColor: Colors.background.base,
-    // borderWidth: 1,
   },
   imagesContainer: {
     marginHorizontal: 50,
@@ -316,19 +351,39 @@ const styles = StyleSheet.create({
   },
   titleContainer: {
     marginTop: 15,
-    marginVertical: 12,
+    marginVertical: 14,
+    justifyContent: "center",
+    alignItems: "center",
+    marginHorizontal: 5,
+    // borderWidth: 1,
   },
   titleText: {
     fontSize: 35,
     fontWeight: 500,
     color: Colors.accent.primary,
+    textAlign: "center",
   },
   posterContainer: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
+    marginHorizontal: 5,
+    maxWidth: 400,
     // borderWidth: 1,
-    marginHorizontal: 20,
+  },
+  posterName: {
+    fontSize: 20,
+    marginHorizontal: 8,
+    marginRight: 0,
+    color: Colors.gray.light,
+    width: 200,
+    // borderWidth: 1,
+  },
+  joinButtonContaienr: {
+    position: "absolute",
+    left: 282,
+    width: 90,
+    // borderWidth: 1,
   },
   detailsContainer: {
     marginVertical: 24,
@@ -336,7 +391,6 @@ const styles = StyleSheet.create({
   detailsCard: {
     backgroundColor: Colors.background.surface,
     width: 384,
-
     borderRadius: 16,
   },
   detailRow: {
@@ -369,9 +423,10 @@ const styles = StyleSheet.create({
   },
   aboutContainer: {
     marginHorizontal: 15,
-    // marginBottom: 60,
+    width: 380,
+    // borderWidth: 1,
   },
-  sectionTitle: {
+  aboutTitle: {
     fontSize: 23,
     color: Colors.accent.primary,
     marginBottom: 4,
@@ -385,7 +440,42 @@ const styles = StyleSheet.create({
     color: Colors.accent.secondary,
     fontWeight: 600,
   },
-  commentsContainer: {},
+  commentsContainer: {
+    marginVertical: 24,
+    // borderWidth: 1,
+  },
+  commentsCard: {
+    alignItems: "center",
+    width: 384,
+    minHeight: 215,
+    backgroundColor: Colors.background.surface,
+    borderRadius: 26,
+  },
+  commentsTitleContainer: {
+    marginVertical: 6,
+    // borderWidth: 1,
+  },
+  commentsTitle: {
+    flexDirection: "row",
+    backgroundColor: Colors.background.elevated,
+    width: 370,
+    height: 38,
+    borderRadius: 19,
+    justifyContent: "flex-start",
+    alignItems: "center",
+    // borderWidth: 1,
+  },
+  commentsIconContainer: {
+    marginLeft: 10,
+    // borderWidth: 1,
+    // justifyContent: "center",
+    // alignItems: "center",
+  },
+  commentsTitleText: {
+    fontSize: 17,
+    color: Colors.gray.light,
+    marginHorizontal: 5,
+  },
   image: {
     resizeMode: "cover",
     height: 281,
@@ -395,12 +485,6 @@ const styles = StyleSheet.create({
     height: 50,
     width: 50,
     borderRadius: 25,
-  },
-  posterName: {
-    fontSize: 20,
-    marginHorizontal: 8,
-    marginRight: 6,
-    color: Colors.gray.light,
   },
   navigationContainer: {
     flexDirection: "row",
@@ -418,6 +502,7 @@ const styles = StyleSheet.create({
     width: 90,
     // borderWidth: 1,
   },
+
   circle: {
     width: 34,
     height: 34,
