@@ -30,10 +30,9 @@ const AppNavigator = () => {
   const dispatch = useDispatch();
   const isLoggedIn = useSelector((state) => state.auth.authData !== null);
 
-
   const fetchProfile = () => async (dispatch) => {
     try {
-      const storedProfile = await SecureStore.getItemAsync('profile');
+      const storedProfile = await SecureStore.getItemAsync("profile");
 
       if (storedProfile) {
         await dispatch({
