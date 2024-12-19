@@ -6,7 +6,7 @@ import {
   Text,
   Pressable,
   StyleSheet,
-  ScrollView,
+  TextInput,
 } from "react-native";
 
 import { Shadow } from "react-native-shadow-2";
@@ -31,6 +31,12 @@ import {
 import * as actionType from "../API/actionTypes";
 
 function EventDetails() {
+  const [InputCommentText, setInputCommentText] = useState("");
+
+  function handleCommentTextInput(input) {
+    setInputCommentText(input);
+  }
+
   const route = useRoute();
 
   const {
@@ -308,7 +314,6 @@ function EventDetails() {
           <View style={styles.commentsCard}>
             <View style={styles.commentsTitleContainer}>
               <View style={styles.commentsTitle}>
-                <View></View>
                 <View style={styles.commentsIconContainer}>
                   <Ionicons
                     name="chatbubble"
@@ -324,7 +329,47 @@ function EventDetails() {
                 <Text style={styles.commentsTitleText}>Comments</Text>
               </View>
             </View>
-            <View></View>
+            <View style={styles.commentInputContainer}>
+              {/* <View style={styles.commentInputContent}> */}
+              {/* <View
+                style={{
+                  flexDirection: "column",
+                  alignItems: "flex-start",
+                  justifyContent: "flex-start",
+                  borderWidth: 1,
+                }}
+              > */}
+              <View style={styles.placeholderPFP}>
+                {/*Profile picture goes here*/}
+              </View>
+              {/* </View> */}
+
+              <TextInput
+                style={[
+                  styles.commentInput,
+                  {
+                    padding: 0, // Remove internal padding
+                    marginTop: 0, // Ensure no top margin
+                    textAlignVertical: "center", // Vertically align text
+                    lineHeight: 20, // Match the line height to surrounding text
+                  },
+                ]}
+                placeholder="Add Comment"
+                keyboardType="default"
+                placeholderTextColor={Colors.gray.medium}
+                value={InputCommentText}
+                onChangeText={handleCommentTextInput}
+                multiline={true}
+                maxLength={180}
+                // scrollEnabled={false}
+              />
+              <Pressable>
+                <View style={styles.sendButton}>
+                  <Text>Send</Text>
+                </View>
+              </Pressable>
+              {/* </View> */}
+            </View>
             <View></View>
           </View>
         </View>
@@ -467,14 +512,38 @@ const styles = StyleSheet.create({
   },
   commentsIconContainer: {
     marginLeft: 10,
-    // borderWidth: 1,
-    // justifyContent: "center",
-    // alignItems: "center",
   },
   commentsTitleText: {
     fontSize: 17,
     color: Colors.gray.light,
     marginHorizontal: 5,
+  },
+  commentInputContainer: {
+    marginVertical: 3,
+    backgroundColor: Colors.background.elevated,
+    width: 355,
+    borderRadius: 19,
+    flexDirection: "row",
+    paddingVertical: 5,
+    // borderWidth: 1,
+  },
+  commentInput: {
+    flex: 1,
+    color: Colors.gray.light,
+    marginLeft: 6,
+    // alignItems: "flex-start",
+    // borderWidth: 1,
+  },
+  sendButton: {
+    backgroundColor: Colors.accent.secondary,
+    width: 58,
+    height: 30,
+    justifyContent: "center",
+    alignItems: "center",
+    marginRight: 5,
+    marginLeft: 5,
+    borderRadius: 18,
+    // borderWidth: 1,
   },
   image: {
     resizeMode: "cover",
@@ -502,7 +571,14 @@ const styles = StyleSheet.create({
     width: 90,
     // borderWidth: 1,
   },
-
+  placeholderPFP: {
+    marginLeft: 5,
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: "gray",
+    justifyContent: "flex-start",
+  },
   circle: {
     width: 34,
     height: 34,
