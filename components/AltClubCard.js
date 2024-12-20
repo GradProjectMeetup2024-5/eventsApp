@@ -36,7 +36,7 @@ function AltClubCard({
             <View style={styles.location}>
               <Ionicons
                 name="location-outline"
-                size={18}
+                size={20}
                 color={Colors.gray.dark}
               />
               <Text style={styles.locationText}>
@@ -94,8 +94,8 @@ const styles = StyleSheet.create({
   },
   cardInfo: {
     flex: 3,
-    paddingHorizontal: 14,
-    paddingVertical: 12,
+    marginHorizontal: 14,
+    marginVertical: 12,
   },
   time: {
     fontSize: 18,
@@ -107,13 +107,16 @@ const styles = StyleSheet.create({
   },
   location: {
     flexDirection: "row",
-    alignItems: "center",
-    paddingTop: 4,
+    alignItems: "flex-start",
+    marginTop: 6,
   },
   locationText: {
     fontSize: 18,
     color: Colors.gray.dark,
+    margin: 0,
     marginLeft: 4,
+    lineHeight: 20,
+    maxWidth: 240,
   },
   attending: {
     flexDirection: "column",

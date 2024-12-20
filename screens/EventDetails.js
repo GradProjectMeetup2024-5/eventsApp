@@ -307,7 +307,7 @@ function EventDetails() {
           <TextDetails
             description={about}
             textStyle={styles.sectionText}
-            maxLines={2}
+            maxLines={5}
           />
         </View>
         <View style={styles.commentsContainer}>
@@ -468,13 +468,13 @@ const styles = StyleSheet.create({
   },
   aboutContainer: {
     marginHorizontal: 15,
-    width: 380,
+    width: 370,
     // borderWidth: 1,
   },
   aboutTitle: {
     fontSize: 23,
     color: Colors.accent.primary,
-    marginBottom: 4,
+    marginBottom: 8,
   },
   sectionText: {
     fontSize: 14,

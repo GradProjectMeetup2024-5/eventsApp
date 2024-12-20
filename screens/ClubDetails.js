@@ -130,7 +130,7 @@ function ClubDetails() {
           </ScrollView>
         </View>
         {/* ABOUT US SECTION */}
-        <View style={[styles.sectionRow, { marginTop: 20 }]}>
+        <View style={[styles.sectionRow, { marginTop: 20, marginBottom: 8 }]}>
           <Text style={[styles.sectionTitle, { color: Colors.accent.primary }]}>
             About Us
           </Text>
@@ -254,8 +254,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   aboutSection: {
-    marginHorizontal: 27,
-    marginTop: -5,
+    marginHorizontal: 22,
   },
   aboutText: {
     color: Colors.gray.light,
@@ -266,7 +265,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     marginHorizontal: 22,
     marginBottom: 25,
-    // borderWidth: 1,
   },
   buttonContainer: {
     backgroundColor: Colors.background.surface,
