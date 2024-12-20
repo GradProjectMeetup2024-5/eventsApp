@@ -7,35 +7,48 @@ import {
   Pressable,
   StyleSheet,
   TextInput,
+  KeyboardAvoidingView,
 } from "react-native";
 
-import { Shadow } from "react-native-shadow-2";
 import { Ionicons } from "@expo/vector-icons";
+import { Shadow } from "react-native-shadow-2";
+
+import { useDispatch, useSelector } from "react-redux";
+import { useRoute } from "@react-navigation/native";
 
 import Colors from "../src/constants/Colors";
 import EventDetailsHeader from "../components/EventDetailsHeader";
 import JoinClubButton from "../components/JoinClubButton";
 import RefreshableScrollView from "../components/RefreshableScrollView";
-
-import { useRoute } from "@react-navigation/native";
 import TextDetails from "../components/TextDetails";
-
-import { useDispatch, useSelector } from "react-redux";
+import DetailCardSeparator from "../components/DetailCardSeparator";
+import DetailCardSection from "../components/DetailCardSection";
 
 import {
   joinEvent,
   checkIfUserJoinedEvent,
   leaveEvent,
 } from "../API/action/eventUser";
-
 import * as actionType from "../API/actionTypes";
 
 function EventDetails() {
-  const [InputCommentText, setInputCommentText] = useState("");
+  const [inputCommentText, setInputCommentText] = useState("");
+  const [joinState, setJoinState] = useState(false);
+  const [isApproved, setIsApproved] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [isExpanded, setIsExpanded] = useState(false);
 
   function handleCommentTextInput(input) {
     setInputCommentText(input);
   }
+
+  const handleSend = () => {
+    if (inputCommentText.trim()) {
+      // Place submit logic here, Firas.
+      console.log("Comment submitted: ", inputCommentText);
+      setInputCommentText("");
+    }
+  };
 
   const route = useRoute();
 
@@ -55,29 +68,11 @@ function EventDetails() {
 
   const dispatch = useDispatch();
 
-  const [joinState, setJoinState] = useState(false);
-  const [isApproved, setisApproved] = useState(false);
-  const [loading, setLoading] = useState(true);
-
-  const [isExpanded, setIsExpanded] = useState(false);
-
   const checkIfUserJoined = useSelector(
     (state) => state.eventUser.checkIfUserJoinedEvent
   );
 
   console.log("checkIfUserJoined", checkIfUserJoined);
-
-  // useEffect(() => {
-  //   const fetchStatus = async () => {
-  //     setLoading(true);
-  //     await dispatch(checkIfUserJoinedEvent(eventId));
-  //     setLoading(false);
-  //   };
-
-  //   fetchStatus();
-
-  //   setJoinState(checkIfUserJoined);
-  // }, [dispatch, eventId, checkIfUserJoined]);
 
   const fetchStatus = async () => {
     setLoading(true);
@@ -184,119 +179,78 @@ function EventDetails() {
           >
             <View style={styles.detailsCard}>
               {/* DATE AND TIME */}
-              <Pressable style={styles.detailRow}>
-                <View style={styles.iconContainer}>
-                  <Ionicons
-                    name="calendar-clear-outline"
-                    size={32}
-                    color={Colors.accent.primary}
-                  />
-                </View>
-                <View style={styles.infoContainer}>
-                  <Text style={styles.primary}>{eventDate}</Text>
-                  <Text style={styles.secondary}>1:00 PM - 3:00 PM</Text>
-                </View>
-                <View style={styles.endItemContainer}>
-                  <Ionicons
-                    name="chevron-forward"
-                    size={30}
-                    color={Colors.gray.light}
-                  />
-                </View>
-              </Pressable>
+              <DetailCardSection
+                iconName="calendar-clear-outline"
+                primary={eventDate}
+                secondary="1:00 PM - 3:00 PM"
+              >
+                <Ionicons
+                  name="chevron-forward"
+                  size={30}
+                  color={Colors.gray.light}
+                />
+              </DetailCardSection>
 
               {/* SEPARATOR */}
-              <View
-                style={{
-                  borderBottomColor: Colors.gray.darkest,
-                  borderBottomWidth: StyleSheet.hairlineWidth,
-                  marginHorizontal: 20,
-                }}
-              />
+              <DetailCardSeparator />
 
               {/* LOCATION */}
-              <Pressable style={styles.detailRow}>
-                <View style={styles.iconContainer}>
-                  <Ionicons
-                    name="location-outline"
-                    size={32}
-                    color={Colors.accent.primary}
-                  />
-                </View>
-                <View style={styles.infoContainer}>
-                  <Text style={styles.primary}>{faculty}</Text>
-                  <Text style={styles.secondary}>
-                    {room},{floor}
-                  </Text>
-                </View>
-                <View style={styles.endItemContainer}>
-                  <Ionicons
-                    name="chevron-forward"
-                    size={30}
-                    color={Colors.gray.light}
-                  />
-                </View>
-              </Pressable>
+              <DetailCardSection
+                iconName="location-outline"
+                primary={faculty}
+                secondary={room + ", " + floor}
+              >
+                <Ionicons
+                  name="chevron-forward"
+                  size={30}
+                  color={Colors.gray.light}
+                />
+              </DetailCardSection>
 
               {/* SEPARATOR */}
-              <View
-                style={{
-                  borderBottomColor: Colors.gray.darkest,
-                  borderBottomWidth: StyleSheet.hairlineWidth,
-                  marginHorizontal: 20,
-                }}
-              />
+              <DetailCardSeparator />
 
               {/* ATTENDEES */}
-              <View style={styles.detailRow}>
-                <View style={styles.iconContainer}>
-                  <Ionicons
-                    name="checkmark-circle-outline"
-                    size={32}
-                    color={Colors.accent.primary}
+              <DetailCardSection
+                iconName="checkmark-circle-outline"
+                primary="Attendees"
+                secondary={
+                  joinedUsers?.length == 0
+                    ? "No Attendees"
+                    : joinedUsers?.length
+                }
+              >
+                <View style={styles.attendingImages}>
+                  <View
+                    style={[
+                      styles.circle,
+                      styles.circle4,
+                      { left: 0, top: 0, zIndex: 4 },
+                    ]}
+                  />
+                  <View
+                    style={[
+                      styles.circle,
+                      styles.circle3,
+                      { left: -17, top: 0, zIndex: 3 },
+                    ]}
+                  />
+                  <View
+                    style={[
+                      styles.circle,
+                      styles.circle2,
+                      { left: -34, top: 0, zIndex: 2 },
+                    ]}
+                  />
+                  <View
+                    style={[
+                      styles.circle,
+                      styles.circle1,
+                      { left: -51, top: 0, zIndex: 1 },
+                    ]}
                   />
                 </View>
-                <View style={styles.infoContainer}>
-                  <Text style={styles.primary}>Attendees</Text>
-                  <Text style={styles.secondary}>
-                    {joinedUsers?.length == 0
-                      ? "No Attendees"
-                      : joinedUsers?.length}
-                  </Text>
-                </View>
-                <View style={styles.endItemContainer}>
-                  <View style={styles.attendingImages}>
-                    <View
-                      style={[
-                        styles.circle,
-                        styles.circle4,
-                        { left: 0, top: 0, zIndex: 4 },
-                      ]}
-                    />
-                    <View
-                      style={[
-                        styles.circle,
-                        styles.circle3,
-                        { left: -17, top: 0, zIndex: 3 },
-                      ]}
-                    />
-                    <View
-                      style={[
-                        styles.circle,
-                        styles.circle2,
-                        { left: -34, top: 0, zIndex: 2 },
-                      ]}
-                    />
-                    <View
-                      style={[
-                        styles.circle,
-                        styles.circle1,
-                        { left: -51, top: 0, zIndex: 1 },
-                      ]}
-                    />
-                  </View>
-                </View>
-              </View>
+              </DetailCardSection>
             </View>
           </Shadow>
         </View>
@@ -310,7 +264,11 @@ function EventDetails() {
             maxLines={5}
           />
         </View>
-        <View style={styles.commentsContainer}>
+        <View
+          // behavior="padding"
+          // keyboardVerticalOffset={100}
+          style={styles.commentsContainer}
+        >
           <View style={styles.commentsCard}>
             <View style={styles.commentsTitleContainer}>
               <View style={styles.commentsTitle}>
@@ -330,42 +288,35 @@ function EventDetails() {
               </View>
             </View>
             <View style={styles.commentInputContainer}>
-              {/* <View style={styles.commentInputContent}> */}
-              {/* <View
-                style={{
-                  flexDirection: "column",
-                  alignItems: "flex-start",
-                  justifyContent: "flex-start",
-                  borderWidth: 1,
-                }}
-              > */}
               <View style={styles.placeholderPFP}>
                 {/*Profile picture goes here*/}
               </View>
               {/* </View> */}
 
               <TextInput
-                style={[
-                  styles.commentInput,
-                  {
-                    padding: 0, // Remove internal padding
-                    marginTop: 0, // Ensure no top margin
-                    textAlignVertical: "center", // Vertically align text
-                    lineHeight: 20, // Match the line height to surrounding text
-                  },
-                ]}
+                style={[styles.commentInput, {}]}
                 placeholder="Add Comment"
                 keyboardType="default"
                 placeholderTextColor={Colors.gray.medium}
-                value={InputCommentText}
+                value={inputCommentText}
                 onChangeText={handleCommentTextInput}
                 multiline={true}
                 maxLength={180}
                 // scrollEnabled={false}
               />
-              <Pressable>
-                <View style={styles.sendButton}>
-                  <Text>Send</Text>
+              <Pressable
+                onPress={handleSend}
+                disabled={!inputCommentText.trim()}
+              >
+                <View
+                  style={[
+                    styles.sendButton,
+                    inputCommentText.trim() && {
+                      backgroundColor: Colors.accent.secondary,
+                    },
+                  ]}
+                >
+                  <Text style={styles.sendButtonText}>Send</Text>
                 </View>
               </Pressable>
               {/* </View> */}
@@ -383,7 +334,6 @@ export default EventDetails;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-
     backgroundColor: Colors.background.base,
   },
   imagesContainer: {
@@ -400,7 +350,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginHorizontal: 5,
-    // borderWidth: 1,
   },
   titleText: {
     fontSize: 35,
@@ -414,7 +363,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginHorizontal: 5,
     maxWidth: 400,
-    // borderWidth: 1,
   },
   posterName: {
     fontSize: 20,
@@ -422,13 +370,11 @@ const styles = StyleSheet.create({
     marginRight: 0,
     color: Colors.gray.light,
     width: 200,
-    // borderWidth: 1,
   },
   joinButtonContaienr: {
     position: "absolute",
     left: 282,
     width: 90,
-    // borderWidth: 1,
   },
   detailsContainer: {
     marginVertical: 24,
@@ -438,38 +384,9 @@ const styles = StyleSheet.create({
     width: 384,
     borderRadius: 16,
   },
-  detailRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    margin: 16,
-  },
-  iconContainer: {
-    backgroundColor: Colors.background.base,
-    height: 44,
-    width: 44,
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 8,
-  },
-  infoContainer: {
-    flexDirection: "column",
-  },
-  primary: {
-    marginHorizontal: 10,
-    color: Colors.gray.light,
-    fontSize: 16,
-    fontWeight: 500,
-  },
-  secondary: {
-    marginHorizontal: 10,
-    color: Colors.gray.light,
-    fontSize: 13,
-    fontWeight: 400,
-  },
   aboutContainer: {
     marginHorizontal: 15,
     width: 370,
-    // borderWidth: 1,
   },
   aboutTitle: {
     fontSize: 23,
@@ -487,7 +404,6 @@ const styles = StyleSheet.create({
   },
   commentsContainer: {
     marginVertical: 24,
-    // borderWidth: 1,
   },
   commentsCard: {
     alignItems: "center",
@@ -498,7 +414,6 @@ const styles = StyleSheet.create({
   },
   commentsTitleContainer: {
     marginVertical: 6,
-    // borderWidth: 1,
   },
   commentsTitle: {
     flexDirection: "row",
@@ -508,7 +423,6 @@ const styles = StyleSheet.create({
     borderRadius: 19,
     justifyContent: "flex-start",
     alignItems: "center",
-    // borderWidth: 1,
   },
   commentsIconContainer: {
     marginLeft: 10,
@@ -525,17 +439,17 @@ const styles = StyleSheet.create({
     borderRadius: 19,
     flexDirection: "row",
     paddingVertical: 5,
-    // borderWidth: 1,
   },
   commentInput: {
     flex: 1,
     color: Colors.gray.light,
     marginLeft: 6,
-    // alignItems: "flex-start",
-    // borderWidth: 1,
+    textAlignVertical: "center",
+    lineHeight: 20,
+    padding: 0,
   },
   sendButton: {
-    backgroundColor: Colors.accent.secondary,
+    backgroundColor: Colors.background.surface,
     width: 58,
     height: 30,
     justifyContent: "center",
@@ -543,7 +457,10 @@ const styles = StyleSheet.create({
     marginRight: 5,
     marginLeft: 5,
     borderRadius: 18,
-    // borderWidth: 1,
+  },
+  sendButtonText: {
+    color: Colors.gray.white,
+    fontWeight: 500,
   },
   image: {
     resizeMode: "cover",
@@ -560,16 +477,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginRight: 90,
   },
-  endItemContainer: {
-    flex: 1,
-    alignItems: "flex-end",
-    // borderWidth: 1,
-  },
   attendingImages: {
     flexDirection: "row",
     alignItems: "flex-start",
     width: 90,
-    // borderWidth: 1,
   },
   placeholderPFP: {
     marginLeft: 5,

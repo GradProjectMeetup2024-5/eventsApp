@@ -11,7 +11,7 @@ import {
 import { useNavigation } from "@react-navigation/native";
 
 import ClubDetailsHeader from "../components/ClubDetailsHeader";
-import AltClubCard from "../components/AltClubCard";
+import AltEventCard from "../components/AltEventCard";
 import { Ionicons } from "@expo/vector-icons";
 
 import Colors from "../src/constants/Colors";
@@ -102,7 +102,7 @@ function ClubDetails() {
           >
             {clubEvent?.length > 0 ? (
               clubEvent?.map((event) => (
-                <AltClubCard
+                <AltEventCard
                   key={event?.id}
                   eventDate={event?.event_date}
                   eventName={event?.event_name}
@@ -260,6 +260,7 @@ const styles = StyleSheet.create({
     color: Colors.gray.light,
     fontSize: 14,
     lineHeight: 20,
+    fontWeight: 500,
   },
   buttonsContainer: {
     flexDirection: "row",

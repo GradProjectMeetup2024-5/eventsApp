@@ -4,7 +4,7 @@ import Colors from "../src/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 import { Shadow } from "react-native-shadow-2";
 
-function AltClubCard({
+function AltEventCard({
   onPress,
   eventName,
   faculty,
@@ -77,7 +77,7 @@ function AltClubCard({
   );
 }
 
-export default AltClubCard;
+export default AltEventCard;
 
 const styles = StyleSheet.create({
   container: {
