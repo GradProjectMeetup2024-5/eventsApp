@@ -1,14 +1,6 @@
 import { useState, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import {
-  View,
-  Image,
-  Text,
-  Pressable,
-  StyleSheet,
-  TextInput,
-  KeyboardAvoidingView,
-} from "react-native";
+import { View, Image, Text, Pressable, StyleSheet } from "react-native";
 
 import { Ionicons } from "@expo/vector-icons";
 import { Shadow } from "react-native-shadow-2";
@@ -30,25 +22,13 @@ import {
   leaveEvent,
 } from "../API/action/eventUser";
 import * as actionType from "../API/actionTypes";
+import CommentSection from "../components/CommentSection";
 
 function EventDetails() {
-  const [inputCommentText, setInputCommentText] = useState("");
   const [joinState, setJoinState] = useState(false);
   const [isApproved, setIsApproved] = useState(false);
   const [loading, setLoading] = useState(true);
   const [isExpanded, setIsExpanded] = useState(false);
-
-  function handleCommentTextInput(input) {
-    setInputCommentText(input);
-  }
-
-  const handleSend = () => {
-    if (inputCommentText.trim()) {
-      // Place submit logic here, Firas.
-      console.log("Comment submitted: ", inputCommentText);
-      setInputCommentText("");
-    }
-  };
 
   const route = useRoute();
 
@@ -163,6 +143,8 @@ function EventDetails() {
             <JoinClubButton />
           </View>
         </View>
+
+        {/* DETAILS SECTION */}
         <View style={styles.detailsContainer}>
           <Shadow
             sides={{ bottom: true, top: false, start: false, end: true }}
@@ -178,7 +160,7 @@ function EventDetails() {
             endColor="rgba(0, 0, 0, 0.05)"
           >
             <View style={styles.detailsCard}>
-              {/* DATE AND TIME */}
+              {/* DATE AND TIME SUB-SECTION*/}
               <DetailCardSection
                 iconName="calendar-clear-outline"
                 primary={eventDate}
@@ -194,7 +176,7 @@ function EventDetails() {
               {/* SEPARATOR */}
               <DetailCardSeparator />
 
-              {/* LOCATION */}
+              {/* LOCATION SUB-SECTION*/}
               <DetailCardSection
                 iconName="location-outline"
                 primary={faculty}
@@ -210,7 +192,7 @@ function EventDetails() {
               {/* SEPARATOR */}
               <DetailCardSeparator />
 
-              {/* ATTENDEES */}
+              {/* ATTENDEES SUB-SECTION*/}
               <DetailCardSection
                 iconName="checkmark-circle-outline"
                 primary="Attendees"
@@ -264,66 +246,9 @@ function EventDetails() {
             maxLines={5}
           />
         </View>
-        <View
-          // behavior="padding"
-          // keyboardVerticalOffset={100}
-          style={styles.commentsContainer}
-        >
-          <View style={styles.commentsCard}>
-            <View style={styles.commentsTitleContainer}>
-              <View style={styles.commentsTitle}>
-                <View style={styles.commentsIconContainer}>
-                  <Ionicons
-                    name="chatbubble"
-                    size={24}
-                    style={{
-                      transform: [{ scaleX: -1 }],
-                      // borderWidth: 1,
-                      alignSelf: "center",
-                    }}
-                    color={Colors.gray.dark}
-                  />
-                </View>
-                <Text style={styles.commentsTitleText}>Comments</Text>
-              </View>
-            </View>
-            <View style={styles.commentInputContainer}>
-              <View style={styles.placeholderPFP}>
-                {/*Profile picture goes here*/}
-              </View>
-              {/* </View> */}
 
-              <TextInput
-                style={[styles.commentInput, {}]}
-                placeholder="Add Comment"
-                keyboardType="default"
-                placeholderTextColor={Colors.gray.medium}
-                value={inputCommentText}
-                onChangeText={handleCommentTextInput}
-                multiline={true}
-                maxLength={180}
-                // scrollEnabled={false}
-              />
-              <Pressable
-                onPress={handleSend}
-                disabled={!inputCommentText.trim()}
-              >
-                <View
-                  style={[
-                    styles.sendButton,
-                    inputCommentText.trim() && {
-                      backgroundColor: Colors.accent.secondary,
-                    },
-                  ]}
-                >
-                  <Text style={styles.sendButtonText}>Send</Text>
-                </View>
-              </Pressable>
-              {/* </View> */}
-            </View>
-            <View></View>
-          </View>
-        </View>
+        {/* COMMENTS SECTION */}
+        <CommentSection />
       </RefreshableScrollView>
     </SafeAreaView>
   );
@@ -402,66 +327,6 @@ const styles = StyleSheet.create({
     color: Colors.accent.secondary,
     fontWeight: 600,
   },
-  commentsContainer: {
-    marginVertical: 24,
-  },
-  commentsCard: {
-    alignItems: "center",
-    width: 384,
-    minHeight: 215,
-    backgroundColor: Colors.background.surface,
-    borderRadius: 26,
-  },
-  commentsTitleContainer: {
-    marginVertical: 6,
-  },
-  commentsTitle: {
-    flexDirection: "row",
-    backgroundColor: Colors.background.elevated,
-    width: 370,
-    height: 38,
-    borderRadius: 19,
-    justifyContent: "flex-start",
-    alignItems: "center",
-  },
-  commentsIconContainer: {
-    marginLeft: 10,
-  },
-  commentsTitleText: {
-    fontSize: 17,
-    color: Colors.gray.light,
-    marginHorizontal: 5,
-  },
-  commentInputContainer: {
-    marginVertical: 3,
-    backgroundColor: Colors.background.elevated,
-    width: 355,
-    borderRadius: 19,
-    flexDirection: "row",
-    paddingVertical: 5,
-  },
-  commentInput: {
-    flex: 1,
-    color: Colors.gray.light,
-    marginLeft: 6,
-    textAlignVertical: "center",
-    lineHeight: 20,
-    padding: 0,
-  },
-  sendButton: {
-    backgroundColor: Colors.background.surface,
-    width: 58,
-    height: 30,
-    justifyContent: "center",
-    alignItems: "center",
-    marginRight: 5,
-    marginLeft: 5,
-    borderRadius: 18,
-  },
-  sendButtonText: {
-    color: Colors.gray.white,
-    fontWeight: 500,
-  },
   image: {
     resizeMode: "cover",
     height: 281,
@@ -481,14 +346,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "flex-start",
     width: 90,
-  },
-  placeholderPFP: {
-    marginLeft: 5,
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    backgroundColor: "gray",
-    justifyContent: "flex-start",
   },
   circle: {
     width: 34,
