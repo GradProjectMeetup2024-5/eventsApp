@@ -88,7 +88,6 @@ export default function Explore() {
             <EventCard
               eventName={event?.event_name}
               eventDate={event?.event_date}
-              eventTime={event?.created_time}
               eventLocation={event?.event_desc}
               eventOrganizer={event?.userId}
               eventImage={back}
