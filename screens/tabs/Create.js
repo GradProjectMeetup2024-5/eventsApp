@@ -30,34 +30,63 @@ export default function Create() {
   const [eventData, setEventData] = useState({ event_name: '', event_desc: '', event_image: '',
     faculty: '',floor: '', room: '', image:''})
 
-    const handleSubmit = () => {
-      if (!eventName || !eventMonth || !eventDay || !eventYear || !eventTime ) {
+    const handleSubmit = async () => {
+      // Validate required fields
+      if (!eventName || !eventMonth || !eventDay || !eventYear || !eventTime) {
         Alert.alert("Error", "All fields are required.");
         return;
       }
+    
+      // Validate time format (optional but recommended)
+      const timePattern = /^(1[0-2]|0?[1-9]):[0-5][0-9] [AP]M$/; // Example: "4:30 PM"
+      if (!timePattern.test(eventTime)) {
+        Alert.alert("Error", "Event time must be in the format 'HH:MM AM/PM'.");
+        return;
+      }
+    
+      // Parse the time
       let [hours, minutes] = eventTime.split(":").map(Number);
-
+      const amPm = eventTime.split(" ")[1]; // Extract AM/PM part
+    
+      // Adjust hours based on AM/PM
       if (amPm === "PM" && hours < 12) hours += 12; 
       if (amPm === "AM" && hours === 12) hours = 0; 
-     
+    
+      // Create the event date
       const eventDate = new Date(
         `${eventYear}-${eventMonth.padStart(2, '0')}-${eventDay.padStart(2, '0')}T${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`
       );
+    
+      // Check if the eventDate is valid
+      if (isNaN(eventDate.getTime())) {
+        Alert.alert("Error", "Invalid event date.");
+        return;
+      }
+    
+      // Prepare the event data
+      const eventDateString = eventDate.toLocaleString('en-JO', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true,
+      }).replace(',', ''); // Remove the comma from the string
+    
       const newEventData = {
         event_name: eventName,
         event_desc: eventDescription,
-        event_date: eventDate,
-        event_time: eventTime,
+        event_date: eventDateString, // Store the formatted date string
+        event_hour: eventTime, // Keep the time as a string
         event_image: eventImage,
-        faculty:eventFaculty,
-        floor:eventFloor,
-        room:eventRoom
+        faculty: eventFaculty,
+        floor: eventFloor,
+        room: eventRoom
       };
-    
       
-      dispatch(createEvent(newEventData));
+    await dispatch(createEvent(newEventData))
     };
-
+    
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ScrollView contentContainerStyle={styles.scrollViewContent}>
