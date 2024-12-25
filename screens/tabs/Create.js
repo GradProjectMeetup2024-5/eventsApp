@@ -11,82 +11,55 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import Colors from "../../src/constants/Colors";
 import { useDispatch } from 'react-redux';
-import { createEvent } from '../../API/action/event'
+import { createEvent } from '../../API/action/event';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 export default function Create() {
   const dispatch = useDispatch();
   const [eventName, setEventName] = useState("");
-  const [eventMonth, setEventMonth] = useState("");
-  const [eventDay, setEventDay] = useState("");
-  const [eventYear, setEventYear] = useState("");
-  const [eventTime, setEventTime] = useState("");
-  const [eventFaculty,setEventFaculty] = useState("");
-  const [eventFloor,setEventFloor] = useState("");
-  const [eventRoom,setEventRoom] = useState("");
+  const [eventDate, setEventDate] = useState(new Date());
+  const [eventTime, setEventTime] = useState(new Date());
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [showTimePicker, setShowTimePicker] = useState(false);
+  const [eventFaculty, setEventFaculty] = useState("");
+  const [eventFloor, setEventFloor] = useState("");
+  const [eventRoom, setEventRoom] = useState("");
   const [eventDescription, setEventDescription] = useState("");
   const [eventImage, setEventImage] = useState("");
-  const [amPm, setAmPm] = useState("AM");
 
-  const [eventData, setEventData] = useState({ event_name: '', event_desc: '', event_image: '',
-    faculty: '',floor: '', room: '', image:''})
+  const handleDateChange = (event, selectedDate) => {
+    const currentDate = selectedDate || eventDate;
+    setShowDatePicker(false);
+    setEventDate(currentDate);
+  };
 
-    const handleSubmit = async () => {
-      // Validate required fields
-      if (!eventName || !eventMonth || !eventDay || !eventYear || !eventTime) {
-        Alert.alert("Error", "All fields are required.");
-        return;
-      }
-    
-      // Validate time format (optional but recommended)
-      const timePattern = /^(1[0-2]|0?[1-9]):[0-5][0-9] [AP]M$/; // Example: "4:30 PM"
-      if (!timePattern.test(eventTime)) {
-        Alert.alert("Error", "Event time must be in the format 'HH:MM AM/PM'.");
-        return;
-      }
-    
-      // Parse the time
-      let [hours, minutes] = eventTime.split(":").map(Number);
-      const amPm = eventTime.split(" ")[1]; // Extract AM/PM part
-    
-      // Adjust hours based on AM/PM
-      if (amPm === "PM" && hours < 12) hours += 12; 
-      if (amPm === "AM" && hours === 12) hours = 0; 
-    
-      // Create the event date
-      const eventDate = new Date(
-        `${eventYear}-${eventMonth.padStart(2, '0')}-${eventDay.padStart(2, '0')}T${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`
-      );
-    
-      // Check if the eventDate is valid
-      if (isNaN(eventDate.getTime())) {
-        Alert.alert("Error", "Invalid event date.");
-        return;
-      }
-    
-      // Prepare the event data
-      const eventDateString = eventDate.toLocaleString('en-JO', {
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: true,
-      }).replace(',', ''); // Remove the comma from the string
-    
-      const newEventData = {
-        event_name: eventName,
-        event_desc: eventDescription,
-        event_date: eventDateString, // Store the formatted date string
-        event_hour: eventTime, // Keep the time as a string
-        event_image: eventImage,
-        faculty: eventFaculty,
-        floor: eventFloor,
-        room: eventRoom
-      };
-      
-    await dispatch(createEvent(newEventData))
+  const handleTimeChange = (event, selectedTime) => {
+    const currentTime = selectedTime || eventTime;
+    setShowTimePicker(false);
+    setEventTime(currentTime);
+  };
+
+  const handleSubmit = () => {
+    if (!eventName || !eventFaculty || !eventFloor || !eventRoom || !eventDescription) {
+      Alert.alert("Error", "All fields are required.");
+      return;
+    }
+
+    // Format the event date and time for submission
+    const eventData = {
+      event_name: eventName,
+      event_desc: eventDescription,
+      event_date: eventDate,
+      event_time: eventTime,
+      event_image: eventImage,
+      faculty: eventFaculty,
+      floor: eventFloor,
+      room: eventRoom
     };
-    
+
+    dispatch(createEvent(eventData));
+  };
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ScrollView contentContainerStyle={styles.scrollViewContent}>
@@ -98,7 +71,7 @@ export default function Create() {
             <TextInput
               style={styles.input}
               value={eventName}
-               onChangeText={setEventName}
+              onChangeText={setEventName}
               placeholder="Enter event name"
               placeholderTextColor="#808080"
             />
@@ -106,54 +79,32 @@ export default function Create() {
 
           <View style={styles.inputContainer}>
             <Text style={styles.label}>Date</Text>
-            <View style={styles.dateContainer}>
-              <TextInput
-                style={styles.dateInput}
-                value={eventMonth}
-                onChangeText={setEventMonth}
-                placeholder="MM"
-                placeholderTextColor="#808080"
-                keyboardType="numeric"
-                maxLength={2}
+            <Pressable style={styles.dateButton} onPress={() => setShowDatePicker(true)}>
+              <Text style={styles.dateButtonText}>{eventDate.toLocaleDateString()}</Text>
+            </Pressable>
+            {showDatePicker && (
+              <DateTimePicker
+                value={eventDate}
+                mode="date"
+                display="default"
+                onChange={handleDateChange}
               />
-              <TextInput
-                style={styles.dateInput}
-                value={eventDay}
-                onChangeText={setEventDay}
-                placeholder="DD"
-                placeholderTextColor="#808080"
-                keyboardType="numeric"
-                maxLength={2}
-              />
-              <TextInput
-                style={styles.dateInput}
-                value={eventYear}
-                onChangeText={setEventYear}
-                placeholder="YYYY"
-                placeholderTextColor="#808080"
-                keyboardType="numeric"
-                maxLength={4}
-              />
-            </View>
+            )}
           </View>
 
           <View style={styles.inputContainer}>
             <Text style={styles.label}>Time</Text>
-            <View style={styles.timeContainer}>
-              <TextInput
-                style={styles.timeInput}
+            <Pressable style={styles.timeButton} onPress={() => setShowTimePicker(true)}>
+              <Text style={styles.timeButtonText}>{eventTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })}</Text>
+            </Pressable>
+            {showTimePicker && (
+              <DateTimePicker
                 value={eventTime}
-                onChangeText={setEventTime}
-                placeholder="HH:MM"
-                placeholderTextColor="#808080"
+                mode="time"
+                display="default"
+                onChange={handleTimeChange}
               />
-              <Pressable
-                style={styles.amPmButton}
-                onPress={() => setAmPm(amPm === "AM" ? "PM" : "AM")}
-              >
-                <Text style={styles.amPmButtonText}>{amPm}</Text>
-              </Pressable>
-            </View>
+            )}
           </View>
 
           <View style={styles.inputContainer}>
@@ -193,8 +144,8 @@ export default function Create() {
             <Text style={styles.label}>Image URL</Text>
             <TextInput
               style={styles.input}
-              value={eventData.event_image}
-              onChangeText={(text) => setEventData({ ...eventData, event_image: text })}
+              value={eventImage}
+              onChangeText={setEventImage}
               placeholder="Enter image URL"
               placeholderTextColor="#808080"
             />
@@ -260,49 +211,28 @@ const styles = StyleSheet.create({
     color: "#000000",
   },
   descriptionInput: {
-    height: 100, // Increased height for the description field
-    textAlignVertical: "top", // Aligns the placeholder text to the top
+    height: 100,
+    textAlignVertical: "top",
   },
-  dateContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  dateInput: {
+  dateButton: {
     backgroundColor: "white",
-    paddingHorizontal: 15,
-    paddingVertical: 10,
+    padding: 15,
     borderRadius: 10,
-    fontSize: 16,
-    borderWidth: 1,
-    borderColor: "#ddd",
-    color: "#000000",
-    flex: 1,
-    marginHorizontal: 5,
-  },
-  timeContainer: {
-    flexDirection: "row",
     alignItems: "center",
   },
-  timeInput: {
-    flex: 1,
-    backgroundColor: "white",
-    paddingHorizontal: 15,
-    paddingVertical: 10,
-    borderRadius: 10,
+  dateButtonText: {
     fontSize: 16,
-    borderWidth: 1,
-    borderColor: "#ddd",
     color: "#000000",
   },
-  amPmButton: {
-    backgroundColor: "#DC143C",
+  timeButton: {
+    backgroundColor: "white",
+    padding: 15,
     borderRadius: 10,
-    padding: 10,
-    marginLeft: 10,
+    alignItems: "center",
   },
-  amPmButtonText: {
-    color: "#FFFFFF",
-    fontWeight: "600",
+  timeButtonText: {
+    fontSize: 16,
+    color: "#000000",
   },
   button: {
     backgroundColor: "#DC143C",
