@@ -11,12 +11,11 @@ import UserDetails from "../components/ui/ProfileUi/UserDetails";
 import { useDispatch } from "react-redux";
 import * as actionType from "../API/actionTypes";
 
-import * as SecureStore from 'expo-secure-store';
+import * as SecureStore from "expo-secure-store";
 
 export default function Profile({ navigation }) {
-
   const dispatch = useDispatch();
-  const [user, setUser] = useState(SecureStore.getItemAsync('profile'));
+  const [user, setUser] = useState(SecureStore.getItemAsync("profile"));
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -36,14 +35,14 @@ export default function Profile({ navigation }) {
     fetchUserData();
   }, []);
 
- async function handleLogOut() {
-  console.log("delete")
-    await SecureStore.deleteItemAsync('profile');
-    navigation.navigate('Profile', { screen: 'SignUp' });
+  async function handleLogOut() {
+    console.log("delete");
+    await SecureStore.deleteItemAsync("profile");
+    navigation.navigate("Profile", { screen: "SignUp" });
   }
 
   function handleBackToHome() {
-    navigation.navigate("Home");
+    navigation.navigate("Explore");
   }
 
   return (
@@ -93,7 +92,7 @@ export default function Profile({ navigation }) {
             <ButtonItem
               icon={<LogOut size={16} color="#000000" />}
               style={styles.buttonItem}
-            onPress={handleLogOut}
+              onPress={handleLogOut}
             >
               Log Out
             </ButtonItem>
