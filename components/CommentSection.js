@@ -24,7 +24,7 @@ function CommentSection({ eventId }) {
     "What time does it start?",
     "Had an amazing time!",
   ]);
-  const [visibleComments, setVisibleComments] = useState(5);
+  const [visibleComments, setVisibleComments] = useState(3);
 
   const handleSend = () => {
     if (inputCommentText.trim()) {
@@ -39,7 +39,7 @@ function CommentSection({ eventId }) {
   };
 
   const handleSeeMore = () => {
-    setVisibleComments((prev) => prev + 5);
+    setVisibleComments((prev) => prev + 3);
   };
 
   function handleCommentTextInput(input) {
