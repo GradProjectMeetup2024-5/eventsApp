@@ -4,7 +4,7 @@ import { Ionicons } from "@expo/vector-icons";
 
 import Colors from "../src/constants/Colors";
 
-// import BottomNavigation from "../../components/ui/BottomNavigation";
+import BottomNavigation from "./ui/BottomNavigation";
 
 const Header = ({ onPress }) => {
   return (
@@ -24,7 +24,7 @@ const Header = ({ onPress }) => {
         </Pressable>
       </View>
 
-      {/* <BottomNavigation /> */}
+      <BottomNavigation />
     </View>
   );
 };
