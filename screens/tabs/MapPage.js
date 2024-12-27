@@ -4,7 +4,12 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import MapView, { Marker, Callout } from "react-native-maps";
 import Colors from "../../src/constants/Colors";
 import Header from "../../components/Header";
-import EventDetailsHeader from "../../components/EventDetailsHeader";
+import RefreshableScrollView from "../../components/RefreshableScrollView";
+
+function pressHandler() {
+  navigation.navigate("Profile");
+}
+
 
 const App = () => {
   const markers = [
@@ -28,16 +33,19 @@ const App = () => {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <Header />
-
+      <Header 
+        // onPress={pressHandler} 
+        // searchText={searchText} 
+        // onSearchChange={setSearchText} 
+      />
       <View style={styles.container}>
         <MapView
           style={styles.mapStyle}
           initialRegion={{
             latitude: 32.0401803456018,
             longitude: 35.900398904295194,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
+            latitudeDelta: 0.9,
+            longitudeDelta: 0.9000,
           }}
           customMapStyle={mapStyle}
         >
@@ -182,7 +190,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   mapStyle: {
-    height: 300, // Adjust the height as needed
+    flex: 1, 
   },
   calloutContainer: {
     padding: 10,
