@@ -44,8 +44,8 @@ const App = () => {
           initialRegion={{
             latitude: 32.0401803456018,
             longitude: 35.900398904295194,
-            latitudeDelta: 0.9,
-            longitudeDelta: 0.9000,
+            latitudeDelta: 0.009,
+            longitudeDelta: 0.009,
           }}
           customMapStyle={mapStyle}
         >
