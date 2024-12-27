@@ -31,7 +31,7 @@ function AttendeePictures({ attendees = [], enableAttendeeCount = false }) {
             source={{ uri: attendee }}
             style={[
               styles.attendeeImage,
-              { left: index * (imageWidth - overlap), zIndex: 3 - index },
+              { left: index * (imageWidth - overlap), zIndex: index - 3 },
             ]}
           />
         ))}
@@ -72,14 +72,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-end",
     marginHorizontal: 4,
-    // borderWidth: 1,
-    // width: 105,
   },
   attendeeImageContainer: {
     height: 34,
     position: "relative",
     alignSelf: "center",
-    // borderWidth: 1,
   },
   attendeeImage: {
     width: 34,
@@ -99,7 +96,6 @@ const styles = StyleSheet.create({
   circlePlus: {
     fontSize: 16,
     fontWeight: 600,
-    // color: "white",
     color: Colors.accent.secondary,
   },
   attendeeCount: {

@@ -24,6 +24,7 @@ import {
 } from "../API/action/eventUser";
 import * as actionType from "../API/actionTypes";
 import CommentSection from "../components/CommentSection";
+import EventDetailsFooter from "../components/EventDetailsFooter";
 
 function EventDetails() {
   const [joinState, setJoinState] = useState(false);
@@ -89,7 +90,7 @@ function EventDetails() {
     <SafeAreaView style={styles.container}>
       <EventDetailsHeader />
       <RefreshableScrollView
-        style={[{ paddingBottom: 20, alignItems: "center" }]}
+        style={[{ paddingBottom: 50, alignItems: "center" }]}
         onRefresh={fetchStatus}
       >
         <View style={styles.imagesContainer}></View>
@@ -205,10 +206,10 @@ function EventDetails() {
               >
                 <AttendeePictures
                   attendees={[
-                    "https://picsum.photos/100/100",
+                    "https://picsum.photos/100/300",
                     "https://picsum.photos/200/100",
                     "https://picsum.photos/100/100",
-                    "https://picsum.photos/100/100",
+                    "https://picsum.photos/300/100",
                   ]}
                 />
               </DetailCardSection>
@@ -229,6 +230,7 @@ function EventDetails() {
         {/* COMMENTS SECTION */}
         <CommentSection />
       </RefreshableScrollView>
+      <EventDetailsFooter />
     </SafeAreaView>
   );
 }
