@@ -1,12 +1,5 @@
 import { useState } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  Pressable,
-  TextInput,
-  KeyboardAvoidingView,
-} from "react-native";
+import { View, Text, StyleSheet, Pressable, TextInput } from "react-native";
 
 import Colors from "../src/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
@@ -24,7 +17,7 @@ function CommentSection({ eventId }) {
     "What time does it start?",
     "Had an amazing time!",
   ]);
-  const [visibleComments, setVisibleComments] = useState(5);
+  const [visibleComments, setVisibleComments] = useState(3);
 
   const handleSend = () => {
     if (inputCommentText.trim()) {
@@ -39,19 +32,20 @@ function CommentSection({ eventId }) {
   };
 
   const handleSeeMore = () => {
-    setVisibleComments((prev) => prev + 5);
+    setVisibleComments((prev) => prev + 3);
   };
 
   function handleCommentTextInput(input) {
     setInputCommentText(input);
   }
   return (
-    <View
-      // behavior="padding"
-      // keyboardVerticalOffset={100}
-      style={styles.commentsContainer}
-    >
-      <View style={styles.commentsCard}>
+    <View style={styles.commentsContainer}>
+      <View
+        style={[
+          styles.commentsCard,
+          { minHeight: tempComments !== 0 ? 200 : 215 },
+        ]}
+      >
         <View style={styles.commentsTitleContainer}>
           <View style={styles.commentsTitle}>
             <View style={styles.commentsIconContainer}>
@@ -60,7 +54,6 @@ function CommentSection({ eventId }) {
                 size={24}
                 style={{
                   transform: [{ scaleX: -1 }],
-                  // borderWidth: 1,
                   alignSelf: "center",
                 }}
                 color={Colors.gray.dark}
@@ -73,7 +66,6 @@ function CommentSection({ eventId }) {
           <View style={styles.placeholderPFP}>
             {/*Profile picture goes here*/}
           </View>
-          {/* </View> */}
 
           <TextInput
             style={[styles.commentInput, {}]}
@@ -84,8 +76,6 @@ function CommentSection({ eventId }) {
             onChangeText={handleCommentTextInput}
             multiline={true}
             maxLength={180}
-            // returnKeyType="send"
-            // returnKeyLabel="send"
             onSubmitEditing={handleSend}
             submitBehavior="submit"
           />
@@ -101,7 +91,6 @@ function CommentSection({ eventId }) {
               <Text style={styles.sendButtonText}>Send</Text>
             </View>
           </Pressable>
-          {/* </View> */}
         </View>
         <View style={styles.comments}>
           {tempComments
@@ -149,7 +138,6 @@ const styles = StyleSheet.create({
   commentsCard: {
     alignItems: "center",
     width: 384,
-    minHeight: 215,
     backgroundColor: Colors.background.surface,
     borderRadius: 26,
     paddingBottom: 10,
@@ -181,7 +169,6 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    // borderWidth: 1,
     marginVertical: 25,
   },
   noCommentsText: {

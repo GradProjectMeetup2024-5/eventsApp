@@ -15,6 +15,7 @@ import RefreshableScrollView from "../components/RefreshableScrollView";
 import TextDetails from "../components/TextDetails";
 import DetailCardSeparator from "../components/DetailCardSeparator";
 import DetailCardSection from "../components/DetailCardSection";
+import AttendeePictures from "../components/AttendeePictures";
 
 import {
   joinEvent,
@@ -23,6 +24,7 @@ import {
 } from "../API/action/eventUser";
 import * as actionType from "../API/actionTypes";
 import CommentSection from "../components/CommentSection";
+import EventDetailsFooter from "../components/EventDetailsFooter";
 
 function EventDetails() {
   const [joinState, setJoinState] = useState(false);
@@ -88,7 +90,7 @@ function EventDetails() {
     <SafeAreaView style={styles.container}>
       <EventDetailsHeader />
       <RefreshableScrollView
-        style={[{ paddingBottom: 20, alignItems: "center" }]}
+        style={[{ paddingBottom: 60, alignItems: "center" }]}
         onRefresh={fetchStatus}
       >
         <View style={styles.imagesContainer}></View>
@@ -202,36 +204,14 @@ function EventDetails() {
                     : joinedUsers?.length
                 }
               >
-                <View style={styles.attendingImages}>
-                  <View
-                    style={[
-                      styles.circle,
-                      styles.circle4,
-                      { left: 0, top: 0, zIndex: 4 },
-                    ]}
-                  />
-                  <View
-                    style={[
-                      styles.circle,
-                      styles.circle3,
-                      { left: -17, top: 0, zIndex: 3 },
-                    ]}
-                  />
-                  <View
-                    style={[
-                      styles.circle,
-                      styles.circle2,
-                      { left: -34, top: 0, zIndex: 2 },
-                    ]}
-                  />
-                  <View
-                    style={[
-                      styles.circle,
-                      styles.circle1,
-                      { left: -51, top: 0, zIndex: 1 },
-                    ]}
-                  />
-                </View>
+                <AttendeePictures
+                  attendees={[
+                    "https://picsum.photos/100/300",
+                    "https://picsum.photos/200/100",
+                    "https://picsum.photos/100/100",
+                    "https://picsum.photos/300/100",
+                  ]}
+                />
               </DetailCardSection>
             </View>
           </Shadow>
@@ -250,6 +230,7 @@ function EventDetails() {
         {/* COMMENTS SECTION */}
         <CommentSection />
       </RefreshableScrollView>
+      <EventDetailsFooter />
     </SafeAreaView>
   );
 }
@@ -346,22 +327,5 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "flex-start",
     width: 90,
-  },
-  circle: {
-    width: 34,
-    height: 34,
-    borderRadius: 17,
-  },
-  circle1: {
-    backgroundColor: Colors.background.subtle,
-  },
-  circle2: {
-    backgroundColor: Colors.gray.darkest,
-  },
-  circle3: {
-    backgroundColor: Colors.gray.muted,
-  },
-  circle4: {
-    backgroundColor: Colors.gray.light,
   },
 });

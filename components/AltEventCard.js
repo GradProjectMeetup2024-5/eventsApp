@@ -3,6 +3,7 @@ import { View, Pressable, Text, Image, StyleSheet } from "react-native";
 import Colors from "../src/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 import { Shadow } from "react-native-shadow-2";
+import AttendeePictures from "./AttendeePictures";
 
 function AltEventCard({
   onPress,
@@ -45,32 +46,17 @@ function AltEventCard({
               </Text>
             </View>
           </View>
-          <View style={styles.attending}>
-            <View style={styles.attendingImages}>
-              <View
-                style={[
-                  styles.circle,
-                  styles.circle3,
-                  { left: 0, top: 0, zIndex: 3 },
-                ]}
-              />
-              <View
-                style={[
-                  styles.circle,
-                  styles.circle2,
-                  { left: -17, top: 0, zIndex: 2 },
-                ]}
-              />
-              <View
-                style={[
-                  styles.circle,
-                  styles.circle1,
-                  { left: -34, top: 0, zIndex: 1 },
-                ]}
-              />
-            </View>
-            <Text style={styles.attendingCount}>4 att.</Text>
-          </View>
+          <AttendeePictures
+            attendees={[
+              "https://picsum.photos/100/100",
+              "https://picsum.photos/200/100",
+              "https://picsum.photos/400/300",
+              "https://picsum.photos/100/100",
+              "https://picsum.photos/100/100",
+              "https://picsum.photos/100/100",
+            ]}
+            enableAttendeeCount={true}
+          />
         </Pressable>
       </Shadow>
     </View>
@@ -116,7 +102,7 @@ const styles = StyleSheet.create({
     margin: 0,
     marginLeft: 4,
     lineHeight: 20,
-    maxWidth: 240,
+    maxWidth: 230,
   },
   attending: {
     flexDirection: "column",
@@ -130,20 +116,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: 68,
     height: 40,
-  },
-  circle: {
-    width: 34,
-    height: 34,
-    borderRadius: 17,
-  },
-  circle1: {
-    backgroundColor: Colors.background.subtle,
-  },
-  circle2: {
-    backgroundColor: Colors.gray.darkest,
-  },
-  circle3: {
-    backgroundColor: Colors.gray.muted,
   },
   attendingCount: {
     fontSize: 15,
