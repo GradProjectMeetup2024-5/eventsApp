@@ -1,19 +1,23 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { View, TextInput, Pressable, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
 import Colors from "../src/constants/Colors";
 
-// import BottomNavigation from "../../components/ui/BottomNavigation";
+import BottomNavigation from "./ui/BottomNavigation";
+import TabBar from "../components/ui/HomeTabBar";
 
-const Header = ({ onPress }) => {
+
+const Header = ({ onPress, searchText, onSearchChange }) => {
   return (
-    <View style={styles.headerContainer}>
+    <View style={[styles.headerContainer, { paddingBottom: 10 }]}>
       <View style={styles.searchBarContainer}>
         <TextInput
           style={styles.searchbar}
           placeholder="Search"
           placeholderTextColor="#FFFFFF"
+          value={searchText}
+          onChangeText={onSearchChange}
         />
         <Pressable style={styles.iconContainer} onPress={onPress}>
           <Ionicons
@@ -23,8 +27,8 @@ const Header = ({ onPress }) => {
           />
         </Pressable>
       </View>
-
-      {/* <BottomNavigation /> */}
+      <TabBar />
+      <BottomNavigation />
     </View>
   );
 };
@@ -34,7 +38,6 @@ export default Header;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // backgroundColor: "#000000",
   },
   headerContainer: {
     backgroundColor: Colors.background.elevated,
@@ -54,7 +57,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: Colors.background.surface,
     paddingLeft: 15,
-    // color: "#FFFFFF",
   },
   iconContainer: {
     padding: 5,

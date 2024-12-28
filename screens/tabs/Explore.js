@@ -2,47 +2,21 @@ import React, { useState, useEffect } from "react";
 import { View, TextInput, Pressable, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
-import { Ionicons } from "@expo/vector-icons";
 import Colors from "../../src/constants/Colors";
 import EventCard from "../../components/ui/EventCard";
-import TabBar from "../../components/ui/HomeTabBar";
-import BottomNavigation from "../../components/ui/BottomNavigation";
 import RefreshableScrollView from "../../components/RefreshableScrollView";
 import { useDispatch, useSelector } from "react-redux";
 import { showEvents } from "../../API/action/event";
 import * as actionType from "../../API/actionTypes";
+import Header from "../../components/Header";
 
-const Header = ({ onPress, searchText, onSearchChange }) => {
-  return (
-    <View style={[styles.headerContainer, { paddingBottom: 10 }]}>
-      <View style={styles.searchBarContainer}>
-        <TextInput
-          style={styles.searchbar}
-          placeholder="Search"
-          placeholderTextColor="#FFFFFF"
-          value={searchText}
-          onChangeText={onSearchChange}
-        />
-        <Pressable style={styles.iconContainer} onPress={onPress}>
-          <Ionicons
-            name="person-outline"
-            size={28}
-            color={Colors.accent.primary}
-          />
-        </Pressable>
-      </View>
-      <TabBar />
-      <BottomNavigation />
-    </View>
-  );
-};
 
 import { back } from "../../assets/eventplaceholder.png";
 
 export default function Explore() {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
-  const [searchText, setSearchText] = useState(""); // New state for search input
+  const [searchText, setSearchText] = useState(""); 
 
   const allEvents = useSelector((state) => state.event);
 

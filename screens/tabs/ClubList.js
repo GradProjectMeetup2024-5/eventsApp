@@ -18,19 +18,6 @@ function ClubList() {
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
-  // useEffect(() => {
-  //   const fetchClubs = async () => {
-  //     try {
-  //       await dispatch(allClubs());
-  //     } catch (error) {
-  //       console.error("Failed to fetch clubs:", error);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-
-  //   fetchClubs();
-  // }, [dispatch]);
 
   const fetchClubs = async () => {
     setLoading(true); // Set loading to true
