@@ -43,3 +43,8 @@ export const findOneClub =(id)=>API.get(`/club/${id}`)
 // Club Events
 export const showClubEvents =(clubId)=>API.get(`/club-event/${clubId}`)
 
+// Comment
+export const createComment =(clubId,formData)=>API.post(`/comment/${clubId}`,formData)
+export const showComments =(clubId)=>API.get(`/comment/${clubId}`)
+export const deleteComment =(commentId)=>API.delete(`/comment/${commentId}`)
+export const updateComment =(commentId,formData)=>API.patch(`/comment/${commentId}`,formData)

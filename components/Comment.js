@@ -2,16 +2,16 @@ import { View, Text, StyleSheet } from "react-native";
 
 import Colors from "../src/constants/Colors";
 
-function Comment({ text }) {
+function Comment({ text, creatorName, createdAt }) {
   return (
     <View style={styles.container}>
       <View style={styles.commentInfo}>
         <View style={styles.userContainer}>
           <View style={styles.placeholderPFP} />
-          <Text style={styles.userName}>Abdalla Wohoush</Text>
+          <Text style={styles.userName}>{creatorName}</Text>
           {/*should add a character limit here at some point */}
         </View>
-        <Text style={styles.commentDate}>Yesterday at 22:22 PM</Text>
+        <Text style={styles.commentDate}>{createdAt}</Text>
         {/*need to figure out what time format to use*/}
         {/*examples: Today at 2:34 PM, Yesterday at 9:33 AM, 2 Days ago, 3 Weeks ago*/}
       </View>

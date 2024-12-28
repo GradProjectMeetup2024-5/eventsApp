@@ -1,134 +1,92 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { View, Text, StyleSheet, Pressable, TextInput } from "react-native";
-
 import Colors from "../src/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
-
 import Comment from "./Comment";
+import { showComments, createComment } from "../API/action/comment";
 
 function CommentSection({ eventId }) {
-  const [inputCommentText, setInputCommentText] = useState("");
-  const [placeholderCommentState] = useState(false);
-  const [tempComments, setTempComments] = useState([
-    "Wait where is this again?",
-    "Looking forward to it!",
-    "Can't wait to see everyone there!",
-    "Great event!",
-    "What time does it start?",
-    "Had an amazing time!",
-  ]);
-  const [visibleComments, setVisibleComments] = useState(3);
+  const dispatch = useDispatch();
+  const comments = useSelector((state) => state.commentReducer || []); 
 
+  const [inputCommentText, setInputCommentText] = useState("");
+  const [visibleComments, setVisibleComments] = useState(3);
+  useEffect(() => {
+    dispatch(showComments(eventId));
+  }, [dispatch, eventId]);
+
+  const data = {
+    text:inputCommentText,
+  }
   const handleSend = () => {
-    if (inputCommentText.trim()) {
-      // Place submit logic here, Firas.
-      if (inputCommentText.trim()) {
-        setTempComments((prevComments) => [...prevComments, inputCommentText]);
-        setInputCommentText("");
-      }
-      console.log("Comment submitted: ", inputCommentText);
+
+      dispatch(createComment(eventId, data));
       setInputCommentText("");
-    }
+    
   };
 
   const handleSeeMore = () => {
     setVisibleComments((prev) => prev + 3);
   };
 
-  function handleCommentTextInput(input) {
-    setInputCommentText(input);
-  }
   return (
     <View style={styles.commentsContainer}>
-      <View
-        style={[
-          styles.commentsCard,
-          { minHeight: tempComments !== 0 ? 200 : 215 },
-        ]}
-      >
+      <View style={styles.commentsCard}>
         <View style={styles.commentsTitleContainer}>
           <View style={styles.commentsTitle}>
             <View style={styles.commentsIconContainer}>
-              <Ionicons
-                name="chatbubble"
-                size={24}
-                style={{
-                  transform: [{ scaleX: -1 }],
-                  alignSelf: "center",
-                }}
-                color={Colors.gray.dark}
-              />
+              <Ionicons name="chatbubble" size={24} color={Colors.gray.dark} />
             </View>
             <Text style={styles.commentsTitleText}>Comments</Text>
           </View>
         </View>
         <View style={styles.commentInputContainer}>
-          <View style={styles.placeholderPFP}>
-            {/*Profile picture goes here*/}
-          </View>
-
           <TextInput
-            style={[styles.commentInput, {}]}
+            style={styles.commentInput}
             placeholder="Add Comment"
-            keyboardType="default"
-            placeholderTextColor={Colors.gray.medium}
             value={inputCommentText}
-            onChangeText={handleCommentTextInput}
+            onChangeText={setInputCommentText}
             multiline={true}
             maxLength={180}
             onSubmitEditing={handleSend}
-            submitBehavior="submit"
           />
           <Pressable onPress={handleSend} disabled={!inputCommentText.trim()}>
-            <View
-              style={[
-                styles.sendButton,
-                inputCommentText.trim() && {
-                  backgroundColor: Colors.accent.secondary,
-                },
-              ]}
-            >
+            <View style={[styles.sendButton, inputCommentText.trim() && { backgroundColor: Colors.accent.secondary }]}>
               <Text style={styles.sendButtonText}>Send</Text>
             </View>
           </Pressable>
         </View>
         <View style={styles.comments}>
-          {tempComments
-            .slice()
-            .reverse()
-            .slice(0, visibleComments)
-            .map((comment, index) => (
-              <Comment key={tempComments.length - 1 - index} text={comment} />
-            ))}
+        {
+            Array.isArray(comments) && comments.length > 0 ? (
+              comments.map((comment, index) => (
+                <Comment
+                  key={index}
+                  text={comment?.text}
+                  creatorName={comment?.creatorName}
+                  createdAt={comment?.createdAt}
+                />
+              ))
+            ) : (
+              <View style={styles.emptyComments}>
+                <Text>No comments yet. Be the first!</Text>
+                <Ionicons name="happy-outline" size={30} color={Colors.background.subtle} />
+              </View>
+            )
+          }
         </View>
-        {tempComments.length > visibleComments && (
+        {comments?.length > visibleComments && (
           <Pressable onPress={handleSeeMore} style={styles.seeMoreButton}>
             <Text style={styles.seeMoreText}>See More</Text>
-            <Ionicons
-              name="arrow-down-outline"
-              size={24}
-              color={Colors.accent.secondary}
-            />
+            <Ionicons name="arrow-down-outline" size={24} color={Colors.accent.secondary} />
           </Pressable>
-        )}
-
-        {tempComments.length === 0 && (
-          <View style={styles.emptyComments}>
-            <Text style={styles.noCommentsText}>
-              No one has left a comment yet, why not be the first?
-            </Text>
-            <Ionicons
-              name="happy-outline"
-              size={30}
-              color={Colors.background.subtle}
-            />
-          </View>
         )}
       </View>
     </View>
+
   );
 }
-
 export default CommentSection;
 
 const styles = StyleSheet.create({

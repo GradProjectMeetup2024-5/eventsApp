@@ -228,7 +228,9 @@ function EventDetails() {
         </View>
 
         {/* COMMENTS SECTION */}
-        <CommentSection />
+        <CommentSection 
+        eventId={eventId}
+        />
       </RefreshableScrollView>
       <EventDetailsFooter />
     </SafeAreaView>
