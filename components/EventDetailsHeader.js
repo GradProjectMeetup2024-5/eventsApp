@@ -41,14 +41,14 @@ function EventDetailsHeader() {
             style={styles.icons}
           />
         </Pressable>
-        <Pressable onPress={toggleAttending}>
+        {/* <Pressable onPress={toggleAttending}>
           <Ionicons
             name={isAttending ? "add-circle" : "add-circle-outline"}
             color={isAttending ? Colors.accent.secondary : Colors.gray.light}
             size={33}
             style={styles.icons}
           />
-        </Pressable>
+        </Pressable> */}
       </View>
     </View>
   );

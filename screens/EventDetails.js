@@ -90,7 +90,7 @@ function EventDetails() {
     <SafeAreaView style={styles.container}>
       <EventDetailsHeader />
       <RefreshableScrollView
-        style={[{ paddingBottom: 50, alignItems: "center" }]}
+        style={[{ paddingBottom: 60, alignItems: "center" }]}
         onRefresh={fetchStatus}
       >
         <View style={styles.imagesContainer}></View>
