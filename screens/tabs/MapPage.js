@@ -19,7 +19,7 @@ const App = () => {
       longitude: 35.90039,
       title: "First Marker",
       description: "This is the first marker description.",
-      icon: require("../../assets/map/marker-1.png"),
+      // icon: require("../../assets/map/marker-1.png"),
     },
     {
       id: 2,
@@ -27,7 +27,7 @@ const App = () => {
       longitude: 35.90539,
       title: "Second Marker",
       description: "This is the second marker description.",
-      icon: require("../../assets/map/marker-2.png"),
+      // icon: require("../../assets/map/marker-2.png"),
     },
   ];
 
@@ -58,7 +58,7 @@ const App = () => {
               }}
               title={marker.title}
               description={marker.description}
-              icon={marker.icon}
+              // icon={marker.icon}
               draggable
               onDragEnd={(e) =>
                 alert(
