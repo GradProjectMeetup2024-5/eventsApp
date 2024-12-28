@@ -15,7 +15,9 @@ import EventCard from "../../components/ui/EventCard";
 import * as actionType from "../../API/actionTypes";
 
 import Colors from "../../src/constants/Colors";
-import AttendingHeader from "../../components/AttendingHeader";
+import SubSectionHeader from "../../components/SubSectionHeader";
+import RefreshableScrollView from "../../components/RefreshableScrollView";
+import { back } from "../../assets/eventplaceholder.png";
 
 function AttendingPage() {
   const dispatch = useDispatch();
@@ -33,68 +35,87 @@ function AttendingPage() {
     return () => clearTimeout(timer);
   }, []);
 
-  const handleSectionSelect = (section) => {
-    setSelected(section);
-  };
+  // const handleSectionSelect = (section) => {
+  //   setSelected(section);
+  // };
 
-  const [oneIsSelected, setOneIsSelected] = useState(true);
+  const one = "Attending";
+  const two = "My Events";
+  const [selector, setSelector] = useState(one);
 
-  function handlePressOne() {
-    setOneIsSelected(true);
+  function handlePressAttending() {
+    setSelector(one);
   }
-  function handlePressTwo() {
-    setOneIsSelected(false);
+  function handlePressMyEvents() {
+    setSelector(two);
   }
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <AttendingHeader
-        oneIsSelected={oneIsSelected}
-        handlePressOne={handlePressOne}
-        handlePressTwo={handlePressTwo}
+    <SafeAreaView style={styles.safeArea}>
+      <SubSectionHeader
+        selected={selector}
+        handlePressOne={handlePressAttending}
+        handlePressTwo={handlePressMyEvents}
+        one={one}
+        two={two}
+        title="Attending"
       />
       <ScrollView style={styles.container}>
         {/*turn this into a flatlist*/}
 
         {
-          !oneIsSelected ? (
-            events?.length > 0 ? (
-              <ScrollView contentContainerStyle={{ padding: 16 }}>
-                {events.map((event, index) => (
-                  <View key={index} style={{ marginBottom: 16 }}>
-                    <EventCard
-                      eventName={event.event_name}
-                      eventDescription={event.event_desc}
-                    />
-                  </View>
-                ))}
-              </ScrollView>
-            ) : (
-              <ScrollView contentContainerStyle={styles.content}>
-                <View style={styles.emptyState}>
-                  <PlaceHolderIcon />
-                  <Text style={styles.emptyStateTitle}>
-                    No Events Scheduled
-                  </Text>
-                  <Text style={styles.emptyStateDescription}>
-                    You don't have any listed events.
-                  </Text>
+          selector === one ? null : events?.length > 0 ? ( // MY EVENTS SUB-SECTION
+            <ScrollView contentContainerStyle={{ padding: 16 }}>
+              {events.map((event, index) => (
+                <View key={index} style={{ marginBottom: 16 }}>
+                  <EventCard
+                    eventName={event?.event_name}
+                    eventDate={event?.event_date}
+                    eventLocation={event?.event_desc}
+                    eventOrganizer={event?.userId}
+                    eventImage={back}
+                    profileImageSource={back}
+                    textColor="#FFFFFF"
+                    onPress={() =>
+                      navigation.navigate("EventDetails", {
+                        eventId: event?.id,
+                        creatorName: event?.createrName,
+                        eventName: event?.event_name,
+                        eventDate: event?.event_date,
+                        floor: event?.floor,
+                        room: event?.room,
+                        about: event?.event_desc,
+                        image: event?.image,
+                        faculty: event?.faculty,
+                        joinedUsers: event?.joined_users,
+                      })
+                    }
+                  />
                 </View>
-              </ScrollView>
-            )
-          ) : null
+              ))}
+            </ScrollView>
+          ) : (
+            <ScrollView contentContainerStyle={styles.content}>
+              <View style={styles.emptyState}>
+                <PlaceHolderIcon />
+                <Text style={styles.emptyStateTitle}>No Events Scheduled</Text>
+                <Text style={styles.emptyStateDescription}>
+                  You don't have any listed events.
+                </Text>
+              </View>
+            </ScrollView>
+          )
           // this is where attending page rendering goes
         }
 
-        {/*
-         <View style={styles.footer}>
-        <Pressable
-          style={styles.button}
-          onPress={() => navigation.navigate('Home')}
-        >
-          <Text style={styles.buttonText}>Browse</Text>
-        </Pressable>
-      </View> */}
+        {/* <View style={styles.footer}>
+          <Pressable
+            style={styles.button}
+            onPress={() => navigation.navigate("Explore")}
+          >
+            <Text style={styles.buttonText}>Browse</Text>
+          </Pressable>
+        </View> */}
       </ScrollView>
     </SafeAreaView>
   );
@@ -102,9 +123,12 @@ function AttendingPage() {
 export default AttendingPage;
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: Colors.background.base,
+  },
   container: {
     flex: 1,
-    backgroundColor: "#000000",
     paddingBottom: 80,
     backgroundColor: Colors.background.base,
   },

@@ -41,14 +41,13 @@ export default function Profile({ navigation }) {
     navigation.navigate("Profile", { screen: "SignUp" });
   }
 
-  function handleBackToHome() {
-    navigation.navigate("Explore");
-  }
-
+  const goBack = () => {
+    navigation.goBack();
+  };
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
-        <Pressable onPress={handleBackToHome} style={styles.backButton}>
+        <Pressable onPress={goBack} style={styles.backButton}>
           <Ionicons name="arrow-back" size={24} color="#FFFFFF" />
           <Text style={styles.backButtonText}>Profile</Text>
         </Pressable>

@@ -1,7 +1,11 @@
 import { View, Image, Text, StyleSheet } from "react-native";
 import Colors from "../src/constants/Colors";
 
-function AttendeePictures({ attendees = [], enableAttendeeCount = false }) {
+function AttendeePictures({
+  attendees = [],
+  enableAttendeeCount = false,
+  pageType = null,
+}) {
   const imageWidth = 34;
   const overlap = 12;
   const totalWidth =
@@ -53,7 +57,19 @@ function AttendeePictures({ attendees = [], enableAttendeeCount = false }) {
               { left: 3 * (imageWidth - overlap), zIndex: 0 },
             ]}
           >
-            <Text style={styles.circlePlus}>+</Text>
+            <Text
+              style={[
+                styles.circlePlus,
+                {
+                  color:
+                    pageType == "History"
+                      ? Colors.gray.medium
+                      : Colors.accent.secondary,
+                },
+              ]}
+            >
+              +
+            </Text>
           </View>
         )}
       </View>
@@ -96,7 +112,6 @@ const styles = StyleSheet.create({
   circlePlus: {
     fontSize: 16,
     fontWeight: 600,
-    color: Colors.accent.secondary,
   },
   attendeeCount: {
     fontSize: 15,

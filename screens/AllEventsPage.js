@@ -1,17 +1,191 @@
+import { useState, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { StyleSheet } from "react-native";
-
+import { View, Text, ScrollView, StyleSheet } from "react-native";
 import Colors from "../src/constants/Colors";
+import SubSectionHeader from "../components/SubSectionHeader";
+import AltEventCard from "../components/AltEventCard";
+import { groupEventsByMonth } from "../utils/groupEventsByMonth";
+import moment from "moment";
+
+const dummyEvents = [
+  {
+    id: 1,
+    event_name: "Event 1",
+    faculty: "Faculty 1",
+    floor: "Floor 1",
+    room: "Room 1",
+    image: "https://via.placeholder.com/150",
+    event_date: "2023-01-15",
+  },
+  {
+    id: 2,
+    event_name: "Event 2",
+    faculty: "Faculty 2",
+    floor: "Floor 2",
+    room: "Room 2",
+    image: "https://via.placeholder.com/150",
+    event_date: "2023-01-20",
+  },
+  {
+    id: 3,
+    event_name: "Event 3",
+    faculty: "Faculty 3",
+    floor: "Floor 3",
+    room: "Room 3",
+    image: "https://via.placeholder.com/150",
+    event_date: "2023-02-10",
+  },
+  {
+    id: 4,
+    event_name: "Event 4",
+    faculty: "Faculty 1",
+    floor: "Floor 1",
+    room: "Room 1",
+    image: "https://via.placeholder.com/150",
+    event_date: "2024-11-15",
+  },
+  {
+    id: 5,
+    event_name: "Event 5",
+    faculty: "Faculty 2",
+    floor: "Floor 2",
+    room: "Room 2",
+    image: "https://via.placeholder.com/150",
+    event_date: "2024-12-20",
+  },
+  {
+    id: 6,
+    event_name: "Event 6",
+    faculty: "Faculty 3",
+    floor: "Floor 3",
+    room: "Room 3",
+    image: "https://via.placeholder.com/150",
+    event_date: "2025-01-10",
+  },
+  {
+    id: 7,
+    event_name: "Event 7",
+    faculty: "Faculty 4",
+    floor: "Floor 4",
+    room: "Room 4",
+    image: "https://via.placeholder.com/150",
+    event_date: "2025-01-12",
+  },
+  {
+    id: 8,
+    event_name: "Event 8",
+    faculty: "Faculty 5",
+    floor: "Floor 5",
+    room: "Room 5",
+    image: "https://via.placeholder.com/150",
+    event_date: "2025-02-01",
+  },
+];
 
 function AllEventsPage() {
-  return <SafeAreaView style={styles.container}></SafeAreaView>;
+  const one = "Upcoming";
+  const two = "History";
+  const [selector, setSelector] = useState(one);
+  const [groupedEvents, setGroupedEvents] = useState({});
+
+  useEffect(() => {
+    const now = moment();
+    let filteredEvents;
+
+    if (selector === one) {
+      filteredEvents = dummyEvents.filter((event) =>
+        moment(event.event_date).isAfter(now)
+      );
+    } else {
+      filteredEvents = dummyEvents
+        .filter((event) => moment(event.event_date).isBefore(now))
+        .sort((a, b) => moment(b.event_date) - moment(a.event_date));
+    }
+
+    const grouped = groupEventsByMonth(filteredEvents);
+    setGroupedEvents(grouped);
+  }, [selector]);
+
+  function handlePressAttending() {
+    setSelector(one);
+  }
+  function handlePressMyEvents() {
+    setSelector(two);
+  }
+
+  return (
+    <SafeAreaView style={styles.safeArea}>
+      <SubSectionHeader
+        selected={selector}
+        handlePressOne={handlePressAttending}
+        handlePressTwo={handlePressMyEvents}
+        one={one}
+        two={two}
+        title="All Events"
+        backButton={true}
+      />
+      <ScrollView
+        contentContainerStyle={styles.container}
+        overScrollMode="never"
+      >
+        {Object.keys(groupedEvents).map((month) => (
+          <View key={month}>
+            <View style={styles.dateContainer}>
+              <Text
+                style={[
+                  styles.date,
+                  {
+                    color:
+                      selector === one
+                        ? Colors.accent.secondary
+                        : Colors.gray.light,
+                  },
+                ]}
+              >
+                {month}
+              </Text>
+            </View>
+            {groupedEvents[month].map((event) => (
+              <AltEventCard
+                key={event.id}
+                eventName={event.event_name}
+                faculty={event.faculty}
+                floor={event.floor}
+                room={event.room}
+                image={event.image}
+                eventDate={event.event_date}
+                eventId={event.id}
+                onPress={() => console.log(`Event ${event.id} pressed`)}
+                style={{ marginBottom: 12 }}
+                pageType={selector}
+              />
+            ))}
+          </View>
+        ))}
+      </ScrollView>
+    </SafeAreaView>
+  );
 }
 
 export default AllEventsPage;
 
 const styles = StyleSheet.create({
-  container: {
+  safeArea: {
     flex: 1,
     backgroundColor: Colors.background.base,
+  },
+  container: {
+    marginTop: 10,
+    paddingBottom: 20,
+    backgroundColor: Colors.background.base,
+  },
+  dateContainer: {
+    marginBottom: 12,
+    marginTop: 14,
+    marginLeft: 15,
+  },
+  date: {
+    fontSize: 23,
+    fontWeight: "500",
   },
 });
