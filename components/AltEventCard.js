@@ -14,9 +14,11 @@ function AltEventCard({
   image,
   eventDate,
   eventId,
+  style,
+  pageType = null,
 }) {
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, style]}>
       <Shadow
         sides={{ bottom: true, top: false, start: false, end: true }}
         corners={{
@@ -33,7 +35,19 @@ function AltEventCard({
         <Pressable style={styles.card} onPress={onPress}>
           <View style={styles.cardInfo}>
             <Text style={styles.time}>{eventDate}</Text>
-            <Text style={styles.title}>{eventName}</Text>
+            <Text
+              style={[
+                styles.title,
+                {
+                  color:
+                    pageType == "History"
+                      ? Colors.gray.muted
+                      : Colors.accent.primary,
+                },
+              ]}
+            >
+              {eventName}
+            </Text>
             <View style={styles.location}>
               <Ionicons
                 name="location-outline"
@@ -56,6 +70,7 @@ function AltEventCard({
               "https://picsum.photos/100/100",
             ]}
             enableAttendeeCount={true}
+            pageType={pageType}
           />
         </Pressable>
       </Shadow>
@@ -89,7 +104,6 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 24,
-    color: Colors.accent.primary,
   },
   location: {
     flexDirection: "row",
