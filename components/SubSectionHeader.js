@@ -53,7 +53,7 @@ function SubSectionHeader({
               backgroundColor:
                 selected === one
                   ? Colors.background.surface
-                  : Colors.background.muted,
+                  : Colors.gray.darkest,
             },
           ]}
           onPress={handlePressOne}
@@ -67,7 +67,7 @@ function SubSectionHeader({
               backgroundColor:
                 selected === two
                   ? Colors.background.surface
-                  : Colors.background.muted,
+                  : Colors.gray.darkest,
             },
           ]}
           onPress={handlePressTwo}

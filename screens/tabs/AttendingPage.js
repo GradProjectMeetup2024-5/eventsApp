@@ -35,10 +35,6 @@ function AttendingPage() {
     return () => clearTimeout(timer);
   }, []);
 
-  // const handleSectionSelect = (section) => {
-  //   setSelected(section);
-  // };
-
   const one = "Attending";
   const two = "My Events";
   const [selector, setSelector] = useState(one);
@@ -107,15 +103,6 @@ function AttendingPage() {
           )
           // this is where attending page rendering goes
         }
-
-        {/* <View style={styles.footer}>
-          <Pressable
-            style={styles.button}
-            onPress={() => navigation.navigate("Explore")}
-          >
-            <Text style={styles.buttonText}>Browse</Text>
-          </Pressable>
-        </View> */}
       </ScrollView>
     </SafeAreaView>
   );
