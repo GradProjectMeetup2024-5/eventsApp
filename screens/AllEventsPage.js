@@ -1,98 +1,96 @@
 import { useState, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { View, Text, Pressable, ScrollView, StyleSheet } from "react-native";
-import { useNavigation } from "@react-navigation/native";
 
 import Colors from "../src/constants/Colors";
 import SubSectionHeader from "../components/SubSectionHeader";
 import AltEventCard from "../components/AltEventCard";
-import { Ionicons } from "@expo/vector-icons";
+import NoEvents from "../components/NoEvents";
 
 import { groupEventsByMonth } from "../utils/groupEventsByMonth";
 import moment from "moment";
 
 const dummyEvents = [
-  // {
-  //   id: 1,
-  //   event_name: "Event 1",
-  //   faculty: "Faculty 1",
-  //   floor: "Floor 1",
-  //   room: "Room 1",
-  //   image: "https://via.placeholder.com/150",
-  //   event_date: "2023-01-15",
-  // },
-  // {
-  //   id: 2,
-  //   event_name: "Event 2",
-  //   faculty: "Faculty 2",
-  //   floor: "Floor 2",
-  //   room: "Room 2",
-  //   image: "https://via.placeholder.com/150",
-  //   event_date: "2023-01-20",
-  // },
-  // {
-  //   id: 3,
-  //   event_name: "Event 3",
-  //   faculty: "Faculty 3",
-  //   floor: "Floor 3",
-  //   room: "Room 3",
-  //   image: "https://via.placeholder.com/150",
-  //   event_date: "2023-02-10",
-  // },
-  // {
-  //   id: 4,
-  //   event_name: "Event 4",
-  //   faculty: "Faculty 1",
-  //   floor: "Floor 1",
-  //   room: "Room 1",
-  //   image: "https://via.placeholder.com/150",
-  //   event_date: "2024-11-15",
-  // },
-  // {
-  //   id: 5,
-  //   event_name: "Event 5",
-  //   faculty: "Faculty 2",
-  //   floor: "Floor 2",
-  //   room: "Room 2",
-  //   image: "https://via.placeholder.com/150",
-  //   event_date: "2024-12-20",
-  // },
-  // {
-  //   id: 6,
-  //   event_name: "Event 6",
-  //   faculty: "Faculty 3",
-  //   floor: "Floor 3",
-  //   room: "Room 3",
-  //   image: "https://via.placeholder.com/150",
-  //   event_date: "2025-01-10",
-  // },
-  // {
-  //   id: 7,
-  //   event_name: "Event 7",
-  //   faculty: "Faculty 4",
-  //   floor: "Floor 4",
-  //   room: "Room 4",
-  //   image: "https://via.placeholder.com/150",
-  //   event_date: "2025-01-12",
-  // },
-  // {
-  //   id: 8,
-  //   event_name: "Event 8",
-  //   faculty: "Faculty 5",
-  //   floor: "Floor 5",
-  //   room: "Room 5",
-  //   image: "https://via.placeholder.com/150",
-  //   event_date: "2025-02-01",
-  // },
+  {
+    id: 1,
+    event_name: "Event 1",
+    faculty: "Faculty 1",
+    floor: "Floor 1",
+    room: "Room 1",
+    image: "https://via.placeholder.com/150",
+    event_date: "2023-01-15",
+  },
+  {
+    id: 2,
+    event_name: "Event 2",
+    faculty: "Faculty 2",
+    floor: "Floor 2",
+    room: "Room 2",
+    image: "https://via.placeholder.com/150",
+    event_date: "2023-01-20",
+  },
+  {
+    id: 3,
+    event_name: "Event 3",
+    faculty: "Faculty 3",
+    floor: "Floor 3",
+    room: "Room 3",
+    image: "https://via.placeholder.com/150",
+    event_date: "2023-02-10",
+  },
+  {
+    id: 4,
+    event_name: "Event 4",
+    faculty: "Faculty 1",
+    floor: "Floor 1",
+    room: "Room 1",
+    image: "https://via.placeholder.com/150",
+    event_date: "2024-11-15",
+  },
+  {
+    id: 5,
+    event_name: "Event 5",
+    faculty: "Faculty 2",
+    floor: "Floor 2",
+    room: "Room 2",
+    image: "https://via.placeholder.com/150",
+    event_date: "2024-12-20",
+  },
+  {
+    id: 6,
+    event_name: "Event 6",
+    faculty: "Faculty 3",
+    floor: "Floor 3",
+    room: "Room 3",
+    image: "https://via.placeholder.com/150",
+    event_date: "2025-01-10",
+  },
+  {
+    id: 7,
+    event_name: "Event 7",
+    faculty: "Faculty 4",
+    floor: "Floor 4",
+    room: "Room 4",
+    image: "https://via.placeholder.com/150",
+    event_date: "2025-01-12",
+  },
+  {
+    id: 8,
+    event_name: "Event 8",
+    faculty: "Faculty 5",
+    floor: "Floor 5",
+    room: "Room 5",
+    image: "https://via.placeholder.com/150",
+    event_date: "2025-02-01",
+  },
 ];
 
 function AllEventsPage() {
-  const navigation = useNavigation();
+  // const navigation = useNavigation();
 
   const one = "Upcoming";
   const two = "History";
   const [selector, setSelector] = useState(one);
-  // const [groupedEvents, setGroupedEvents] = useState({});
   const [upcomingEvents, setUpcomingEvents] = useState({});
   const [historyEvents, setHistoryEvents] = useState({});
 
@@ -137,25 +135,14 @@ function AllEventsPage() {
         backButton={true}
       />
       {Object.keys(groupedEvents).length === 0 ? (
-        <View style={styles.noEventContainer}>
-          <View style={styles.noEventIconContainer}>
-            <Ionicons
-              name={noEventsIcon}
-              size={120}
-              color={Colors.accent.secondary}
-            />
-          </View>
-          <Text style={styles.noEventText}>{noEventsMessage}</Text>
-          <View style={styles.exploreButtonContainer}>
-            <Pressable
-              style={styles.exploreButton}
-              onPress={() => navigation.navigate("Explore")}
-            >
-              <Text style={styles.exploreButtonText}>Find Events</Text>
-            </Pressable>
-          </View>
-        </View>
+        <NoEvents
+          icon={noEventsIcon}
+          message={noEventsMessage}
+          location="Explore"
+          buttonText="Find Events"
+        />
       ) : (
+        // turn this into a flatlist
         <ScrollView
           contentContainerStyle={styles.container}
           overScrollMode="never"

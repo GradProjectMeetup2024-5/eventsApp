@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
-import PlaceHolderIcon from "../../components/ui/PlaceHolderIcon";
-import { useNavigation } from "@react-navigation/native";
 
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -10,21 +8,113 @@ import {
   myJoinedEvents,
   showMyCreatedEvents,
 } from "../../API/action/eventUser";
+import { groupEventsByMonth } from "../../utils/groupEventsByMonth";
+import moment from "moment";
 
-import EventCard from "../../components/ui/EventCard";
+// import EventCard from "../../components/ui/EventCard";
 import * as actionType from "../../API/actionTypes";
 
 import Colors from "../../src/constants/Colors";
 import SubSectionHeader from "../../components/SubSectionHeader";
-import RefreshableScrollView from "../../components/RefreshableScrollView";
-import { back } from "../../assets/eventplaceholder.png";
+// import { back } from "../../assets/eventplaceholder.png";
+import AltEventCard from "../../components/AltEventCard";
+import NoEvents from "../../components/NoEvents";
+
+const dummyEvents = [
+  {
+    id: 1,
+    event_name: "Event 6",
+    faculty: "Faculty 3",
+    floor: "Floor 3",
+    room: "Room 3",
+    image: "https://via.placeholder.com/150",
+    event_date: "2025-02-10",
+  },
+  {
+    id: 2,
+    event_name: "Event 7",
+    faculty: "Faculty 4",
+    floor: "Floor 4",
+    room: "Room 4",
+    image: "https://via.placeholder.com/150",
+    event_date: "2025-02-12",
+  },
+  {
+    id: 3,
+    event_name: "Event 8",
+    faculty: "Faculty 5",
+    floor: "Floor 5",
+    room: "Room 5",
+    image: "https://via.placeholder.com/150",
+    event_date: "2025-02-15",
+  },
+  {
+    id: 4,
+    event_name: "Event 6",
+    faculty: "Faculty 3",
+    floor: "Floor 3",
+    room: "Room 3",
+    image: "https://via.placeholder.com/150",
+    event_date: "2025-03-10",
+  },
+  {
+    id: 5,
+    event_name: "Event 7",
+    faculty: "Faculty 4",
+    floor: "Floor 4",
+    room: "Room 4",
+    image: "https://via.placeholder.com/150",
+    event_date: "2025-03-12",
+  },
+  {
+    id: 6,
+    event_name: "Event 8",
+    faculty: "Faculty 5",
+    floor: "Floor 5",
+    room: "Room 5",
+    image: "https://via.placeholder.com/150",
+    event_date: "2025-03-15",
+  },
+  {
+    id: 7,
+    event_name: "Event 6",
+    faculty: "Faculty 3",
+    floor: "Floor 3",
+    room: "Room 3",
+    image: "https://via.placeholder.com/150",
+    event_date: "2025-03-10",
+  },
+  {
+    id: 8,
+    event_name: "Event 7",
+    faculty: "Faculty 4",
+    floor: "Floor 4",
+    room: "Room 4",
+    image: "https://via.placeholder.com/150",
+    event_date: "2025-03-10",
+  },
+  {
+    id: 9,
+    event_name: "Event 8",
+    faculty: "Faculty 5",
+    floor: "Floor 5",
+    room: "Room 5",
+    image: "https://via.placeholder.com/150",
+    event_date: "2025-04-15",
+  },
+];
 
 function AttendingPage() {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
   const events = useSelector((state) => state.eventUser);
-  const navigation = useNavigation();
-  // console.log(events)
+  const [groupedEvents, setGroupedEvents] = useState({});
+
+  useEffect(() => {
+    const grouped = groupEventsByMonth(dummyEvents);
+    setGroupedEvents(grouped);
+  }, []);
+
   useEffect(() => {
     const timer = setTimeout(() => {
       dispatch(myJoinedEvents({ type: actionType.MY_JOINED_EVENTS }));
@@ -56,54 +146,46 @@ function AttendingPage() {
         two={two}
         title="Attending"
       />
-      <ScrollView style={styles.container}>
-        {/*turn this into a flatlist*/}
-
-        {
-          selector === one ? null : events?.length > 0 ? ( // MY EVENTS SUB-SECTION
-            <ScrollView contentContainerStyle={{ padding: 16 }}>
-              {events.map((event, index) => (
-                <View key={index} style={{ marginBottom: 16 }}>
-                  <EventCard
-                    eventName={event?.event_name}
-                    eventDate={event?.event_date}
-                    eventLocation={event?.event_desc}
-                    eventOrganizer={event?.userId}
-                    eventImage={back}
-                    profileImageSource={back}
-                    textColor="#FFFFFF"
-                    onPress={() =>
-                      navigation.navigate("EventDetails", {
-                        eventId: event?.id,
-                        creatorName: event?.createrName,
-                        eventName: event?.event_name,
-                        eventDate: event?.event_date,
-                        floor: event?.floor,
-                        room: event?.room,
-                        about: event?.event_desc,
-                        image: event?.image,
-                        faculty: event?.faculty,
-                        joinedUsers: event?.joined_users,
-                      })
-                    }
-                  />
+      {selector === one ? (
+        Object.keys(groupedEvents).length === 0 ? (
+          <NoEvents
+            icon="rocket"
+            message="You haven't joined any events yet, time to find something exciting!"
+            location="Explore"
+            buttonText="Find Events"
+          />
+        ) : (
+          <ScrollView
+            contentContainerStyle={styles.container}
+            overScrollMode="never"
+          >
+            {Object.keys(groupedEvents).map((month) => (
+              <View key={month}>
+                <View style={styles.dateContainer}>
+                  <Text style={styles.date}>{month}</Text>
                 </View>
-              ))}
-            </ScrollView>
-          ) : (
-            <ScrollView contentContainerStyle={styles.content}>
-              <View style={styles.emptyState}>
-                <PlaceHolderIcon />
-                <Text style={styles.emptyStateTitle}>No Events Scheduled</Text>
-                <Text style={styles.emptyStateDescription}>
-                  You don't have any listed events.
-                </Text>
+                {groupedEvents[month].map((event) => (
+                  <AltEventCard
+                    key={event.id}
+                    eventName={event.event_name}
+                    faculty={event.faculty}
+                    floor={event.floor}
+                    room={event.room}
+                    image={event.image}
+                    eventDate={event.event_date}
+                    eventId={event.id}
+                    onPress={() => console.log(`Event ${event.id} pressed`)}
+                    style={{ marginBottom: 12 }}
+                    pageType={selector}
+                  />
+                ))}
               </View>
-            </ScrollView>
-          )
-          // this is where attending page rendering goes
-        }
-      </ScrollView>
+            ))}
+          </ScrollView>
+        )
+      ) : (
+        <View></View>
+      )}
     </SafeAreaView>
   );
 }
@@ -115,8 +197,8 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.background.base,
   },
   container: {
-    flex: 1,
-    paddingBottom: 80,
+    marginTop: 10,
+    paddingBottom: 24,
     backgroundColor: Colors.background.base,
   },
   content: {
@@ -163,5 +245,15 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 24,
     color: "#FFFFFF",
+  },
+  dateContainer: {
+    marginBottom: 12,
+    marginTop: 14,
+    marginLeft: 15,
+  },
+  date: {
+    fontSize: 21,
+    fontWeight: "500",
+    color: Colors.accent.secondary,
   },
 });
