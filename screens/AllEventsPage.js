@@ -133,12 +133,7 @@ function AllEventsPage() {
         backButton={true}
       />
       {Object.keys(groupedEvents).length === 0 ? (
-        <NoEvents
-          icon={noEventsIcon}
-          message={noEventsMessage}
-          location="Explore"
-          buttonText="Find Events"
-        />
+        <NoEvents icon={noEventsIcon} message={noEventsMessage} />
       ) : (
         // turn this into a flatlist
         <ScrollView
@@ -205,40 +200,5 @@ const styles = StyleSheet.create({
   date: {
     fontSize: 21,
     fontWeight: "500",
-  },
-  noEventContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  noEventIconContainer: {
-    width: 220,
-    height: 220,
-    borderRadius: 110,
-    marginBottom: 20,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: Colors.background.surface,
-  },
-  noEventText: {
-    fontSize: 14,
-    color: Colors.gray.light,
-    textAlign: "center",
-    lineHeight: 20,
-    width: 300,
-    height: 65,
-    marginBottom: 250,
-  },
-  exploreButtonContainer: {
-    width: 200,
-    height: 40,
-    borderRadius: 8,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: Colors.gray.darkest,
-  },
-  exploreButtonText: {
-    color: Colors.gray.light,
-    fontSize: 13,
   },
 });

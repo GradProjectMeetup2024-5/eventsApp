@@ -95,13 +95,13 @@ function ClubDetails() {
           </Pressable>
         </View>
         <View style={styles.eventScrollView}>
-          <ScrollView
-            horizontal={true}
-            showsHorizontalScrollIndicator={false}
-            overScrollMode="never"
-          >
-            {clubEvent?.length > 0 ? (
-              clubEvent?.map((event) => (
+          {clubEvent?.length < 0 ? (
+            <ScrollView
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+              overScrollMode="never"
+            >
+              {clubEvent?.map((event) => (
                 <AltEventCard
                   key={event?.id}
                   eventDate={event?.event_date}
@@ -123,11 +123,11 @@ function ClubDetails() {
                     })
                   }
                 />
-              ))
-            ) : (
-              <Text> This club has no events</Text>
-            )}
-          </ScrollView>
+              ))}
+            </ScrollView>
+          ) : (
+            <AltEventCard noEvents={true} />
+          )}
         </View>
         {/* ABOUT US SECTION */}
         <View style={[styles.sectionRow, { marginTop: 20, marginBottom: 8 }]}>

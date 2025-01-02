@@ -38,7 +38,8 @@ export default function Profile({ navigation }) {
   async function handleLogOut() {
     console.log("delete");
     await SecureStore.deleteItemAsync("profile");
-    navigation.navigate("Profile", { screen: "SignUp" });
+    dispatch({ type: actionType.LOGOUT });
+    navigation.navigate("LogIn");
   }
 
   const goBack = () => {

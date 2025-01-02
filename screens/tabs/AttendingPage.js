@@ -18,6 +18,7 @@ import Colors from "../../src/constants/Colors";
 import SubSectionHeader from "../../components/Headers/SubSectionHeader";
 // import { back } from "../../assets/eventplaceholder.png";
 import AltEventCard from "../../components/Cards/AltEventCard";
+import EventCard from "../../components/Cards/EventCard";
 import NoEvents from "../../components/NoEvents";
 
 const dummyEvents = [
@@ -48,59 +49,89 @@ const dummyEvents = [
     image: "https://via.placeholder.com/150",
     event_date: "2025-02-15",
   },
+  // {
+  //   id: 4,
+  //   event_name: "Event 6",
+  //   faculty: "Faculty 3",
+  //   floor: "Floor 3",
+  //   room: "Room 3",
+  //   image: "https://via.placeholder.com/150",
+  //   event_date: "2025-03-10",
+  // },
+  // {
+  //   id: 5,
+  //   event_name: "Event 7",
+  //   faculty: "Faculty 4",
+  //   floor: "Floor 4",
+  //   room: "Room 4",
+  //   image: "https://via.placeholder.com/150",
+  //   event_date: "2025-03-12",
+  // },
+  // {
+  //   id: 6,
+  //   event_name: "Event 8",
+  //   faculty: "Faculty 5",
+  //   floor: "Floor 5",
+  //   room: "Room 5",
+  //   image: "https://via.placeholder.com/150",
+  //   event_date: "2025-03-15",
+  // },
+  // {
+  //   id: 7,
+  //   event_name: "Event 6",
+  //   faculty: "Faculty 3",
+  //   floor: "Floor 3",
+  //   room: "Room 3",
+  //   image: "https://via.placeholder.com/150",
+  //   event_date: "2025-03-10",
+  // },
+  // {
+  //   id: 8,
+  //   event_name: "Event 7",
+  //   faculty: "Faculty 4",
+  //   floor: "Floor 4",
+  //   room: "Room 4",
+  //   image: "https://via.placeholder.com/150",
+  //   event_date: "2025-03-10",
+  // },
+  // {
+  //   id: 9,
+  //   event_name: "Event 8",
+  //   faculty: "Faculty 5",
+  //   floor: "Floor 5",
+  //   room: "Room 5",
+  //   image: "https://via.placeholder.com/150",
+  //   event_date: "2025-04-15",
+  // },
+];
+
+const dummyUserEvents = [
   {
-    id: 4,
+    id: 1,
     event_name: "Event 6",
     faculty: "Faculty 3",
     floor: "Floor 3",
     room: "Room 3",
     image: "https://via.placeholder.com/150",
-    event_date: "2025-03-10",
+    event_date: "2025-02-10",
   },
   {
-    id: 5,
-    event_name: "Event 7",
-    faculty: "Faculty 4",
-    floor: "Floor 4",
-    room: "Room 4",
-    image: "https://via.placeholder.com/150",
-    event_date: "2025-03-12",
-  },
-  {
-    id: 6,
-    event_name: "Event 8",
-    faculty: "Faculty 5",
-    floor: "Floor 5",
-    room: "Room 5",
-    image: "https://via.placeholder.com/150",
-    event_date: "2025-03-15",
-  },
-  {
-    id: 7,
+    id: 2,
     event_name: "Event 6",
     faculty: "Faculty 3",
     floor: "Floor 3",
     room: "Room 3",
     image: "https://via.placeholder.com/150",
-    event_date: "2025-03-10",
+    event_date: "2025-02-10",
   },
   {
-    id: 8,
-    event_name: "Event 7",
-    faculty: "Faculty 4",
-    floor: "Floor 4",
-    room: "Room 4",
+    id: 3,
+    event_name: "Event 6",
+    faculty: "Faculty 3",
+    floor: "Floor 3",
+    room: "Room 3",
     image: "https://via.placeholder.com/150",
-    event_date: "2025-03-10",
-  },
-  {
-    id: 9,
-    event_name: "Event 8",
-    faculty: "Faculty 5",
-    floor: "Floor 5",
-    room: "Room 5",
-    image: "https://via.placeholder.com/150",
-    event_date: "2025-04-15",
+    event_date: "2025-02-10",
   },
 ];
 
@@ -136,6 +167,13 @@ function AttendingPage() {
     setSelector(two);
   }
 
+  const noEventsMessage =
+    selector === one
+      ? "You haven't joined any events yet, time to find something exciting!"
+      : "You're not hosting anything right now,\nready to make your mark?";
+
+  const noEventsIcon = selector === one ? "rocket" : "footsteps";
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <SubSectionHeader
@@ -148,12 +186,7 @@ function AttendingPage() {
       />
       {selector === one ? (
         Object.keys(groupedEvents).length === 0 ? (
-          <NoEvents
-            icon="rocket"
-            message="You haven't joined any events yet, time to find something exciting!"
-            location="Explore"
-            buttonText="Find Events"
-          />
+          <NoEvents icon={noEventsIcon} message={noEventsMessage} />
         ) : (
           <ScrollView
             contentContainerStyle={styles.container}
@@ -183,8 +216,34 @@ function AttendingPage() {
             ))}
           </ScrollView>
         )
+      ) : dummyUserEvents.length === 0 ? (
+        <NoEvents
+          icon={noEventsIcon}
+          message={noEventsMessage}
+          location="Create"
+          buttonText="Create Event"
+        />
       ) : (
-        <View></View>
+        <ScrollView
+          contentContainerStyle={[styles.container, { marginTop: 20 }]}
+          overScrollMode="never"
+        >
+          {dummyUserEvents.map((event) => (
+            <View key={event.id} style={styles.eventContainer}>
+              <EventCard
+                eventName={event.event_name}
+                faculty={event.faculty}
+                floor={event.floor}
+                room={event.room}
+                image={event.image}
+                eventDate={event.event_date}
+                eventId={event.id}
+                onPress={() => console.log(`Event ${event.id} pressed`)}
+                style={{ marginBottom: 12 }}
+              />
+            </View>
+          ))}
+        </ScrollView>
       )}
     </SafeAreaView>
   );
@@ -201,11 +260,8 @@ const styles = StyleSheet.create({
     paddingBottom: 24,
     backgroundColor: Colors.background.base,
   },
-  content: {
-    flexGrow: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    padding: 16,
+  eventContainer: {
+    marginBottom: 10,
   },
   emptyState: {
     alignItems: "center",

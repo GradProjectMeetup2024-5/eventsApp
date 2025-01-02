@@ -4,7 +4,12 @@ import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import Colors from "../src/constants/Colors";
 
-function NoEvents({ icon, message, location, buttonText }) {
+function NoEvents({
+  icon,
+  message,
+  location = "Explore",
+  buttonText = "Find Events",
+}) {
   const navigation = useNavigation();
 
   return (
@@ -13,14 +18,14 @@ function NoEvents({ icon, message, location, buttonText }) {
         <Ionicons name={icon} size={120} color={Colors.accent.secondary} />
       </View>
       <Text style={styles.noEventText}>{message}</Text>
-      <View style={styles.exploreButtonContainer}>
-        <Pressable
-          style={styles.exploreButton}
-          onPress={() => navigation.navigate(location)}
-        >
+      <Pressable
+        style={styles.exploreButtonContainer}
+        onPress={() => navigation.navigate(location)}
+      >
+        <View style={styles.exploreButton}>
           <Text style={styles.exploreButtonText}>{buttonText}</Text>
-        </Pressable>
-      </View>
+        </View>
+      </Pressable>
     </View>
   );
 }
@@ -43,7 +48,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.background.surface,
   },
   noEventText: {
-    fontSize: 14,
+    fontSize: 16,
     color: Colors.gray.light,
     textAlign: "center",
     lineHeight: 20,
