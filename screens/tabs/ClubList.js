@@ -5,8 +5,8 @@ import { useContext, useState, useEffect } from "react";
 import { Provider, useSelector, useDispatch } from "react-redux";
 
 import Colors from "../../src/constants/Colors";
-import Header from "../../components/Header";
-import ClubCard from "../../components/ClubCard";
+import Header from "../../components/Headers/Header";
+import ClubCard from "../../components/Cards/ClubCard";
 import RefreshableScrollView from "../../components/RefreshableScrollView";
 
 import { allClubs } from "../../API/action/club";
@@ -17,7 +17,6 @@ function ClubList() {
   const clubs = useSelector((state) => state.clubReducer.clubs); // Ensure to access clubs property
   const dispatch = useDispatch();
   const navigation = useNavigation();
-
 
   const fetchClubs = async () => {
     setLoading(true); // Set loading to true

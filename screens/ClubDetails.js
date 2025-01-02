@@ -10,8 +10,8 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
-import ClubDetailsHeader from "../components/ClubDetailsHeader";
-import AltEventCard from "../components/AltEventCard";
+import ClubDetailsHeader from "../components/Headers/ClubDetailsHeader";
+import AltEventCard from "../components/Cards/AltEventCard";
 import { Ionicons } from "@expo/vector-icons";
 
 import Colors from "../src/constants/Colors";

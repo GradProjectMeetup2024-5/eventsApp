@@ -15,9 +15,9 @@ import moment from "moment";
 import * as actionType from "../../API/actionTypes";
 
 import Colors from "../../src/constants/Colors";
-import SubSectionHeader from "../../components/SubSectionHeader";
+import SubSectionHeader from "../../components/Headers/SubSectionHeader";
 // import { back } from "../../assets/eventplaceholder.png";
-import AltEventCard from "../../components/AltEventCard";
+import AltEventCard from "../../components/Cards/AltEventCard";
 import NoEvents from "../../components/NoEvents";
 
 const dummyEvents = [

@@ -3,8 +3,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { View, Text, Pressable, ScrollView, StyleSheet } from "react-native";
 
 import Colors from "../src/constants/Colors";
-import SubSectionHeader from "../components/SubSectionHeader";
-import AltEventCard from "../components/AltEventCard";
+import SubSectionHeader from "../components/Headers/SubSectionHeader";
+import AltEventCard from "../components/Cards/AltEventCard";
 import NoEvents from "../components/NoEvents";
 
 import { groupEventsByMonth } from "../utils/groupEventsByMonth";
@@ -86,8 +86,6 @@ const dummyEvents = [
 ];
 
 function AllEventsPage() {
-  // const navigation = useNavigation();
-
   const one = "Upcoming";
   const two = "History";
   const [selector, setSelector] = useState(one);

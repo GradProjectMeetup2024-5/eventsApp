@@ -1,9 +1,9 @@
 import { View, Pressable, Text, Image, StyleSheet } from "react-native";
 
-import Colors from "../src/constants/Colors";
+import Colors from "../../src/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 import { Shadow } from "react-native-shadow-2";
-import AttendeePictures from "./AttendeePictures";
+import AttendeePictures from "../AttendeePictures";
 
 function AltEventCard({
   onPress,

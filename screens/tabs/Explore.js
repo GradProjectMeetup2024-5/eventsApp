@@ -3,20 +3,19 @@ import { View, TextInput, Pressable, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
 import Colors from "../../src/constants/Colors";
-import EventCard from "../../components/ui/EventCard";
+import EventCard from "../../components/Cards/EventCard";
 import RefreshableScrollView from "../../components/RefreshableScrollView";
 import { useDispatch, useSelector } from "react-redux";
 import { showEvents } from "../../API/action/event";
 import * as actionType from "../../API/actionTypes";
-import Header from "../../components/Header";
-
+import Header from "../../components/Headers/Header";
 
 import { back } from "../../assets/eventplaceholder.png";
 
 export default function Explore() {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
-  const [searchText, setSearchText] = useState(""); 
+  const [searchText, setSearchText] = useState("");
 
   const allEvents = useSelector((state) => state.event);
 
@@ -28,9 +27,9 @@ export default function Explore() {
     fetchEvents();
   }, []);
 
-  const filteredEvents = allEvents?.filter(event =>
+  const filteredEvents = allEvents?.filter((event) =>
     event.event_name.toLowerCase().includes(searchText.toLowerCase())
-  ); 
+  );
 
   const navigation = useNavigation();
 
@@ -40,10 +39,10 @@ export default function Explore() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Header 
-        onPress={pressHandler} 
-        searchText={searchText} 
-        onSearchChange={setSearchText} 
+      <Header
+        onPress={pressHandler}
+        searchText={searchText}
+        onSearchChange={setSearchText}
       />
       <RefreshableScrollView
         onRefresh={fetchEvents}
@@ -74,7 +73,9 @@ export default function Explore() {
                 })
               }
             />
-            {index < filteredEvents.length - 1 && <View style={styles.separator} />}
+            {index < filteredEvents.length - 1 && (
+              <View style={styles.separator} />
+            )}
           </View>
         ))}
       </RefreshableScrollView>
@@ -105,7 +106,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: Colors.background.surface,
     paddingLeft: 15,
-    color: "#FFFFFF"
+    color: "#FFFFFF",
   },
   iconContainer: {
     padding: 5,

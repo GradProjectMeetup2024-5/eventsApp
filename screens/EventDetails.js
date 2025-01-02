@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useRoute } from "@react-navigation/native";
 
 import Colors from "../src/constants/Colors";
-import EventDetailsHeader from "../components/EventDetailsHeader";
+import EventDetailsHeader from "../components/Headers/EventDetailsHeader";
 import JoinClubButton from "../components/JoinClubButton";
 import RefreshableScrollView from "../components/RefreshableScrollView";
 import TextDetails from "../components/TextDetails";
@@ -228,9 +228,7 @@ function EventDetails() {
         </View>
 
         {/* COMMENTS SECTION */}
-        <CommentSection 
-        eventId={eventId}
-        />
+        <CommentSection eventId={eventId} />
       </RefreshableScrollView>
       <EventDetailsFooter />
     </SafeAreaView>

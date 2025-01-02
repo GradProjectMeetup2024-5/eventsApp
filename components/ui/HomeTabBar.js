@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { View, Text, Pressable, StyleSheet } from "react-native";
+import Colors from "../../src/constants/Colors";
 
 const tabs = ["Upcoming", "Today", "Tomorrow", "Weekend"];
 
 export default function TabBar() {
-  const [activeTab, setActiveTab] = useState("Today");
+  const [activeTab, setActiveTab] = useState("Upcoming");
 
   return (
     <View style={styles.container}>
@@ -28,7 +29,7 @@ export default function TabBar() {
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
-    backgroundColor: "#1A1A1A",
+    backgroundColor: Colors.background.surface,
     padding: 4,
     borderRadius: 10,
     gap: 4,
@@ -39,14 +40,14 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   activeTab: {
-    backgroundColor: "#FF5733",
+    backgroundColor: Colors.accent.secondary,
   },
   tabText: {
-    color: "#FFFFFF",
+    color: Colors.gray.white,
     fontSize: 14,
     fontWeight: "500",
   },
   activeTabText: {
-    color: "#000000",
+    color: Colors.background.surface,
   },
 });

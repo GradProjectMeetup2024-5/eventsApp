@@ -1,7 +1,7 @@
 import { View, Pressable, Text, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
-import Colors from "../src/constants/Colors";
+import Colors from "../../src/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 
 function ClubDetailsHeader({ title }) {
