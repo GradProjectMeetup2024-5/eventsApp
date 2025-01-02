@@ -95,7 +95,7 @@ function ClubDetails() {
           </Pressable>
         </View>
         <View style={styles.eventScrollView}>
-          {clubEvent?.length < 0 ? (
+          {clubEvent?.length > 0 ? (
             <ScrollView
               horizontal={true}
               showsHorizontalScrollIndicator={false}
