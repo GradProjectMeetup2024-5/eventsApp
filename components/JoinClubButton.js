@@ -11,7 +11,16 @@ function JoinClubButton() {
   }
   return (
     <Pressable
-      style={joinState ? styles.joinedButton : styles.joinButton}
+      style={[
+        styles.button,
+        {
+          backgroundColor: joinState
+            ? Colors.background.base
+            : Colors.accent.secondary,
+          borderWidth: joinState ? 1 : 0,
+          borderColor: Colors.accent.secondary,
+        },
+      ]}
       onPress={joinHandler}
     >
       <Text
@@ -31,23 +40,12 @@ function JoinClubButton() {
 export default JoinClubButton;
 
 const styles = StyleSheet.create({
-  joinButton: {
-    backgroundColor: Colors.accent.secondary,
+  button: {
     height: 28,
     // width: 167,
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 15,
-  },
-  joinedButton: {
-    backgroundColor: Colors.background.base,
-    height: 28,
-    // width: 167,
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 15,
-    borderWidth: 1,
-    borderColor: Colors.accent.secondary,
   },
   text: {
     fontSize: 16,

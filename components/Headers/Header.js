@@ -1,17 +1,15 @@
 import React from "react";
 import { View, TextInput, Pressable, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import Colors from "../../src/constants/Colors";
 
-import Colors from "../src/constants/Colors";
-
-import BottomNavigation from "./ui/BottomNavigation";
-import TabBar from "../components/ui/HomeTabBar";
-
+import BottomNavigation from "../ui/BottomNavigation";
+import TabBar from "../ui/HomeTabBar";
 
 const Header = ({ onPress, searchText, onSearchChange }) => {
   return (
-    <View style={[styles.headerContainer, { paddingBottom: 10 }]}>
-      <View style={styles.searchBarContainer}>
+    <View style={styles.headerContainer}>
+      <View style={styles.titleContainer}>
         <TextInput
           style={styles.searchbar}
           placeholder="Search"
@@ -19,7 +17,7 @@ const Header = ({ onPress, searchText, onSearchChange }) => {
           value={searchText}
           onChangeText={onSearchChange}
         />
-        <Pressable style={styles.iconContainer} onPress={onPress}>
+        <Pressable style={styles.profileButton} onPress={onPress}>
           <Ionicons
             name="person-outline"
             size={28}
@@ -28,7 +26,6 @@ const Header = ({ onPress, searchText, onSearchChange }) => {
         </Pressable>
       </View>
       <TabBar />
-      <BottomNavigation />
     </View>
   );
 };
@@ -36,16 +33,15 @@ const Header = ({ onPress, searchText, onSearchChange }) => {
 export default Header;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
   headerContainer: {
     backgroundColor: Colors.background.elevated,
     paddingHorizontal: 15,
+    paddingBottom: 8,
     borderBottomWidth: 1,
     borderColor: Colors.gray.darkest,
+    justifyContent: "center",
   },
-  searchBarContainer: {
+  titleContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
@@ -58,16 +54,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.background.surface,
     paddingLeft: 15,
   },
-  iconContainer: {
-    padding: 5,
-    paddingLeft: 15,
-  },
-  scrollViewContent: {
-    paddingVertical: 10,
-  },
-  separator: {
-    height: 1,
-    backgroundColor: Colors.gray.darkest,
-    marginVertical: 10,
+  profileButton: {
+    marginLeft: 10,
   },
 });

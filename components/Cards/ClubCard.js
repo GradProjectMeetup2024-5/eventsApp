@@ -2,9 +2,9 @@ import { View, Pressable, Text, Image, StyleSheet } from "react-native";
 
 import { Shadow } from "react-native-shadow-2";
 
-import TextDetails from "./TextDetails";
+import TextDetails from "../TextDetails";
 
-import Colors from "../src/constants/Colors";
+import Colors from "../../src/constants/Colors";
 
 function ClubCard({ image, title, description, onPress, clubId }) {
   return (

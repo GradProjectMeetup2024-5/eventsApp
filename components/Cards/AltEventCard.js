@@ -1,9 +1,9 @@
 import { View, Pressable, Text, Image, StyleSheet } from "react-native";
 
-import Colors from "../src/constants/Colors";
+import Colors from "../../src/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 import { Shadow } from "react-native-shadow-2";
-import AttendeePictures from "./AttendeePictures";
+import AttendeePictures from "../AttendeePictures";
 
 function AltEventCard({
   onPress,
@@ -16,6 +16,7 @@ function AltEventCard({
   eventId,
   style,
   pageType = null,
+  noEvents = false,
 }) {
   return (
     <View style={[styles.container, style]}>
@@ -33,45 +34,40 @@ function AltEventCard({
         endColor="rgba(0, 0, 0, 0.05)"
       >
         <Pressable style={styles.card} onPress={onPress}>
-          <View style={styles.cardInfo}>
-            <Text style={styles.time}>{eventDate}</Text>
-            <Text
-              style={[
-                styles.title,
-                {
-                  color:
-                    pageType == "History"
-                      ? Colors.gray.muted
-                      : Colors.accent.primary,
-                },
-              ]}
-            >
-              {eventName}
-            </Text>
-            <View style={styles.location}>
-              <Ionicons
-                name="location-outline"
-                size={20}
-                color={Colors.gray.dark}
-              />
-              <Text style={styles.locationText}>
-                {/* Art's Faculty, Gallery - GF */}
-                {faculty + "-" + floor + "-" + room}
+          {!noEvents ? (
+            <View style={styles.cardInfo}>
+              <Text style={styles.time}>{eventDate}</Text>
+              <Text
+                style={[
+                  styles.title,
+                  {
+                    color:
+                      pageType == "History"
+                        ? Colors.gray.muted
+                        : Colors.accent.primary,
+                  },
+                ]}
+              >
+                {eventName}
+              </Text>
+              <View style={styles.location}>
+                <Ionicons
+                  name="location-outline"
+                  size={20}
+                  color={Colors.gray.dark}
+                />
+                <Text style={styles.locationText}>
+                  {faculty + "-" + floor + "-" + room}
+                </Text>
+              </View>
+            </View>
+          ) : (
+            <View style={styles.noEventsCard}>
+              <Text style={styles.noEventsText}>
+                No events at the moment, stay tuned!
               </Text>
             </View>
-          </View>
-          <AttendeePictures
-            attendees={[
-              "https://picsum.photos/100/100",
-              "https://picsum.photos/200/100",
-              "https://picsum.photos/400/300",
-              "https://picsum.photos/100/100",
-              "https://picsum.photos/100/100",
-              "https://picsum.photos/100/100",
-            ]}
-            enableAttendeeCount={true}
-            pageType={pageType}
-          />
+          )}
         </Pressable>
       </Shadow>
     </View>
@@ -92,6 +88,15 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     justifyContent: "space-between",
     backgroundColor: Colors.background.surface,
+  },
+  noEventsCard: {
+    justifyContent: "center",
+    alignItems: "center",
+    width: "100%",
+  },
+  noEventsText: {
+    fontSize: 15,
+    color: Colors.gray.muted,
   },
   cardInfo: {
     flex: 3,

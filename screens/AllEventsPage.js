@@ -1,9 +1,12 @@
 import { useState, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { View, Text, ScrollView, StyleSheet } from "react-native";
+import { View, Text, Pressable, ScrollView, StyleSheet } from "react-native";
+
 import Colors from "../src/constants/Colors";
-import SubSectionHeader from "../components/SubSectionHeader";
-import AltEventCard from "../components/AltEventCard";
+import SubSectionHeader from "../components/Headers/SubSectionHeader";
+import AltEventCard from "../components/Cards/AltEventCard";
+import NoEvents from "../components/NoEvents";
+
 import { groupEventsByMonth } from "../utils/groupEventsByMonth";
 import moment from "moment";
 
@@ -86,25 +89,30 @@ function AllEventsPage() {
   const one = "Upcoming";
   const two = "History";
   const [selector, setSelector] = useState(one);
-  const [groupedEvents, setGroupedEvents] = useState({});
+  const [upcomingEvents, setUpcomingEvents] = useState({});
+  const [historyEvents, setHistoryEvents] = useState({});
+
+  const groupedEvents = selector === one ? upcomingEvents : historyEvents;
+  const noEventsMessage =
+    selector === one
+      ? "The calendar's clear for now,\nbut who knows what's brewing behind the scenes?"
+      : "No past events here, \nthis club's story is just getting started!";
+
+  const noEventsIcon = selector === one ? "flask" : "sparkles";
 
   useEffect(() => {
     const now = moment();
-    let filteredEvents;
 
-    if (selector === one) {
-      filteredEvents = dummyEvents.filter((event) =>
-        moment(event.event_date).isAfter(now)
-      );
-    } else {
-      filteredEvents = dummyEvents
-        .filter((event) => moment(event.event_date).isBefore(now))
-        .sort((a, b) => moment(b.event_date) - moment(a.event_date));
-    }
+    const upcomingFilteredEvents = dummyEvents.filter((event) =>
+      moment(event.event_date).isAfter(now)
+    );
+    const historyFilteredEvents = dummyEvents
+      .filter((event) => moment(event.event_date).isBefore(now))
+      .sort((a, b) => moment(b.event_date) - moment(a.event_date));
 
-    const grouped = groupEventsByMonth(filteredEvents);
-    setGroupedEvents(grouped);
-  }, [selector]);
+    setUpcomingEvents(groupEventsByMonth(upcomingFilteredEvents));
+    setHistoryEvents(groupEventsByMonth(historyFilteredEvents));
+  }, []);
 
   function handlePressAttending() {
     setSelector(one);
@@ -124,45 +132,50 @@ function AllEventsPage() {
         title="All Events"
         backButton={true}
       />
-      <ScrollView
-        contentContainerStyle={styles.container}
-        overScrollMode="never"
-      >
-        {Object.keys(groupedEvents).map((month) => (
-          <View key={month}>
-            <View style={styles.dateContainer}>
-              <Text
-                style={[
-                  styles.date,
-                  {
-                    color:
-                      selector === one
-                        ? Colors.accent.secondary
-                        : Colors.gray.light,
-                  },
-                ]}
-              >
-                {month}
-              </Text>
+      {Object.keys(groupedEvents).length === 0 ? (
+        <NoEvents icon={noEventsIcon} message={noEventsMessage} />
+      ) : (
+        // turn this into a flatlist
+        <ScrollView
+          contentContainerStyle={styles.container}
+          overScrollMode="never"
+        >
+          {Object.keys(groupedEvents).map((month) => (
+            <View key={month}>
+              <View style={styles.dateContainer}>
+                <Text
+                  style={[
+                    styles.date,
+                    {
+                      color:
+                        selector === one
+                          ? Colors.accent.secondary
+                          : Colors.gray.light,
+                    },
+                  ]}
+                >
+                  {month}
+                </Text>
+              </View>
+              {groupedEvents[month].map((event) => (
+                <AltEventCard
+                  key={event.id}
+                  eventName={event.event_name}
+                  faculty={event.faculty}
+                  floor={event.floor}
+                  room={event.room}
+                  image={event.image}
+                  eventDate={event.event_date}
+                  eventId={event.id}
+                  onPress={() => console.log(`Event ${event.id} pressed`)}
+                  style={{ marginBottom: 12 }}
+                  pageType={selector}
+                />
+              ))}
             </View>
-            {groupedEvents[month].map((event) => (
-              <AltEventCard
-                key={event.id}
-                eventName={event.event_name}
-                faculty={event.faculty}
-                floor={event.floor}
-                room={event.room}
-                image={event.image}
-                eventDate={event.event_date}
-                eventId={event.id}
-                onPress={() => console.log(`Event ${event.id} pressed`)}
-                style={{ marginBottom: 12 }}
-                pageType={selector}
-              />
-            ))}
-          </View>
-        ))}
-      </ScrollView>
+          ))}
+        </ScrollView>
+      )}
     </SafeAreaView>
   );
 }
@@ -176,7 +189,7 @@ const styles = StyleSheet.create({
   },
   container: {
     marginTop: 10,
-    paddingBottom: 20,
+    paddingBottom: 24,
     backgroundColor: Colors.background.base,
   },
   dateContainer: {
@@ -185,7 +198,7 @@ const styles = StyleSheet.create({
     marginLeft: 15,
   },
   date: {
-    fontSize: 23,
+    fontSize: 21,
     fontWeight: "500",
   },
 });

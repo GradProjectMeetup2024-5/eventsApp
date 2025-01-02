@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, StyleSheet, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
-import Colors from "../src/constants/Colors";
+import Colors from "../../src/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 
 function SubSectionHeader({
@@ -53,7 +53,7 @@ function SubSectionHeader({
               backgroundColor:
                 selected === one
                   ? Colors.background.surface
-                  : Colors.background.muted,
+                  : Colors.gray.darkest,
             },
           ]}
           onPress={handlePressOne}
@@ -67,7 +67,7 @@ function SubSectionHeader({
               backgroundColor:
                 selected === two
                   ? Colors.background.surface
-                  : Colors.background.muted,
+                  : Colors.gray.darkest,
             },
           ]}
           onPress={handlePressTwo}
@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
     // borderWidth: 1,
   },
   backButton: { position: "absolute", left: 7 },
-  profileButton: { position: "absolute", right: 6 },
+  profileButton: { position: "absolute", right: 0 },
   title: {
     fontSize: 24,
     fontWeight: "600",
