@@ -27,10 +27,7 @@ function AttendingPage() {
   const [loading, setLoading] = useState(true);
   const events = useSelector((state) => state.eventUser || []);
   const myJoinedEvent = useSelector((state) => state.eventUser.myJoinedEvents || []);
-  // console.log("events",events);
   const [groupedEvents, setGroupedEvents] = useState({});
-
-
 
   useEffect(() => {
       dispatch(myJoinedEvents());
@@ -40,7 +37,6 @@ function AttendingPage() {
   useEffect(() => {
     if (myJoinedEvent.length > 0) {
       const grouped = groupEventsByMonth(myJoinedEvent);
-      console.log("grouped",grouped);
       setGroupedEvents(grouped);
     }
   }, [myJoinedEvent]);
