@@ -54,8 +54,6 @@ function EventDetails() {
     (state) => state.eventUser.checkIfUserJoinedEvent
   );
 
-  console.log("checkIfUserJoined", checkIfUserJoined);
-
   const fetchStatus = async () => {
     setLoading(true);
     await dispatch(checkIfUserJoinedEvent(eventId));
@@ -85,7 +83,6 @@ function EventDetails() {
     }
   }
 
-  const num = 6;
   return (
     <SafeAreaView style={styles.container}>
       <EventDetailsHeader />
@@ -230,7 +227,10 @@ function EventDetails() {
         {/* COMMENTS SECTION */}
         <CommentSection eventId={eventId} />
       </RefreshableScrollView>
-      <EventDetailsFooter />
+      <EventDetailsFooter
+      isAttending={joinState}
+      onJoinLeave={joinHandler}
+    />
     </SafeAreaView>
   );
 }

@@ -6,46 +6,47 @@ import SwipeButton from "./SwipeButton";
 import { Ionicons } from "@expo/vector-icons";
 import Colors from "../src/constants/Colors";
 
-function EventDetailsFooter() {
-  const [isAttending, setIsAttending] = useState(false);
+function EventDetailsFooter({ isAttending, onJoinLeave }) {
+  // const [isAttending, setIsAttending] = useState(false);
 
-  const handleSwipeComplete = () => {
-    setIsAttending(true);
-  };
-  const handleCancelAttend = () => {
-    setIsAttending(false);
-  };
+  // const handleSwipeComplete = () => {
+  //   setIsAttending(true);
+  // };
+  // const handleCancelAttend = () => {
+  //   setIsAttending(false);
+  // };
 
-  return (
-    <View style={styles.footer}>
-      {isAttending ? (
-        <View style={styles.attendingContainer}>
-          <View style={styles.cancelContainer}>
-            <Text style={[styles.text, { fontSize: 16, fontWeight: 500 }]}>
-              You're Attending!
-            </Text>
-            <Pressable onPress={handleCancelAttend}>
-              <Text style={styles.cancelText}>Cancel Attendance</Text>
+    return (
+      <View style={styles.footer}>
+        {isAttending ? (
+          <View style={styles.attendingContainer}>
+            <View style={styles.cancelContainer}>
+              <Text style={[styles.text, { fontSize: 16, fontWeight: 500 }]}>
+                You're Attending!
+              </Text>
+              <Pressable onPress={onJoinLeave}>
+                <Text style={styles.cancelText}>Cancel Attendance</Text>
+              </Pressable>
+            </View>
+            <Pressable>
+              <View style={styles.shareButton}>
+                <Ionicons
+                  name="share-outline"
+                  color={Colors.gray.light}
+                  size={20}
+                  style={styles.icon}
+                />
+                <Text style={styles.text}> Share</Text>
+              </View>
             </Pressable>
           </View>
-          <Pressable>
-            <View style={styles.shareButton}>
-              <Ionicons
-                name="share-outline"
-                color={Colors.gray.light}
-                size={20}
-                style={styles.icon}
-              />
-              <Text style={styles.text}> Share</Text>
-            </View>
-          </Pressable>
-        </View>
-      ) : (
-        <SwipeButton onSwipeComplete={handleSwipeComplete} />
-      )}
-    </View>
-  );
-}
+        ) : (
+          <SwipeButton onSwipeComplete={onJoinLeave} />
+        )}
+      </View>
+    );
+  }
+
 
 export default EventDetailsFooter;
 
