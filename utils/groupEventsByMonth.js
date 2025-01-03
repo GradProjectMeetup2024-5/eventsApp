@@ -2,8 +2,8 @@ import moment from "moment";
 
 export const groupEventsByMonth = (events) => {
   const groupedEvents = {};
-
-  events.forEach((event) => {
+  if(events === undefined) return groupedEvents;
+  events?.forEach((event) => {
     const eventMonth = moment(event.event_date).format("MMMM YYYY");
     if (!groupedEvents[eventMonth]) {
       groupedEvents[eventMonth] = [];

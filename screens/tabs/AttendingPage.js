@@ -21,140 +21,29 @@ import AltEventCard from "../../components/Cards/AltEventCard";
 import EventCard from "../../components/Cards/EventCard";
 import NoEvents from "../../components/NoEvents";
 
-const dummyEvents = [
-  {
-    id: 1,
-    event_name: "Event 6",
-    faculty: "Faculty 3",
-    floor: "Floor 3",
-    room: "Room 3",
-    image: "https://via.placeholder.com/150",
-    event_date: "2025-02-10",
-  },
-  {
-    id: 2,
-    event_name: "Event 7",
-    faculty: "Faculty 4",
-    floor: "Floor 4",
-    room: "Room 4",
-    image: "https://via.placeholder.com/150",
-    event_date: "2025-02-12",
-  },
-  {
-    id: 3,
-    event_name: "Event 8",
-    faculty: "Faculty 5",
-    floor: "Floor 5",
-    room: "Room 5",
-    image: "https://via.placeholder.com/150",
-    event_date: "2025-02-15",
-  },
-  // {
-  //   id: 4,
-  //   event_name: "Event 6",
-  //   faculty: "Faculty 3",
-  //   floor: "Floor 3",
-  //   room: "Room 3",
-  //   image: "https://via.placeholder.com/150",
-  //   event_date: "2025-03-10",
-  // },
-  // {
-  //   id: 5,
-  //   event_name: "Event 7",
-  //   faculty: "Faculty 4",
-  //   floor: "Floor 4",
-  //   room: "Room 4",
-  //   image: "https://via.placeholder.com/150",
-  //   event_date: "2025-03-12",
-  // },
-  // {
-  //   id: 6,
-  //   event_name: "Event 8",
-  //   faculty: "Faculty 5",
-  //   floor: "Floor 5",
-  //   room: "Room 5",
-  //   image: "https://via.placeholder.com/150",
-  //   event_date: "2025-03-15",
-  // },
-  // {
-  //   id: 7,
-  //   event_name: "Event 6",
-  //   faculty: "Faculty 3",
-  //   floor: "Floor 3",
-  //   room: "Room 3",
-  //   image: "https://via.placeholder.com/150",
-  //   event_date: "2025-03-10",
-  // },
-  // {
-  //   id: 8,
-  //   event_name: "Event 7",
-  //   faculty: "Faculty 4",
-  //   floor: "Floor 4",
-  //   room: "Room 4",
-  //   image: "https://via.placeholder.com/150",
-  //   event_date: "2025-03-10",
-  // },
-  // {
-  //   id: 9,
-  //   event_name: "Event 8",
-  //   faculty: "Faculty 5",
-  //   floor: "Floor 5",
-  //   room: "Room 5",
-  //   image: "https://via.placeholder.com/150",
-  //   event_date: "2025-04-15",
-  // },
-];
-
-const dummyUserEvents = [
-  {
-    id: 1,
-    event_name: "Event 6",
-    faculty: "Faculty 3",
-    floor: "Floor 3",
-    room: "Room 3",
-    image: "https://via.placeholder.com/150",
-    event_date: "2025-02-10",
-  },
-  {
-    id: 2,
-    event_name: "Event 6",
-    faculty: "Faculty 3",
-    floor: "Floor 3",
-    room: "Room 3",
-    image: "https://via.placeholder.com/150",
-    event_date: "2025-02-10",
-  },
-  {
-    id: 3,
-    event_name: "Event 6",
-    faculty: "Faculty 3",
-    floor: "Floor 3",
-    room: "Room 3",
-    image: "https://via.placeholder.com/150",
-    event_date: "2025-02-10",
-  },
-];
 
 function AttendingPage() {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
-  const events = useSelector((state) => state.eventUser);
+  const events = useSelector((state) => state.eventUser || []);
+  const myJoinedEvent = useSelector((state) => state.eventUser.myJoinedEvents || []);
+  // console.log("events",events);
   const [groupedEvents, setGroupedEvents] = useState({});
 
-  useEffect(() => {
-    const grouped = groupEventsByMonth(dummyEvents);
-    setGroupedEvents(grouped);
-  }, []);
+
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      dispatch(myJoinedEvents({ type: actionType.MY_JOINED_EVENTS }));
+      dispatch(myJoinedEvents());
       dispatch(showMyCreatedEvents({ type: actionType.MY_CREATED_EVENT }));
-      setLoading(false);
-    }, 2);
-
-    return () => clearTimeout(timer);
   }, []);
+
+  useEffect(() => {
+    if (myJoinedEvent.length > 0) {
+      const grouped = groupEventsByMonth(myJoinedEvent);
+      console.log("grouped",grouped);
+      setGroupedEvents(grouped);
+    }
+  }, [myJoinedEvent]);
 
   const one = "Attending";
   const two = "My Events";
@@ -199,15 +88,15 @@ function AttendingPage() {
                 </View>
                 {groupedEvents[month].map((event) => (
                   <AltEventCard
-                    key={event.id}
-                    eventName={event.event_name}
-                    faculty={event.faculty}
-                    floor={event.floor}
-                    room={event.room}
-                    image={event.image}
-                    eventDate={event.event_date}
-                    eventId={event.id}
-                    onPress={() => console.log(`Event ${event.id} pressed`)}
+                    key={event?.id}
+                    eventName={event?.event_name}
+                    faculty={event?.faculty}
+                    floor={event?.floor}
+                    room={event?.room}
+                    image={event?.image}
+                    eventDate={event?.event_date}
+                    eventId={event?.id}
+                    onPress={() => console.log(`Event ${event?.id} pressed`)}
                     style={{ marginBottom: 12 }}
                     pageType={selector}
                   />
@@ -216,7 +105,7 @@ function AttendingPage() {
             ))}
           </ScrollView>
         )
-      ) : dummyUserEvents.length === 0 ? (
+      ) : events?.length === 0 ? (
         <NoEvents
           icon={noEventsIcon}
           message={noEventsMessage}
@@ -228,21 +117,25 @@ function AttendingPage() {
           contentContainerStyle={[styles.container, { marginTop: 20 }]}
           overScrollMode="never"
         >
-          {dummyUserEvents.map((event) => (
-            <View key={event.id} style={styles.eventContainer}>
-              <EventCard
-                eventName={event.event_name}
-                faculty={event.faculty}
-                floor={event.floor}
-                room={event.room}
-                image={event.image}
-                eventDate={event.event_date}
-                eventId={event.id}
-                onPress={() => console.log(`Event ${event.id} pressed`)}
-                style={{ marginBottom: 12 }}
-              />
-            </View>
-          ))}
+      {events?.length > 0 ? (
+        events.map((event) => (
+          <View key={event.id} style={styles.eventContainer}>
+            <EventCard
+              eventName={event?.event_name}
+              faculty={event?.faculty}
+              floor={event?.floor}
+              room={event?.room}
+              image={event?.image}
+              eventDate={event?.event_date}
+              eventId={event?.id}
+              onPress={() => console.log(`Event ${event?.id} pressed`)}
+              style={{ marginBottom: 12 }}
+            />
+          </View>
+        ))
+      ) : (
+        <Text>No events available</Text>
+      )}
         </ScrollView>
       )}
     </SafeAreaView>
