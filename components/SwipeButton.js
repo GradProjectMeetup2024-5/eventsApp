@@ -52,7 +52,7 @@ const SwipeButton = ({ onSwipeComplete }) => {
           {
             width: slideBarWidth.interpolate({
               inputRange: [13, 100],
-              outputRange: ["14.3%", "100%"],
+              outputRange: ["13%", "100%"],
             }),
           },
         ]}
@@ -75,7 +75,7 @@ const SwipeButton = ({ onSwipeComplete }) => {
 
 const styles = StyleSheet.create({
   container: {
-    width: 350,
+    width: 385,
     height: 50,
     alignItems: "flex-end",
   },

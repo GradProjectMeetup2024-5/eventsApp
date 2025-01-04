@@ -25,6 +25,7 @@ import {
 import * as actionType from "../API/actionTypes";
 import CommentSection from "../components/CommentSection";
 import EventDetailsFooter from "../components/EventDetailsFooter";
+import ImageSlider from "../components/ImageSlider";
 
 function EventDetails() {
   const [joinState, setJoinState] = useState(false);
@@ -90,29 +91,9 @@ function EventDetails() {
         style={[{ paddingBottom: 60, alignItems: "center" }]}
         onRefresh={fetchStatus}
       >
-        <View style={styles.imagesContainer}></View>
-        <Shadow
-          sides={{ bottom: true, top: false, start: false, end: true }}
-          corners={{
-            topStart: false,
-            topEnd: false,
-            bottomStart: false,
-            bottomEnd: true,
-          }}
-          offset={[0, 0]}
-          distance={6}
-          startColor="rgba(0, 0, 0, 0.20)"
-          endColor="rgba(0, 0, 0, 0.05)"
-        >
-          <View style={styles.imageSliderContainer}>
-            <Image
-              source={{
-                uri: "https://assets.cntraveller.in/photos/66667d71fec9b2e737ab2480/master/w_1600%2Cc_limit/DAG%2520-%2520Caption%2520_Installation%2520shot%2520at%2520DAG%25201_%2520(1).jpg",
-              }}
-              style={styles.image}
-            />
-          </View>
-        </Shadow>
+        <View style={styles.imagesContainer}>
+          <ImageSlider />
+        </View>
 
         <View style={styles.titleContainer}>
           <Text style={styles.titleText}>{eventName}</Text>
@@ -227,10 +208,7 @@ function EventDetails() {
         {/* COMMENTS SECTION */}
         <CommentSection eventId={eventId} />
       </RefreshableScrollView>
-      <EventDetailsFooter
-      isAttending={joinState}
-      onJoinLeave={joinHandler}
-    />
+      <EventDetailsFooter isAttending={joinState} onJoinLeave={joinHandler} />
     </SafeAreaView>
   );
 }
@@ -243,16 +221,10 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.background.base,
   },
   imagesContainer: {
-    marginHorizontal: 50,
-    marginVertical: 8,
-  },
-  imageSliderContainer: {
-    overflow: "hidden",
-    borderRadius: 8,
+    marginTop: 12,
   },
   titleContainer: {
-    marginTop: 15,
-    marginVertical: 14,
+    marginBottom: 14,
     justifyContent: "center",
     alignItems: "center",
     marginHorizontal: 5,
@@ -307,11 +279,6 @@ const styles = StyleSheet.create({
   readMoreButton: {
     color: Colors.accent.secondary,
     fontWeight: 600,
-  },
-  image: {
-    resizeMode: "cover",
-    height: 281,
-    width: 381,
   },
   posterImage: {
     height: 50,

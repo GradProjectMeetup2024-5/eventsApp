@@ -21,17 +21,18 @@ import AltEventCard from "../../components/Cards/AltEventCard";
 import EventCard from "../../components/Cards/EventCard";
 import NoEvents from "../../components/NoEvents";
 
-
 function AttendingPage() {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
   const events = useSelector((state) => state.eventUser || []);
-  const myJoinedEvent = useSelector((state) => state.eventUser.myJoinedEvents || []);
+  const myJoinedEvent = useSelector(
+    (state) => state.eventUser.myJoinedEvents || []
+  );
   const [groupedEvents, setGroupedEvents] = useState({});
 
   useEffect(() => {
-      dispatch(myJoinedEvents());
-      dispatch(showMyCreatedEvents({ type: actionType.MY_CREATED_EVENT }));
+    dispatch(myJoinedEvents());
+    dispatch(showMyCreatedEvents({ type: actionType.MY_CREATED_EVENT }));
   }, []);
 
   useEffect(() => {
@@ -101,37 +102,35 @@ function AttendingPage() {
             ))}
           </ScrollView>
         )
-      ) : events?.length === 0 ? (
-        <NoEvents
-          icon={noEventsIcon}
-          message={noEventsMessage}
-          location="Create"
-          buttonText="Create Event"
-        />
       ) : (
         <ScrollView
           contentContainerStyle={[styles.container, { marginTop: 20 }]}
           overScrollMode="never"
         >
-      {events?.length > 0 ? (
-        events.map((event) => (
-          <View key={event.id} style={styles.eventContainer}>
-            <EventCard
-              eventName={event?.event_name}
-              faculty={event?.faculty}
-              floor={event?.floor}
-              room={event?.room}
-              image={event?.image}
-              eventDate={event?.event_date}
-              eventId={event?.id}
-              onPress={() => console.log(`Event ${event?.id} pressed`)}
-              style={{ marginBottom: 12 }}
+          {events?.length > 0 ? (
+            events.map((event) => (
+              <View key={event.id} style={styles.eventContainer}>
+                <EventCard
+                  eventName={event?.event_name}
+                  faculty={event?.faculty}
+                  floor={event?.floor}
+                  room={event?.room}
+                  image={event?.image}
+                  eventDate={event?.event_date}
+                  eventId={event?.id}
+                  onPress={() => console.log(`Event ${event?.id} pressed`)}
+                  style={{ marginBottom: 12 }}
+                />
+              </View>
+            ))
+          ) : (
+            <NoEvents
+              icon={noEventsIcon}
+              message={noEventsMessage}
+              location="Create"
+              buttonText="Create Event"
             />
-          </View>
-        ))
-      ) : (
-        <Text>No events available</Text>
-      )}
+          )}
         </ScrollView>
       )}
     </SafeAreaView>
