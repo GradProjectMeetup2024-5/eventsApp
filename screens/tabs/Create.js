@@ -13,8 +13,10 @@ import Colors from "../../src/constants/Colors";
 import { useDispatch } from 'react-redux';
 import { createEvent } from '../../API/action/event';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { Picker } from '@react-native-picker/picker';
 
-export default function Create() {
+
+const Create = () => {
   const dispatch = useDispatch();
   const [eventName, setEventName] = useState("");
   const [eventDate, setEventDate] = useState(new Date());
@@ -26,6 +28,29 @@ export default function Create() {
   const [eventRoom, setEventRoom] = useState("");
   const [eventDescription, setEventDescription] = useState("");
   const [eventImage, setEventImage] = useState("");
+  const [latitude, setLatitude] = useState(null);
+  const [longitude, setLongitude] = useState(null);
+
+  const faculties = {
+    "Conference Hall": "32.04235706530699, 35.90077170744573",
+    // "\u0645\u0631\u0643\u0632 \u0627\u0644\u0627\u0633\u062a\u0634\u0627\u0631\u0627\u062a \u0648\u0627\u0644\u062a\u062f\u0631\u064a\u0628 - \u062c\u0627\u0645\u0639\u0629 \u0627\u0644\u0639\u0644\u0648\u0645 \u0627\u0644\u062a\u0637\u0628\u064a\u0642\u064a\u0629 \u0627\u0644\u062e\u0627\u0635\u0629": "32.04106475017362, 35.9014549889317",
+    "Faculty of Sharia & Islamic Studies": "32.04147166360305, 35.90049085546174",
+    "Faculty of Engineering": "32.04110517252083, 35.90046230634091",
+    "Student Activities Building": "32.041927962418825, 35.899582162383595",
+    "Faculty of Economics and Administrative Sciences": "32.04044638372422, 35.90106738527859",
+    "Faculty of IT": "32.040468804302854, 35.901375581054666",
+    "Faculty of Pharmacy": "32.04022038450591, 35.90199291891347",
+    "Presidency Building": "32.041619257774244, 35.902921284895164",
+    "Faculty of Arts and Humanities": "32.03986960264171, 35.90239394345769",
+    "King Hussein Sports Hall": "32.039664673423765, 35.90119666863786",
+    "University Library": "32.0384689358981, 35.90094348597592",
+    "Faculty of Nursing": "32.038288381582205, 35.90200846069219",
+    "Faculty of Dentistry": "32.03955906760852, 35.902149117734986",
+    "Faculty of Allied Medical Sciences": "32.03827496940359, 35.902139639993976",
+    "ASU Stadium": "32.03847634377796, 35.8982060809678",
+    "Animal House": "32.0375780674437, 35.90048945904207",
+    "Square 360": "32.04117773331819, 35.90179475191668"
+};
 
   const handleDateChange = (event, selectedDate) => {
     const currentDate = selectedDate || eventDate;
@@ -39,13 +64,23 @@ export default function Create() {
     setEventTime(currentTime);
   };
 
+  const handleFacultyChange = (faculty) => {
+    setEventFaculty(faculty);
+    const coords = faculties[faculty].split(', ');
+    console.log(coords[0], coords[1]);
+    setLatitude(parseFloat(coords[0]));
+    setLongitude(parseFloat(coords[1]));
+  };
+
   const handleSubmit = () => {
     if (!eventName || !eventFaculty || !eventFloor || !eventRoom || !eventDescription) {
       Alert.alert("Error", "All fields are required.");
       return;
     }
 
-    // Format the event date and time for submission
+    const coordinates = locationData[eventFaculty] || "";
+    const [latitude, longitude] = coordinates.split(", ");
+
     const eventData = {
       event_name: eventName,
       event_desc: eventDescription,
@@ -54,7 +89,9 @@ export default function Create() {
       event_image: eventImage,
       faculty: eventFaculty,
       floor: eventFloor,
-      room: eventRoom
+      room: eventRoom,
+      latitude,
+      longitude
     };
 
     dispatch(createEvent(eventData));
@@ -106,6 +143,20 @@ export default function Create() {
               />
             )}
           </View>
+
+          <View style={styles.inputContainer}>
+      <Text style={styles.label}>Faculty</Text>
+      <Picker
+        selectedValue={eventFaculty}
+        onValueChange={handleFacultyChange}
+        style={styles.picker}
+      >
+        <Picker.Item label="Select a faculty" value="" />
+        {Object.keys(faculties).map((faculty) => (
+          <Picker.Item key={faculty} label={faculty} value={faculty} />
+        ))}
+      </Picker>
+    </View>
 
           <View style={styles.inputContainer}>
             <Text style={styles.label}>Faculty</Text>
@@ -170,7 +221,9 @@ export default function Create() {
       </ScrollView>
     </SafeAreaView>
   );
-}
+};
+
+export default Create;
 
 const styles = StyleSheet.create({
   container: {

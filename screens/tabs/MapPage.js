@@ -1,32 +1,35 @@
-import React from "react";
+import { useState, useEffect } from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import MapView, { Marker, Callout } from "react-native-maps";
 import Colors from "../../src/constants/Colors";
 import Header from "../../components/Headers/Header";
 import RefreshableScrollView from "../../components/RefreshableScrollView";
-
+      
 function pressHandler() {
+
   navigation.navigate("Profile");
 }
 
+
 const App = () => {
+
   const markers = [
     {
       id: 1,
-      latitude: 32.04018,
-      longitude: 35.90039,
+      latitude: 32.04235706530699,
+      longitude: 35.90077170744573,
       title: "First Marker",
       description: "This is the first marker description.",
-      // icon: require("../../assets/map/marker-1.png"),
+      icon: require("../../assets/map/marker-1.png"),
     },
     {
       id: 2,
-      latitude: 32.04518,
-      longitude: 35.90539,
+      latitude: 32.04106475017362,
+      longitude: 35.9014549889317,
       title: "Second Marker",
       description: "This is the second marker description.",
-      // icon: require("../../assets/map/marker-2.png"),
+      icon: require("../../assets/map/marker-2.png"),
     },
   ];
 
@@ -57,13 +60,8 @@ const App = () => {
               }}
               title={marker.title}
               description={marker.description}
-              // icon={marker.icon}
-              draggable
-              onDragEnd={(e) =>
-                alert(
-                  `New position: ${JSON.stringify(e.nativeEvent.coordinate)}`
-                )
-              }
+              icon={marker.icon}
+
             >
               <Callout>
                 <View>
@@ -196,7 +194,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     backgroundColor: "#fff",
     shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: { width: 2, height: 10 },
     shadowOpacity: 0.3,
     shadowRadius: 5,
     elevation: 2,
