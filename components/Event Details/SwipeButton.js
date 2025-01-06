@@ -1,6 +1,7 @@
 import React, { useRef } from "react";
 import { Animated, PanResponder, StyleSheet, View } from "react-native";
-import Colors from "../src/constants/Colors";
+
+import Colors from "../../src/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 
 const SwipeButton = ({ onSwipeComplete }) => {
@@ -84,7 +85,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     overflow: "hidden",
     backgroundColor: Colors.background.surface,
-    height: 50,
+    height: 51,
   },
   text: {
     fontSize: 15,

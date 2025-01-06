@@ -1,5 +1,6 @@
 import { View, StyleSheet } from "react-native";
-import Colors from "../src/constants/Colors";
+
+import Colors from "../../src/constants/Colors";
 
 function DetailCardSeparator() {
   return (

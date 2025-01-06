@@ -1,29 +1,31 @@
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { View, Text, StyleSheet, Pressable, TextInput } from "react-native";
-import Colors from "../src/constants/Colors";
+
+import Colors from "../../../src/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
+
 import Comment from "./Comment";
-import { showComments, createComment } from "../API/action/comment";
+import { showComments, createComment } from "../../../API/action/comment";
 
 function CommentSection({ eventId }) {
   const dispatch = useDispatch();
-  const comments = useSelector((state) => state.commentReducer || []); 
+  const comments = useSelector((state) => state.commentReducer || []);
 
   const [inputCommentText, setInputCommentText] = useState("");
   const [visibleComments, setVisibleComments] = useState(3);
+
   useEffect(() => {
     dispatch(showComments(eventId));
-  }, [dispatch, eventId]);
+  }, [dispatch, eventId, comments]);
 
   const data = {
-    text:inputCommentText,
-  }
+    text: inputCommentText,
+    // createdAt: new Date().toISOString(),
+  };
   const handleSend = () => {
-
-      dispatch(createComment(eventId, data));
-      setInputCommentText("");
-    
+    dispatch(createComment(eventId, data));
+    setInputCommentText("");
   };
 
   const handleSeeMore = () => {
@@ -42,25 +44,39 @@ function CommentSection({ eventId }) {
           </View>
         </View>
         <View style={styles.commentInputContainer}>
+          <View style={styles.placeholderPFP}>
+            {/*Profile picture goes here*/}
+          </View>
           <TextInput
             style={styles.commentInput}
             placeholder="Add Comment"
+            placeholderTextColor={Colors.gray.medium}
             value={inputCommentText}
             onChangeText={setInputCommentText}
             multiline={true}
             maxLength={180}
             onSubmitEditing={handleSend}
+            submitBehavior="submit"
           />
           <Pressable onPress={handleSend} disabled={!inputCommentText.trim()}>
-            <View style={[styles.sendButton, inputCommentText.trim() && { backgroundColor: Colors.accent.secondary }]}>
+            <View
+              style={[
+                styles.sendButton,
+                inputCommentText.trim() && {
+                  backgroundColor: Colors.accent.secondary,
+                },
+              ]}
+            >
               <Text style={styles.sendButtonText}>Send</Text>
             </View>
           </Pressable>
         </View>
         <View style={styles.comments}>
-        {
-            Array.isArray(comments) && comments.length > 0 ? (
-              comments.map((comment, index) => (
+          {Array.isArray(comments) && comments.length > 0 ? (
+            [...comments]
+              .reverse()
+              .slice(0, visibleComments)
+              .map((comment, index) => (
                 <Comment
                   key={index}
                   text={comment?.text}
@@ -68,23 +84,31 @@ function CommentSection({ eventId }) {
                   createdAt={comment?.createdAt}
                 />
               ))
-            ) : (
-              <View style={styles.emptyComments}>
-                <Text>No comments yet. Be the first!</Text>
-                <Ionicons name="happy-outline" size={30} color={Colors.background.subtle} />
-              </View>
-            )
-          }
+          ) : (
+            <View style={styles.emptyComments}>
+              <Text style={styles.noCommentsText}>
+                No comments yet. Be the first!
+              </Text>
+              <Ionicons
+                name="happy-outline"
+                size={30}
+                color={Colors.background.subtle}
+              />
+            </View>
+          )}
         </View>
-        {comments?.length > visibleComments && (
+        {Array.isArray(comments) && comments?.length > visibleComments && (
           <Pressable onPress={handleSeeMore} style={styles.seeMoreButton}>
             <Text style={styles.seeMoreText}>See More</Text>
-            <Ionicons name="arrow-down-outline" size={24} color={Colors.accent.secondary} />
+            <Ionicons
+              name="arrow-down-outline"
+              size={24}
+              color={Colors.accent.secondary}
+            />
           </Pressable>
         )}
       </View>
     </View>
-
   );
 }
 export default CommentSection;
@@ -122,6 +146,7 @@ const styles = StyleSheet.create({
   },
   comments: {
     marginVertical: 5,
+    // flexDirection: "column-reverse",
   },
   emptyComments: {
     flexDirection: "column",
