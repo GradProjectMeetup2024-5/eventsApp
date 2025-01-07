@@ -13,8 +13,8 @@ import EventDetailsHeader from "../components/Headers/EventDetailsHeader";
 import JoinClubButton from "../components/JoinClubButton";
 import RefreshableScrollView from "../components/RefreshableScrollView";
 import TextDetails from "../components/TextDetails";
-import DetailCardSeparator from "../components/DetailCardSeparator";
-import DetailCardSection from "../components/DetailCardSection";
+import DetailCardSeparator from "../components/Event Details/DetailCardSeparator";
+import DetailCardSection from "../components/Event Details/DetailCardSection";
 import AttendeePictures from "../components/AttendeePictures";
 
 import {
@@ -23,9 +23,9 @@ import {
   leaveEvent,
 } from "../API/action/eventUser";
 import * as actionType from "../API/actionTypes";
-import CommentSection from "../components/CommentSection";
-import EventDetailsFooter from "../components/EventDetailsFooter";
-import ImageSlider from "../components/ImageSlider";
+import CommentSection from "../components/Event Details/Comments/CommentSection";
+import EventDetailsFooter from "../components/Event Details/EventDetailsFooter";
+import ImageSlider from "../components/Event Details/ImageSlider";
 
 function EventDetails() {
   const [joinState, setJoinState] = useState(false);

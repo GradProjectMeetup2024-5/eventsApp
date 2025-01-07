@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet } from "react-native";
 
-import Colors from "../src/constants/Colors";
+import Colors from "../../../src/constants/Colors";
 
 function Comment({ text, creatorName, createdAt }) {
   return (
@@ -53,12 +53,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: Colors.gray.light,
     width: 180,
-    // borderWidth: 1,
   },
   commentDate: {
     fontSize: 12,
     color: Colors.gray.dark,
-    // borderWidth: 1,
   },
   commentText: {
     marginTop: 5,

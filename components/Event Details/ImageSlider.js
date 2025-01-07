@@ -4,7 +4,7 @@ import { View, Image, Pressable, StyleSheet, Dimensions } from "react-native";
 import Carousel, { Pagination } from "react-native-snap-carousel";
 
 import { Shadow } from "react-native-shadow-2";
-import Colors from "../src/constants/Colors";
+import Colors from "../../src/constants/Colors";
 
 const { width } = Dimensions.get("window");
 
@@ -66,7 +66,6 @@ function ImageSlider() {
                 activeDotIndex={activeIndex}
                 dotStyle={styles.dotStyle}
                 inactiveDotStyle={styles.inactiveDotStyle}
-                inactiveDotOpacity={0.4}
                 inactiveDotScale={0.6}
               />
             </View>
@@ -110,6 +109,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 2,
   },
   inactiveDotStyle: {
-    backgroundColor: Colors.gray.muted,
+    backgroundColor: Colors.gray.dark,
   },
 });

@@ -1,6 +1,6 @@
 import { View, Pressable, Text, StyleSheet } from "react-native";
 
-import Colors from "../src/constants/Colors";
+import Colors from "../../src/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 
 function DetailCardSection({
