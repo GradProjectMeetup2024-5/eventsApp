@@ -1,8 +1,14 @@
 import { SafeAreaView } from "react-native-safe-area-context";
-import { View, StyleSheet, ScrollView, Text } from "react-native";
+import {
+  View,
+  StyleSheet,
+  ScrollView,
+  Text,
+  ActivityIndicator,
+} from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { useContext, useState, useEffect } from "react";
-import { Provider, useSelector, useDispatch } from "react-redux";
+import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 
 import Colors from "../../src/constants/Colors";
 import Header from "../../components/Headers/Header";
@@ -45,7 +51,11 @@ function ClubList() {
         style={styles.clubListContainer}
       >
         {loading ? (
-          <Text>Loading...</Text>
+          <ActivityIndicator
+            size="large"
+            style={{ marginTop: 15 }}
+            color={Colors.accent.secondary}
+          />
         ) : clubs?.length > 0 ? (
           clubs?.map((club) => (
             <ClubCard
