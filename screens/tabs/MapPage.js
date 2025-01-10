@@ -1,30 +1,30 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import MapView, { Marker, Callout } from "react-native-maps";
 import Colors from "../../src/constants/Colors";
 import Header from "../../components/Headers/Header";
 import RefreshableScrollView from "../../components/RefreshableScrollView";
-
+import { showEvents } from "../../API/action/event";
+import * as actionType from "../../API/actionTypes";
+import { useDispatch, useSelector } from "react-redux";
+import { icon } from "../../assets/map/marker-1.png";
 const App = () => {
-  const markers = [
-    {
-      id: 1,
-      latitude: 32.04018,
-      longitude: 35.90039,
-      title: "First Marker",
-      description: "This is the first marker description.",
-      // icon: require("../../assets/map/marker-1.png"),
-    },
-    {
-      id: 2,
-      latitude: 32.04518,
-      longitude: 35.90539,
-      title: "Second Marker",
-      description: "This is the second marker description.",
-      // icon: require("../../assets/map/marker-2.png"),
-    },
-  ];
+
+  const dispatch = useDispatch();
+  const [loading, setLoading] = useState(true);
+  const [searchText, setSearchText] = useState(""); 
+
+  const allEvents = useSelector((state) => state.event || []); 
+  console.log(allEvents);
+  const fetchEvents = () => {
+    dispatch(showEvents({ type: actionType.FETCH_ALL }));
+  };
+
+  useEffect(() => {
+    fetchEvents();
+  }, []);
+
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -43,33 +43,36 @@ const App = () => {
           }}
           customMapStyle={mapStyle}
         >
-          {markers.map((marker) => (
-            <Marker
-              key={marker.id}
-              coordinate={{
-                latitude: marker.latitude,
-                longitude: marker.longitude,
-              }}
-              title={marker.title}
-              description={marker.description}
-              // icon={marker.icon}
-              draggable
-              onDragEnd={(e) =>
-                alert(
-                  `New position: ${JSON.stringify(e.nativeEvent.coordinate)}`
-                )
-              }
-            >
-              <Callout>
-                <View>
+            {allEvents?.map((marker) => (
+              <Marker
+                key={marker.id}
+                coordinate={{
+                  latitude: marker?.latitude || 32.0401803456018,
+                  longitude: marker?.longitude || 35.900398904295194,
+                }}
+                title={marker?.event_name} // Optional
+                description={marker?.event_desc} // Optional
+                icon={icon} // Ensure the icon path is valid
+                draggable
+                onDragEnd={(e) =>
+                  alert(
+                    `New position: ${JSON.stringify(e.nativeEvent.coordinate)}`
+                  )
+                }
+              >
+                <Callout>
                   <View style={styles.calloutContainer}>
-                    <Text style={styles.calloutTitle}>{marker.title}</Text>
-                    <Text>{marker.description}</Text>
+                    <Text style={styles.calloutTitle}>
+                      {marker?.event_name || "No Name Available"}
+                    </Text>
+                    <Text style={styles.calloutDescription}>
+                      {marker?.event_desc || "No Description Available"}
+                    </Text>
                   </View>
-                </View>
-              </Callout>
-            </Marker>
-          ))}
+                </Callout>
+              </Marker>
+            ))}
+
         </MapView>
       </View>
     </SafeAreaView>
@@ -187,8 +190,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   calloutContainer: {
+    width: 250, 
     padding: 10,
-    borderRadius: 5,
+    borderRadius: 10,
     backgroundColor: "#fff",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
@@ -199,5 +203,10 @@ const styles = StyleSheet.create({
   calloutTitle: {
     fontWeight: "bold",
     fontSize: 16,
+    marginBottom: 5,
+  },
+  calloutDescription: {
+    fontSize: 14,
+    color: "#555",
   },
 });
