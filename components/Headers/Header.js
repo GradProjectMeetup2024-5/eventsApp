@@ -2,22 +2,28 @@ import React from "react";
 import { View, TextInput, Pressable, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import Colors from "../../src/constants/Colors";
+import { useNavigation } from "@react-navigation/native";
 
 import BottomNavigation from "../ui/BottomNavigation";
 import TabBar from "../ui/HomeTabBar";
 
-const Header = ({ onPress, searchText, onSearchChange }) => {
+const Header = ({ searchText, onSearchChange }) => {
+  const navigation = useNavigation();
+
+  function pressHandler() {
+    navigation.navigate("Profile");
+  }
   return (
     <View style={styles.headerContainer}>
       <View style={styles.titleContainer}>
         <TextInput
           style={styles.searchbar}
           placeholder="Search"
-          placeholderTextColor="#FFFFFF"
+          placeholderTextColor={Colors.gray.dark}
           value={searchText}
           onChangeText={onSearchChange}
         />
-        <Pressable style={styles.profileButton} onPress={onPress}>
+        <Pressable style={styles.profileButton} onPress={pressHandler}>
           <Ionicons
             name="person-outline"
             size={28}
@@ -53,6 +59,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: Colors.background.surface,
     paddingLeft: 15,
+    color: Colors.gray.light,
   },
   profileButton: {
     marginLeft: 10,
