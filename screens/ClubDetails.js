@@ -7,6 +7,7 @@ import {
   StyleSheet,
   ScrollView,
   Linking,
+  ActivityIndicator,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
@@ -29,10 +30,10 @@ import TextDetails from "../components/TextDetails";
 import JoinClubButton from "../components/JoinClubButton";
 
 function ClubDetails() {
-  const [isExpanded, setIsExpanded] = useState(false);
   const route = useRoute();
   const { clubId } = route.params;
   const clubIdNumber = Number(clubId);
+  const [loading, setLoading] = useState(true);
 
   const club = useSelector((state) => state.clubReducer.club);
   const clubEvent = useSelector((state) => state.clubEventsReducer.clubEvent);
@@ -40,13 +41,20 @@ function ClubDetails() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(findOneClub(clubIdNumber));
-    dispatch(showClubEvents(clubIdNumber));
-  }, [dispatch, clubIdNumber]);
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        await Promise.all([
+          dispatch(findOneClub(clubIdNumber)),
+          dispatch(showClubEvents(clubIdNumber)),
+        ]);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  function toggleExpanded() {
-    setIsExpanded(!isExpanded);
-  }
+    fetchData();
+  }, [dispatch, clubIdNumber]);
 
   const navigation = useNavigation();
   const pressHandler = (route) => {
@@ -58,135 +66,156 @@ function ClubDetails() {
     <SafeAreaView style={styles.container}>
       {/* CLUB HEADER */}
       <ClubDetailsHeader title={club?.name} />
-      {/* CLUB HEAD SECTION */}
-      <View style={styles.clubHead}>
-        <Image
-          style={styles.clubImg}
-          source={{
-            uri: "https://d1csarkz8obe9u.cloudfront.net/posterpreviews/art-club-logo-design-template-7363f499d408b8d5aa636f25e135ce56_screen.jpg?ts=1688208799",
-          }}
+      {loading ? (
+        <ActivityIndicator
+          size="large"
+          color={Colors.accent.secondary}
+          style={{ marginTop: 15 }}
         />
-        <View style={styles.clubInfo}>
-          <View style={styles.countContainer}>
-            <View style={styles.count}>
-              <Text style={styles.countNum}>{club?.membersCount}</Text>
-              <Text style={styles.countLabel}>members</Text>
-            </View>
-            <View style={styles.count}>
-              <Text style={styles.countNum}>{club?.eventsCount}</Text>
-              <Text style={styles.countLabel}>events</Text>
+      ) : (
+        <>
+          {/* CLUB HEAD SECTION */}
+          <View style={styles.clubHead}>
+            <Image
+              style={styles.clubImg}
+              source={{
+                uri: "https://d1csarkz8obe9u.cloudfront.net/posterpreviews/art-club-logo-design-template-7363f499d408b8d5aa636f25e135ce56_screen.jpg?ts=1688208799",
+              }}
+            />
+            <View style={styles.clubInfo}>
+              <View style={styles.countContainer}>
+                <View style={styles.count}>
+                  <Text style={styles.countNum}>{club?.membersCount}</Text>
+                  <Text style={styles.countLabel}>members</Text>
+                </View>
+                <View style={styles.count}>
+                  <Text style={styles.countNum}>{club?.eventsCount}</Text>
+                  <Text style={styles.countLabel}>events</Text>
+                </View>
+              </View>
+              <JoinClubButton />
             </View>
           </View>
-          <JoinClubButton />
-        </View>
-      </View>
 
-      {/* CLUB BODY SECTION */}
-      <ScrollView style={styles.clubBody} overScrollMode="never">
-        {/* EVENT CARDS SECTION */}
-        <View style={styles.sectionRow}>
-          <Text style={styles.sectionTitle}>Events</Text>
-          <Pressable onPress={() => pressHandler("AllEvents")}>
-            <Text
-              style={[styles.sectionTitle, { color: Colors.accent.secondary }]}
+          {/* CLUB BODY SECTION */}
+          <ScrollView style={styles.clubBody} overScrollMode="never">
+            {/* EVENT CARDS SECTION */}
+            <View style={styles.sectionRow}>
+              <Text style={styles.sectionTitle}>Events</Text>
+              <Pressable onPress={() => pressHandler("AllEvents")}>
+                <Text
+                  style={[
+                    styles.sectionTitle,
+                    { color: Colors.accent.secondary },
+                  ]}
+                >
+                  See All
+                </Text>
+              </Pressable>
+            </View>
+            <View style={styles.eventScrollView}>
+              {clubEvent?.length > 0 ? (
+                <ScrollView
+                  horizontal={true}
+                  showsHorizontalScrollIndicator={false}
+                  overScrollMode="never"
+                >
+                  {clubEvent?.map((event) => (
+                    <AltEventCard
+                      key={event?.id}
+                      eventDate={event?.event_date}
+                      eventName={event?.event_name}
+                      faculty={event?.faculty}
+                      floor={event?.floor}
+                      room={event?.room}
+                      image={event?.image}
+                      onPress={() =>
+                        navigation.navigate("EventDetails", {
+                          clubName: club?.name,
+                          eventName: event?.event_name,
+                          eventDate: event?.event_date,
+                          floor: event?.floor,
+                          room: event?.room,
+                          about: event?.event_desc,
+                          image: event?.image,
+                          faculty: event?.faculty,
+                        })
+                      }
+                    />
+                  ))}
+                </ScrollView>
+              ) : (
+                <AltEventCard noEvents={true} />
+              )}
+            </View>
+            {/* ABOUT US SECTION */}
+            <View
+              style={[styles.sectionRow, { marginTop: 20, marginBottom: 8 }]}
             >
-              See All
-            </Text>
-          </Pressable>
-        </View>
-        <View style={styles.eventScrollView}>
-          {clubEvent?.length > 0 ? (
-            <ScrollView
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}
-              overScrollMode="never"
-            >
-              {clubEvent?.map((event) => (
-                <AltEventCard
-                  key={event?.id}
-                  eventDate={event?.event_date}
-                  eventName={event?.event_name}
-                  faculty={event?.faculty}
-                  floor={event?.floor}
-                  room={event?.room}
-                  image={event?.image}
-                  onPress={() =>
-                    navigation.navigate("EventDetails", {
-                      clubName: club?.name,
-                      eventName: event?.event_name,
-                      eventDate: event?.event_date,
-                      floor: event?.floor,
-                      room: event?.room,
-                      about: event?.event_desc,
-                      image: event?.image,
-                      faculty: event?.faculty,
-                    })
-                  }
-                />
-              ))}
-            </ScrollView>
-          ) : (
-            <AltEventCard noEvents={true} />
-          )}
-        </View>
-        {/* ABOUT US SECTION */}
-        <View style={[styles.sectionRow, { marginTop: 20, marginBottom: 8 }]}>
-          <Text style={[styles.sectionTitle, { color: Colors.accent.primary }]}>
-            About Us
-          </Text>
-        </View>
-        <View style={styles.aboutSection}>
-          <TextDetails
-            textStyle={styles.aboutText}
-            description={club?.desc}
-            maxLines={6}
-          />
-        </View>
-        {/* CONTACT US SECTION */}
-        <View style={styles.sectionRow}>
-          <Text style={[styles.sectionTitle, { color: Colors.accent.primary }]}>
-            Contact Us
-          </Text>
-        </View>
-        <View style={styles.buttonsContainer}>
-          <View style={[styles.buttonContainer, { marginLeft: 0 }]}>
-            <Pressable onPress={() => Linking.openURL(`${club?.instagram}`)}>
-              <Ionicons
-                name="logo-instagram"
-                color={Colors.accent.secondary}
-                size={38}
+              <Text
+                style={[styles.sectionTitle, { color: Colors.accent.primary }]}
+              >
+                About Us
+              </Text>
+            </View>
+            <View style={styles.aboutSection}>
+              <TextDetails
+                textStyle={styles.aboutText}
+                description={club?.desc}
+                maxLines={6}
               />
-            </Pressable>
-          </View>
-          <View style={styles.buttonContainer}>
-            <Pressable onPress={() => Linking.openURL(`${club?.facebook}`)}>
-              <Ionicons
-                name="logo-facebook"
-                color={Colors.accent.secondary}
-                size={38}
-              />
-            </Pressable>
-          </View>
-          <View style={styles.buttonContainer}>
-            <Pressable onPress={() => Linking.openURL(`${club?.whatsapp}`)}>
-              <Ionicons
-                name="logo-whatsapp"
-                color={Colors.accent.secondary}
-                size={38}
-              />
-            </Pressable>
-          </View>
-          <View style={styles.buttonContainer}>
-            <Pressable onPress={() => Linking.openURL(`${club?.linkedIn}`)}>
-              <Ionicons
-                name="logo-linkedin"
-                color={Colors.accent.secondary}
-                size={38}
-              />
-            </Pressable>
-          </View>
-        </View>
-      </ScrollView>
+            </View>
+            {/* CONTACT US SECTION */}
+            <View style={styles.sectionRow}>
+              <Text
+                style={[styles.sectionTitle, { color: Colors.accent.primary }]}
+              >
+                Contact Us
+              </Text>
+            </View>
+            <View style={styles.buttonsContainer}>
+              <View style={[styles.buttonContainer, { marginLeft: 0 }]}>
+                <Pressable
+                  onPress={() => Linking.openURL(`${club?.instagram}`)}
+                >
+                  <Ionicons
+                    name="logo-instagram"
+                    color={Colors.accent.secondary}
+                    size={38}
+                  />
+                </Pressable>
+              </View>
+              <View style={styles.buttonContainer}>
+                <Pressable onPress={() => Linking.openURL(`${club?.facebook}`)}>
+                  <Ionicons
+                    name="logo-facebook"
+                    color={Colors.accent.secondary}
+                    size={38}
+                  />
+                </Pressable>
+              </View>
+              <View style={styles.buttonContainer}>
+                <Pressable onPress={() => Linking.openURL(`${club?.whatsapp}`)}>
+                  <Ionicons
+                    name="logo-whatsapp"
+                    color={Colors.accent.secondary}
+                    size={38}
+                  />
+                </Pressable>
+              </View>
+              <View style={styles.buttonContainer}>
+                <Pressable onPress={() => Linking.openURL(`${club?.linkedIn}`)}>
+                  <Ionicons
+                    name="logo-linkedin"
+                    color={Colors.accent.secondary}
+                    size={38}
+                  />
+                </Pressable>
+              </View>
+            </View>
+          </ScrollView>
+        </>
+      )}
     </SafeAreaView>
   );
 }

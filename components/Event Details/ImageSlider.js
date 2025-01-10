@@ -5,6 +5,7 @@ import Carousel, { Pagination } from "react-native-snap-carousel";
 
 import { Shadow } from "react-native-shadow-2";
 import Colors from "../../src/constants/Colors";
+import ImageViewerModal from "./ImageViewerModal";
 
 const { width } = Dimensions.get("window");
 
@@ -14,13 +15,14 @@ const images = [
   "https://picsum.photos/1000/600",
   //   "https://picsum.photos/500/600",
   //   "https://picsum.photos/1000/500",
-  //   "https://picsum.photos/1000/1000",
+  "https://picsum.photos/2500/1500",
 ];
 
 function ImageSlider() {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
-  const renderItem = ({ item }) => (
+  const renderItem = ({ item, index }) => (
     <View style={styles.imageSliderContainer}>
       <Shadow
         sides={{ bottom: true, top: false, start: false, end: true }}
@@ -36,13 +38,24 @@ function ImageSlider() {
         endColor="rgba(0, 0, 0, 0.05)"
       >
         <View style={styles.slide}>
-          <Pressable>
+          <Pressable
+            onPress={() => {
+              setIsModalVisible(true);
+              setActiveIndex(index);
+              console.log(index);
+            }}
+          >
             <Image source={{ uri: item }} style={styles.image} />
           </Pressable>
         </View>
       </Shadow>
     </View>
   );
+
+  const handleModalClose = (currentIndex) => {
+    setActiveIndex(currentIndex);
+    setIsModalVisible(false);
+  };
   return (
     <View>
       {images.length > 0 && (
@@ -58,6 +71,7 @@ function ImageSlider() {
             autoplay={false}
             autoplayInterval={3000}
             onBeforeSnapToItem={(index) => setActiveIndex(index)}
+            firstItem={activeIndex}
           />
           {images.length > 1 && (
             <View style={styles.paginationContainer}>
@@ -70,6 +84,12 @@ function ImageSlider() {
               />
             </View>
           )}
+          <ImageViewerModal
+            visible={isModalVisible}
+            images={images.map((url) => ({ url }))}
+            onClose={handleModalClose}
+            initialIndex={activeIndex}
+          />
         </View>
       )}
     </View>

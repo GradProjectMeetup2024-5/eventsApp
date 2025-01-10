@@ -10,9 +10,9 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Colors from "../../src/constants/Colors";
-import { useDispatch } from 'react-redux';
-import { createEvent } from '../../API/action/event';
-import DateTimePicker from '@react-native-community/datetimepicker';
+import { useDispatch } from "react-redux";
+import { createEvent } from "../../API/action/event";
+import DateTimePicker from "@react-native-community/datetimepicker";
 
 export default function Create() {
   const dispatch = useDispatch();
@@ -40,7 +40,13 @@ export default function Create() {
   };
 
   const handleSubmit = () => {
-    if (!eventName || !eventFaculty || !eventFloor || !eventRoom || !eventDescription) {
+    if (
+      !eventName ||
+      !eventFaculty ||
+      !eventFloor ||
+      !eventRoom ||
+      !eventDescription
+    ) {
       Alert.alert("Error", "All fields are required.");
       return;
     }
@@ -54,7 +60,7 @@ export default function Create() {
       event_image: eventImage,
       faculty: eventFaculty,
       floor: eventFloor,
-      room: eventRoom
+      room: eventRoom,
     };
 
     dispatch(createEvent(eventData));
@@ -79,8 +85,13 @@ export default function Create() {
 
           <View style={styles.inputContainer}>
             <Text style={styles.label}>Date</Text>
-            <Pressable style={styles.dateButton} onPress={() => setShowDatePicker(true)}>
-              <Text style={styles.dateButtonText}>{eventDate.toLocaleDateString()}</Text>
+            <Pressable
+              style={styles.dateButton}
+              onPress={() => setShowDatePicker(true)}
+            >
+              <Text style={styles.dateButtonText}>
+                {eventDate.toLocaleDateString()}
+              </Text>
             </Pressable>
             {showDatePicker && (
               <DateTimePicker
@@ -94,8 +105,17 @@ export default function Create() {
 
           <View style={styles.inputContainer}>
             <Text style={styles.label}>Time</Text>
-            <Pressable style={styles.timeButton} onPress={() => setShowTimePicker(true)}>
-              <Text style={styles.timeButtonText}>{eventTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })}</Text>
+            <Pressable
+              style={styles.timeButton}
+              onPress={() => setShowTimePicker(true)}
+            >
+              <Text style={styles.timeButtonText}>
+                {eventTime.toLocaleTimeString([], {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  hour12: true,
+                })}
+              </Text>
             </Pressable>
             {showTimePicker && (
               <DateTimePicker
@@ -163,8 +183,10 @@ export default function Create() {
             />
           </View>
 
-          <Pressable style={styles.button} onPress={handleSubmit}>
-            <Text style={styles.buttonText}>Create Event</Text>
+          <Pressable onPress={handleSubmit}>
+            <View style={styles.button}>
+              <Text style={styles.buttonText}>Create Event</Text>
+            </View>
           </Pressable>
         </View>
       </ScrollView>

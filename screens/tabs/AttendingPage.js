@@ -1,15 +1,22 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  ActivityIndicator,
+} from "react-native";
 
 import { SafeAreaView } from "react-native-safe-area-context";
 
+import { useNavigation } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
 import {
   myJoinedEvents,
   showMyCreatedEvents,
 } from "../../API/action/eventUser";
 import { groupEventsByMonth } from "../../utils/groupEventsByMonth";
-import moment from "moment";
+// import moment from "moment";
 
 // import EventCard from "../../components/ui/EventCard";
 import * as actionType from "../../API/actionTypes";
@@ -30,10 +37,16 @@ function AttendingPage() {
   );
   const [groupedEvents, setGroupedEvents] = useState({});
 
+  const fetchData = async () => {
+    await dispatch(myJoinedEvents());
+    await dispatch(showMyCreatedEvents({ type: actionType.MY_CREATED_EVENT }));
+    setLoading(false);
+  };
+
   useEffect(() => {
-    dispatch(myJoinedEvents());
-    dispatch(showMyCreatedEvents({ type: actionType.MY_CREATED_EVENT }));
-  }, []);
+    setLoading(true);
+    fetchData();
+  }, [selector]);
 
   useEffect(() => {
     if (myJoinedEvent.length > 0) {
@@ -60,6 +73,8 @@ function AttendingPage() {
 
   const noEventsIcon = selector === one ? "rocket" : "footsteps";
 
+  const navigation = useNavigation();
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <SubSectionHeader
@@ -70,7 +85,11 @@ function AttendingPage() {
         two={two}
         title="Attending"
       />
-      {selector === one ? (
+      {loading ? (
+        <SafeAreaView style={styles.safeArea}>
+          <ActivityIndicator size="large" color={Colors.accent.secondary} />
+        </SafeAreaView>
+      ) : selector === one ? (
         Object.keys(groupedEvents).length === 0 ? (
           <NoEvents icon={noEventsIcon} message={noEventsMessage} />
         ) : (
@@ -93,7 +112,20 @@ function AttendingPage() {
                     image={event?.image}
                     eventDate={event?.event_date}
                     eventId={event?.id}
-                    onPress={() => console.log(`Event ${event?.id} pressed`)}
+                    onPress={() =>
+                      navigation.navigate("EventDetails", {
+                        eventId: event?.id,
+                        creatorName: event?.createrName,
+                        eventName: event?.event_name,
+                        eventDate: event?.event_date,
+                        floor: event?.floor,
+                        room: event?.room,
+                        about: event?.event_desc,
+                        image: event?.image,
+                        faculty: event?.faculty,
+                        joinedUsers: event?.joined_users,
+                      })
+                    }
                     style={{ marginBottom: 12 }}
                     pageType={selector}
                   />
@@ -118,7 +150,20 @@ function AttendingPage() {
                   image={event?.image}
                   eventDate={event?.event_date}
                   eventId={event?.id}
-                  onPress={() => console.log(`Event ${event?.id} pressed`)}
+                  onPress={() =>
+                    navigation.navigate("EventDetails", {
+                      eventId: event?.id,
+                      creatorName: event?.createrName,
+                      eventName: event?.event_name,
+                      eventDate: event?.event_date,
+                      floor: event?.floor,
+                      room: event?.room,
+                      about: event?.event_desc,
+                      image: event?.image,
+                      faculty: event?.faculty,
+                      joinedUsers: event?.joined_users,
+                    })
+                  }
                   style={{ marginBottom: 12 }}
                 />
               </View>

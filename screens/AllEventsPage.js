@@ -1,6 +1,13 @@
 import { useState, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { View, Text, Pressable, ScrollView, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  ActivityIndicator,
+} from "react-native";
 
 import Colors from "../src/constants/Colors";
 import SubSectionHeader from "../components/Headers/SubSectionHeader";
@@ -91,6 +98,7 @@ function AllEventsPage() {
   const [selector, setSelector] = useState(one);
   const [upcomingEvents, setUpcomingEvents] = useState({});
   const [historyEvents, setHistoryEvents] = useState({});
+  const [loading, setLoading] = useState(true);
 
   const groupedEvents = selector === one ? upcomingEvents : historyEvents;
   const noEventsMessage =
@@ -101,6 +109,7 @@ function AllEventsPage() {
   const noEventsIcon = selector === one ? "flask" : "sparkles";
 
   useEffect(() => {
+    setLoading(true);
     const now = moment();
 
     const upcomingFilteredEvents = dummyEvents.filter((event) =>
@@ -112,6 +121,7 @@ function AllEventsPage() {
 
     setUpcomingEvents(groupEventsByMonth(upcomingFilteredEvents));
     setHistoryEvents(groupEventsByMonth(historyFilteredEvents));
+    setLoading(false);
   }, []);
 
   function handlePressAttending() {
@@ -132,7 +142,11 @@ function AllEventsPage() {
         title="All Events"
         backButton={true}
       />
-      {Object.keys(groupedEvents).length === 0 ? (
+      {loading ? (
+        <SafeAreaView style={styles.safeArea}>
+          <ActivityIndicator size="large" color={Colors.accent.secondary} />
+        </SafeAreaView>
+      ) : Object.keys(groupedEvents).length === 0 ? (
         <NoEvents icon={noEventsIcon} message={noEventsMessage} />
       ) : (
         // turn this into a flatlist
