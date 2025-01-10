@@ -6,10 +6,6 @@ import Colors from "../../src/constants/Colors";
 import Header from "../../components/Headers/Header";
 import RefreshableScrollView from "../../components/RefreshableScrollView";
 
-function pressHandler() {
-  navigation.navigate("Profile");
-}
-
 const App = () => {
   const markers = [
     {
@@ -33,7 +29,6 @@ const App = () => {
   return (
     <SafeAreaView style={styles.safeArea}>
       <Header
-      // onPress={pressHandler}
       // searchText={searchText}
       // onSearchChange={setSearchText}
       />

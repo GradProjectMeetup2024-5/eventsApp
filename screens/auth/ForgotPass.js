@@ -7,19 +7,39 @@ import AuthRedirectButton from "../../components/ui/AuthUi/AuthRedirectButton";
 import BoldText from "../../components/ui/BoldText";
 
 function ForgotPass({ navigation }) {
+  const [displayEmail, setDisplayEmail] = useState("");
+
   function handleBackToLogin() {
     navigation.goBack("SignUp");
   }
   return (
-    <ImageBackground source={require('../../assets/BG.png')} style={styles.container}>
+    <ImageBackground
+      source={require("../../assets/BG.png")}
+      style={styles.container}
+    >
       <View style={styles.contentContainer}>
-        <Image source={require('../../assets/icon.png')} style={[styles.icon, { width: 300, height: 300 }]} resizeMode="contain" />
+        <Image
+          source={require("../../assets/icon.png")}
+          style={[styles.icon, { width: 300, height: 300 }]}
+          resizeMode="contain"
+        />
 
         <Text style={styles.instructions}>
           Please enter your email for instructions on resetting your password.
         </Text>
 
-        <AuthTextInput placeholder="Email" placeholderTextColor="#000000" />
+        <AuthTextInput
+          placeholder="Email"
+          placeholderTextColor="#000000"
+          value={displayEmail}
+          onChangeText={(text) => {
+            setDisplayEmail(text);
+            // setFormData({ ...formData, email: text.toLowerCase().trim() });
+          }}
+          style={styles.inputField}
+          autoCapitalize="none"
+          keyboardType="email-address"
+        />
         <AuthButton>Send</AuthButton>
 
         <AuthRedirectButton onPress={handleBackToLogin}>

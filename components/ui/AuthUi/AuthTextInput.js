@@ -8,6 +8,8 @@ function AuthTextInput({
   secureTextEntry = false,
   value,
   onChangeText,
+  autoCapitalize = null,
+  keyboardType = null,
 }) {
   return (
     <TextInput
@@ -17,6 +19,8 @@ function AuthTextInput({
       secureTextEntry={secureTextEntry}
       value={value}
       onChangeText={onChangeText}
+      autoCapitalize={autoCapitalize}
+      keyboardType={keyboardType}
     />
   );
 }

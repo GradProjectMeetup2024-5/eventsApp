@@ -33,17 +33,9 @@ export default function Explore() {
 
   const navigation = useNavigation();
 
-  function pressHandler() {
-    navigation.navigate("Profile");
-  }
-
   return (
     <SafeAreaView style={styles.container}>
-      <Header
-        onPress={pressHandler}
-        searchText={searchText}
-        onSearchChange={setSearchText}
-      />
+      <Header searchText={searchText} onSearchChange={setSearchText} />
       <RefreshableScrollView
         onRefresh={fetchEvents}
         style={styles.scrollViewContent}

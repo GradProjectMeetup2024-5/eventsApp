@@ -33,13 +33,9 @@ function ClubList() {
     fetchClubs();
   }, [dispatch]);
 
-  const pressHandler = (route) => {
-    navigation.navigate(route);
-  };
-
   return (
     <SafeAreaView style={styles.container}>
-      <Header onPress={() => pressHandler("Profile")} />
+      <Header />
       <RefreshableScrollView
         onRefresh={fetchClubs}
         style={styles.clubListContainer}

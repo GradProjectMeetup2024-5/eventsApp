@@ -1,69 +1,68 @@
-import { StyleSheet, View, Text, Pressable, StatusBar, ImageBackground, Image } from "react-native";
-import AuthContext from "../../context/AuthContext";
+import {
+  StyleSheet,
+  View,
+  Text,
+  Pressable,
+  StatusBar,
+  ImageBackground,
+  Image,
+} from "react-native";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { signin } from "../../API/action/auth";
 
-import AuthTitle from "../../components/ui/AuthUi/AuthTitle";
 import AuthTextInput from "../../components/ui/AuthUi/AuthTextInput";
 import AuthButton from "../../components/ui/AuthUi/AuthButton";
 import AuthRedirectButton from "../../components/ui/AuthUi/AuthRedirectButton";
 import BoldText from "../../components/ui/BoldText";
 
-import { useDispatch, useSelector } from 'react-redux';
-import { signin } from '../../API/action/auth'
-
-import * as SecureStore from 'expo-secure-store';
-
-import React, { useState, useEffect } from 'react';
-
-// import * as actionType from '../../API/actionTypes';
-
 function LogIn({ navigation }) {
-  const [formData, setFormData] = useState({ email: '', password: '' });
-  const [storedProfile, setStoredProfile] = useState(null);
-  const [user, setUser] = useState(null);
+  const [formData, setFormData] = useState({ email: "", password: "" });
+  const [displayEmail, setDisplayEmail] = useState("");
   const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   const fetchProfile = async () => {
-  //     try {
-  //       const profile = await SecureStore.getItemAsync('profile');
-  //       setStoredProfile(profile ? JSON.parse(profile) : null);
-  //     } catch (error) {
-  //       console.error('Error fetching stored profile:', error);
-  //     }
-  //   };
-  //   fetchProfile();
-  // }, []);
-
   async function handleLogin() {
-    console.log('Login button pressed'); // Debug log
+    console.log("Login button pressed");
     try {
       const text = await dispatch(signin(formData));
-      console.log('Stored Profile:', text);
+      console.log("Stored Profile:", text);
     } catch (error) {
-      console.error('Error during login:', error);
+      console.error("Error during login:", error);
     }
   }
 
   function handleSignUp() {
-    navigation.navigate('SignUp');
+    navigation.navigate("SignUp");
   }
 
   function handleForgotPass() {
-    navigation.navigate('ForgotPassword');
+    navigation.navigate("ForgotPassword");
   }
 
   return (
-    <ImageBackground source={require('../../assets/BG.png')} style={styles.container}>
+    <ImageBackground
+      source={require("../../assets/BG.png")}
+      style={styles.container}
+    >
       <StatusBar barStyle="light-content" backgroundColor="#000000" />
       <View style={styles.contentContainer}>
-        <Image source={require('../../assets/icon.png')} style={[styles.icon, { width: 300, height: 300 }]} resizeMode="contain" />
+        <Image
+          source={require("../../assets/icon.png")}
+          style={[styles.icon, { width: 300, height: 300 }]}
+          resizeMode="contain"
+        />
 
         <AuthTextInput
           placeholder="Email"
           placeholderTextColor="#000000"
-          value={formData.email}
-          onChangeText={(text) => setFormData({ ...formData, email: text })}
+          value={displayEmail}
+          onChangeText={(text) => {
+            setDisplayEmail(text);
+            setFormData({ ...formData, email: text.toLowerCase().trim() });
+          }}
           style={styles.inputField}
+          autoCapitalize="none"
+          keyboardType="email-address"
         />
         <AuthTextInput
           placeholder="Password"
@@ -74,10 +73,13 @@ function LogIn({ navigation }) {
           style={styles.inputField}
         />
 
-        <AuthButton onPress={handleLogin} textStyle={styles.whiteText}>Log In</AuthButton>
+        <AuthButton onPress={handleLogin} textStyle={styles.whiteText}>
+          Log In
+        </AuthButton>
 
         <AuthRedirectButton onPress={handleSignUp} textStyle={styles.whiteText}>
-          Don't have an account? {<BoldText style={styles.whiteText}>Sign Up</BoldText>}
+          Don't have an account?{" "}
+          {<BoldText style={styles.whiteText}>Sign Up</BoldText>}
         </AuthRedirectButton>
 
         <Pressable style={styles.forgotPassword} onPress={handleForgotPass}>
@@ -122,6 +124,6 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 5,
     marginBottom: 10,
-    width: '100%',
+    width: "100%",
   },
 });
