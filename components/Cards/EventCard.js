@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Image, View, Text, Pressable, StyleSheet } from "react-native";
-import Icon from "react-native-vector-icons/FontAwesome";
+import { LinearGradient } from "expo-linear-gradient";
+
 import profileImage from "../../assets/image 86.png";
-import back from '../../assets/eventplaceholder.png'
+import back from "../../assets/eventplaceholder.png";
 import Colors from "../../src/constants/Colors";
 
+import AttendeePictures from "../AttendeePictures";
+import PosterDetails from "../PosterDetails";
 
 export default function EventCard({
   eventName,
@@ -13,63 +16,128 @@ export default function EventCard({
   eventLocation,
   eventOrganizer,
   eventImage,
-  onPress
+  onPress,
 }) {
   const [imageError, setImageError] = useState(false);
-
-  const [isExpanded, setIsExpanded] = useState(false);
-
-  function toggleExpanded() {
-    setIsExpanded(!isExpanded);
-  }
-
 
   const handleImageError = (e) => {
     setImageError(true);
   };
 
+  function formatTime(dateString) {
+    const date = new Date(dateString);
+    let hours = date.getHours();
+    const minutes = date.getMinutes().toString().padStart(2, "0");
+
+    const period = hours >= 12 ? "PM" : "AM";
+    hours = hours % 12 || 12;
+
+    return `${hours}:${minutes} ${period}`;
+  }
+
+  const formatDate = (eventDate) => {
+    const event = new Date(eventDate);
+    const today = new Date();
+    const tomorrow = new Date();
+    tomorrow.setDate(today.getDate() + 1);
+
+    const months = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ];
+
+    const getDaySuffix = (day) => {
+      if (day >= 11 && day <= 13) return "th";
+      switch (day % 10) {
+        case 1:
+          return "st";
+        case 2:
+          return "nd";
+        case 3:
+          return "rd";
+        default:
+          return "th";
+      }
+    };
+
+    if (event.toDateString() === today.toDateString()) {
+      return "Today";
+    } else if (event.toDateString() === tomorrow.toDateString()) {
+      return "Tomorrow";
+    } else {
+      const dayOfMonth = event.getDate();
+      const month = months[event.getMonth()];
+      const suffix = getDaySuffix(dayOfMonth);
+      return `${dayOfMonth}${suffix} of ${month}`;
+    }
+  };
+
   return (
-    <View style={styles.cardContainer}>
-      <Pressable
-      onPress={onPress}
-        style={({ pressed }) => [
-          styles.cardContent,
-          { opacity: pressed ? 0.8 : 1 },
-        ]}
-      >
+    <View style={styles.container}>
+      <Pressable onPress={onPress}>
         <View style={styles.imageContainer}>
           {imageError ? (
             <View style={styles.errorImagePlaceholder}>
               <Text style={styles.errorText}>Image Error</Text>
             </View>
           ) : (
-            <Image
-              source={back}
-              style={styles.image}
-              onError={handleImageError}
-            />
+            <>
+              <Image
+                source={back}
+                style={styles.image}
+                onError={handleImageError}
+                // defaultSource={require("../path/to/placeholder.png")}
+              />
+              <LinearGradient
+                colors={[
+                  "rgba(0, 0, 0, 0.8)",
+                  "rgba(0, 0, 0, 0.3)",
+                  "rgba(0, 0, 0, 0)",
+                ]}
+                start={{ x: 0.5, y: 1 }}
+                end={{ x: 0.5, y: 0 }}
+                style={styles.gradientOverlay}
+              />
+            </>
           )}
-          <View style={styles.iconBackground}>
-            <Icon name="share-alt" size={20} color="white" style={styles.shareIcon} />
-          </View>
-          <View style={styles.iconBackground}>
-            <Icon name="heart" size={20} color="white" style={styles.heartIcon} />
+          <View
+            style={[styles.attendeeContainer, { transform: [{ scale: 0.9 }] }]}
+          >
+            <AttendeePictures
+              enableAttendeeCount={true}
+              attendees={[
+                "https://picsum.photos/100/300",
+                "https://picsum.photos/200/100",
+                "https://picsum.photos/100/100",
+                "https://picsum.photos/300/100",
+                "https://picsum.photos/300/150",
+              ]}
+            />
           </View>
         </View>
         <View style={styles.detailsContainer}>
-          <View style={styles.headerContainer}>
-            <Text style={styles.eventName}>{eventName}</Text>
-            <Icon name="chevron-right" size={16} color="white" />
+          <Text style={styles.eventTitle}>{eventName}</Text>
+          <View style={styles.eventDetailsContainer}>
+            <Text style={styles.eventDetailsText}>{formatDate(eventDate)}</Text>
+            <Text style={styles.eventDetailsText}> · </Text>
+            <Text style={styles.eventDetailsText}>{formatTime(eventDate)}</Text>
+            <Text style={styles.eventDetailsText}> · </Text>
+            <Text style={styles.eventDetailsText}>{/*{eventLocation}*/}</Text>
           </View>
-          <Text style={styles.eventDescription}>
-            {eventDate} · {eventTime} · {eventLocation}
-          </Text>
-          <View style={styles.footerContainer}>
-            <Image source={profileImage} style={styles.profileImage} />
-            <Text style={styles.eventOrganizer}>{eventOrganizer}</Text>
-            <Pressable style={styles.attendButton}>
-              <Text style={styles.attendButtonText}>Attend</Text>
-            </Pressable>
+          <View
+            style={[styles.posterContainer, { transform: [{ scale: 0.8 }] }]}
+          >
+            <PosterDetails creatorImage="https://d1csarkz8obe9u.cloudfront.net/posterpreviews/art-club-logo-design-template-7363f499d408b8d5aa636f25e135ce56_screen.jpg?ts=1688208799" />
           </View>
         </View>
       </Pressable>
@@ -78,111 +146,75 @@ export default function EventCard({
 }
 
 const styles = StyleSheet.create({
-  cardContainer: {
+  container: {
     width: 380,
-    borderWidth: 1,
-    borderColor: "black",
-    borderRadius: 8,
+    minHeight: 280,
+    borderRadius: 12,
+    backgroundColor: Colors.background.surface,
     overflow: "hidden",
-    alignSelf: "center",
     marginBottom: 8,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-    backgroundColor: Colors.background.base,
-  },
-  cardContent: {
-    flex: 1,
-    backgroundColor: Colors.background.base,
+    zIndex: 0,
+    marginHorizontal: 16,
   },
   imageContainer: {
     width: "100%",
-    height: 150,
-    position: "relative",
+    height: 180,
+    backgroundColor: Colors.background.elevated,
+    borderRadius: 12,
+    overflow: "hidden",
   },
   image: {
     width: "100%",
     height: "100%",
     resizeMode: "cover",
   },
-  iconBackground: {
+  gradientOverlay: {
     position: "absolute",
-    top: 10,
-    right: 10,
-    backgroundColor: "rgba(128, 128, 128, 0.5)",
-    borderRadius: 20,
-    padding: 5,
+    left: 0,
+    right: 0,
+    bottom: -1,
+    height: "50%",
   },
-  shareIcon: {
-    marginRight: 30,
-  },
-  heartIcon: {
-    marginLeft: 30,
-  },
-  errorImagePlaceholder: {
-    width: "100%",
-    height: "100%",
-    backgroundColor: "red",
+  attendeeContainer: {
+    position: "absolute",
+    bottom: -3,
+    left: -5,
+    zIndex: 2,
     justifyContent: "center",
     alignItems: "center",
-  },
-  errorText: {
-    color: "white",
-    fontWeight: "bold",
-    fontSize: 14,
   },
   detailsContainer: {
-    flexDirection: "column",
     alignItems: "flex-start",
-    padding: 12,
-    gap: 8,
-    width: "100%",
-    backgroundColor: Colors.background.surface,
+    marginVertical: 10,
+    marginHorizontal: 16,
+    // borderWidth: 1,
   },
-  headerContainer: {
+  eventTitle: {
+    color: Colors.accent.primary,
+    fontSize: 22,
+    fontWeight: 500,
+    lineHeight: 25,
+    maxWidth: 348,
+  },
+  eventDetailsContainer: {
+    marginVertical: 2,
+    flexDirection: "row",
+    alignItems: "flex-start",
+    maxWidth: 348,
+  },
+  eventDetailsText: {
+    color: Colors.gray.light,
+    fontSize: 16,
+    fontWeight: 500,
+    lineHeight: 20,
+    flexWrap: "wrap",
+    maxWidth: 150,
+    textAlign: "center",
+  },
+  posterContainer: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between",
-    width: "100%",
-  },
-  eventName: {
-    fontSize: 18,
-    fontWeight: "500",
-    color: "white",
-  },
-  eventDescription: {
-    fontSize: 12,
-    color: "white",
-  },
-  footerContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    width: "100%",
-  },
-  profileImage: {
-    width: 32,
-    height: 32,
-    marginRight: 5,
-  },
-  eventOrganizer: {
-    fontSize: 12,
-    color: "white",
-    flex: 1,
-  },
-  attendButton: {
-    width: 50,
-    height: 25,
-    backgroundColor: "red",
-    borderRadius: 4,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  attendButtonText: {
-    fontSize: 12,
-    fontWeight: "500",
-    color: "white",
+    marginLeft: -37,
+    // borderWidth: 1,
   },
 });

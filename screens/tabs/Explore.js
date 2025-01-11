@@ -38,7 +38,7 @@ export default function Explore() {
       <Header searchText={searchText} onSearchChange={setSearchText} />
       <RefreshableScrollView
         onRefresh={fetchEvents}
-        style={styles.scrollViewContent}
+        style={styles.bodyContainer}
       >
         {filteredEvents?.map((event, index) => (
           <View key={event.id}>
@@ -92,6 +92,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     height: 60,
   },
+  bodyContainer: {
+    // flex: 1,
+    marginTop: 5,
+    paddingVertical: 10,
+    alignItems: "center",
+  },
   searchbar: {
     flex: 1,
     height: 40,
@@ -104,12 +110,11 @@ const styles = StyleSheet.create({
     padding: 5,
     paddingLeft: 15,
   },
-  scrollViewContent: {
-    paddingVertical: 10,
-  },
   separator: {
-    height: 1,
+    height: StyleSheet.hairlineWidth,
     backgroundColor: Colors.gray.darkest,
-    marginVertical: 10,
+    marginVertical: 12,
+    marginBottom: 20,
+    marginHorizontal: 15,
   },
 });

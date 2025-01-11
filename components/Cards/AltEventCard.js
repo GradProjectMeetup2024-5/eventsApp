@@ -35,32 +35,47 @@ function AltEventCard({
       >
         <Pressable style={styles.card} onPress={onPress}>
           {!noEvents ? (
-            <View style={styles.cardInfo}>
-              <Text style={styles.time}>{eventDate}</Text>
-              <Text
-                style={[
-                  styles.title,
-                  {
-                    color:
-                      pageType == "History"
-                        ? Colors.gray.muted
-                        : Colors.accent.primary,
-                  },
-                ]}
-              >
-                {eventName}
-              </Text>
-              <View style={styles.location}>
-                <Ionicons
-                  name="location-outline"
-                  size={20}
-                  color={Colors.gray.dark}
-                />
-                <Text style={styles.locationText}>
-                  {faculty + "-" + floor + "-" + room}
+            <>
+              <View style={styles.cardInfo}>
+                <Text style={styles.time}>{eventDate}</Text>
+                <Text
+                  style={[
+                    styles.title,
+                    {
+                      color:
+                        pageType == "History"
+                          ? Colors.gray.muted
+                          : Colors.accent.primary,
+                    },
+                  ]}
+                >
+                  {eventName}
                 </Text>
+                <View style={styles.location}>
+                  <Ionicons
+                    name="location-outline"
+                    size={20}
+                    color={Colors.gray.dark}
+                  />
+                  <Text style={styles.locationText}>
+                    {faculty + "-" + floor + "-" + room}
+                  </Text>
+                </View>
               </View>
-            </View>
+              <View style={styles.attendeeContainer}>
+                <AttendeePictures
+                  attendees={[
+                    "https://picsum.photos/100/100",
+                    "https://picsum.photos/200/100",
+                    "https://picsum.photos/400/300",
+                    "https://picsum.photos/100/100",
+                    "https://picsum.photos/100/100",
+                    "https://picsum.photos/100/100",
+                  ]}
+                  enableAttendeeCount={true}
+                />
+              </View>
+            </>
           ) : (
             <View style={styles.noEventsCard}>
               <Text style={styles.noEventsText}>
@@ -79,7 +94,7 @@ export default AltEventCard;
 const styles = StyleSheet.create({
   container: {
     marginHorizontal: 16,
-    marginBottom: 6, // same amount as the distance of the shadow, cause it was getting cut off
+    marginBottom: 6, // same amount as the distance of the shadow, cause it was getting cut off in clubDetails
   },
   card: {
     flexDirection: "row",
@@ -121,23 +136,12 @@ const styles = StyleSheet.create({
     margin: 0,
     marginLeft: 4,
     lineHeight: 20,
-    maxWidth: 230,
+    maxWidth: 228,
   },
-  attending: {
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "flex-end",
-    paddingVertical: 10,
-    paddingHorizontal: 12,
-  },
-  attendingImages: {
-    flexDirection: "row",
-    alignItems: "center",
-    width: 68,
-    height: 40,
-  },
-  attendingCount: {
-    fontSize: 15,
-    color: Colors.gray.light,
+  attendeeContainer: {
+    position: "absolute",
+    right: 2,
+    bottom: 0,
+    zIndex: 1,
   },
 });
