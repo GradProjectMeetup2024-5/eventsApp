@@ -13,6 +13,8 @@ import * as actionType from "../API/actionTypes";
 
 import * as SecureStore from "expo-secure-store";
 
+import Friends from "../components/ui/ProfileUi/Friend";
+
 export default function Profile({ navigation }) {
   const dispatch = useDispatch();
   const [user, setUser] = useState(SecureStore.getItemAsync("profile"));
@@ -79,6 +81,10 @@ export default function Profile({ navigation }) {
             </ButtonItem>
           </View>
 
+          <View>
+            <Friends/>
+          </View>
+
           <Text style={styles.sectionTitle}>App Settings</Text>
 
           <View style={styles.settingsSection}>
@@ -106,11 +112,9 @@ export default function Profile({ navigation }) {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: "#000000",
   },
   container: {
     flex: 1,
-    backgroundColor: "#000000",
     paddingBottom: 80,
   },
   backButton: {
