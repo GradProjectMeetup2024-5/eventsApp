@@ -48,3 +48,10 @@ export const createComment =(clubId,formData)=>API.post(`/comment/${clubId}`,for
 export const showComments =(clubId)=>API.get(`/comment/${clubId}`)
 export const deleteComment =(commentId)=>API.delete(`/comment/${commentId}`)
 export const updateComment =(commentId,formData)=>API.patch(`/comment/${commentId}`,formData)
+
+// Friend
+export const sendFriendRequest =(receiverId)=>API.post(`/send-request/${receiverId}`)
+export const acceptFriendRequest =(senderId)=>API.patch(`/accept-request/${senderId}`)
+export const rejectFriendRequest =(senderId)=>API.patch(`/reject-request/${senderId}`)
+export const showPendingRequest =()=>API.get('/pending-requests')
+export const showFriendsList =()=>API.get('/friends-list')
