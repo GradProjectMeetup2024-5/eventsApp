@@ -53,16 +53,18 @@ function ClubList() {
             color={Colors.accent.secondary}
           />
         ) : clubs?.length > 0 ? (
-          clubs?.map((club) => (
-            <ClubCard
-              key={club.id}
-              image="https://d1csarkz8obe9u.cloudfront.net/posterpreviews/art-club-logo-design-template-7363f499d408b8d5aa636f25e135ce56_screen.jpg?ts=1688208799"
-              title={club.name}
-              description={club.desc}
-              onPress={() =>
-                navigation.navigate("ClubDetails", { clubId: club.id })
-              }
-            />
+          clubs?.map((club, index) => (
+            <View key={club.id}>
+              <ClubCard
+                image="https://d1csarkz8obe9u.cloudfront.net/posterpreviews/art-club-logo-design-template-7363f499d408b8d5aa636f25e135ce56_screen.jpg?ts=1688208799"
+                title={club.name}
+                description={club.desc}
+                onPress={() =>
+                  navigation.navigate("ClubDetails", { clubId: club.id })
+                }
+              />
+              {index < clubs?.length && <View style={styles.separator} />}
+            </View>
           ))
         ) : (
           <Text>No clubs were found</Text>
@@ -82,5 +84,12 @@ const styles = StyleSheet.create({
   clubListContainer: {
     alignItems: "center",
     flexDirection: "column",
+  },
+  separator: {
+    height: StyleSheet.hairlineWidth,
+    backgroundColor: Colors.gray.darkest,
+    marginTop: 6,
+    marginBottom: 12,
+    marginHorizontal: 15,
   },
 });

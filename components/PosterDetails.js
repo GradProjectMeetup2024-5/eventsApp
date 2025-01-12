@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     borderRadius: 25,
   },
   posterName: {
-    fontSize: 17,
+    fontSize: 18,
     marginHorizontal: 8,
     marginRight: 0,
     color: Colors.gray.light,

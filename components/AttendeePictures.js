@@ -62,7 +62,7 @@ function AttendeePictures({
                 styles.circlePlus,
                 {
                   color:
-                    pageType == "History"
+                    pageType === "History"
                       ? Colors.gray.medium
                       : Colors.accent.secondary,
                 },

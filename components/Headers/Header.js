@@ -5,7 +5,7 @@ import Colors from "../../src/constants/Colors";
 import { useNavigation } from "@react-navigation/native";
 
 import BottomNavigation from "../ui/BottomNavigation";
-import TabBar from "../ui/HomeTabBar";
+import TabBar from "../ui/TabBar";
 
 const Header = ({ searchText, onSearchChange }) => {
   const navigation = useNavigation();

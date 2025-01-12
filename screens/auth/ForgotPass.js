@@ -1,10 +1,12 @@
-import { StyleSheet, View, Text, ImageBackground, Image } from "react-native";
-
-import AuthTitle from "../../components/ui/AuthUi/AuthTitle";
+import { useState } from "react";
+import { StyleSheet, View, Text, Image } from "react-native";
 import AuthTextInput from "../../components/ui/AuthUi/AuthTextInput";
 import AuthButton from "../../components/ui/AuthUi/AuthButton";
 import AuthRedirectButton from "../../components/ui/AuthUi/AuthRedirectButton";
 import BoldText from "../../components/ui/BoldText";
+import AuthTitle from "../../components/ui/AuthUi/AuthTitle";
+
+import Colors from "../../src/constants/Colors";
 
 function ForgotPass({ navigation }) {
   const [displayEmail, setDisplayEmail] = useState("");
@@ -13,24 +15,21 @@ function ForgotPass({ navigation }) {
     navigation.goBack("SignUp");
   }
   return (
-    <ImageBackground
-      source={require("../../assets/BG.png")}
-      style={styles.container}
-    >
-      <View style={styles.contentContainer}>
+    <View style={styles.contentContainer}>
+      <View style={styles.appLogo}>
         <Image
           source={require("../../assets/icon.png")}
           style={[styles.icon, { width: 300, height: 300 }]}
           resizeMode="contain"
         />
+      </View>
 
-        <Text style={styles.instructions}>
-          Please enter your email for instructions on resetting your password.
-        </Text>
-
+      <View style={styles.formContainer}>
+        <AuthTitle>
+          Need a reset? Enter your email, and we'll guide you back in no time!
+        </AuthTitle>
         <AuthTextInput
           placeholder="Email"
-          placeholderTextColor="#000000"
           value={displayEmail}
           onChangeText={(text) => {
             setDisplayEmail(text);
@@ -46,22 +45,18 @@ function ForgotPass({ navigation }) {
           Already have an account? <BoldText>Log In</BoldText>
         </AuthRedirectButton>
       </View>
-    </ImageBackground>
+    </View>
   );
 }
 
 export default ForgotPass;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    borderRadius: 0,
-    alignItems: "center",
-    justifyContent: "flex-end",
-    padding: 16,
-  },
   contentContainer: {
+    flex: 1,
+    justifyContent: "center",
     alignItems: "center",
+    backgroundColor: Colors.background.base,
   },
   instructions: {
     fontSize: 16,
@@ -70,9 +65,16 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     paddingHorizontal: 20,
   },
+  appLogo: {
+    position: "absolute",
+    top: 100,
+  },
   icon: {
     width: 100,
     height: 100,
-    marginBottom: -80,
+  },
+  formContainer: {
+    width: "80%",
+    alignItems: "center",
   },
 });

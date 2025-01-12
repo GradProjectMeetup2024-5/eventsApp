@@ -6,6 +6,7 @@ import profileImage from "../../assets/image 86.png";
 import back from "../../assets/eventplaceholder.png";
 import Colors from "../../src/constants/Colors";
 
+import EventCardButton from "../EventCardButton";
 import AttendeePictures from "../AttendeePictures";
 import PosterDetails from "../PosterDetails";
 
@@ -82,6 +83,8 @@ export default function EventCard({
     }
   };
 
+  function shareFunction() {}
+
   return (
     <View style={styles.container}>
       <Pressable onPress={onPress}>
@@ -122,6 +125,17 @@ export default function EventCard({
                 "https://picsum.photos/300/100",
                 "https://picsum.photos/300/150",
               ]}
+            />
+          </View>
+          <View style={styles.buttonsContainer}>
+            <EventCardButton
+              icon="share-outline"
+              color={Colors.gray.light}
+              onPress={shareFunction}
+            />
+            <EventCardButton
+              icon="create-outline"
+              color={Colors.accent.secondary}
             />
           </View>
         </View>
@@ -183,6 +197,14 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  buttonsContainer: {
+    position: "absolute",
+    flexDirection: "row",
+    right: 0,
+    marginTop: 5,
+    marginRight: 0,
+    // zIndex: 2,
+  },
   detailsContainer: {
     alignItems: "flex-start",
     marginVertical: 10,
@@ -215,6 +237,5 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     marginLeft: -37,
-    // borderWidth: 1,
   },
 });

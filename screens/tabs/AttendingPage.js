@@ -59,10 +59,10 @@ function AttendingPage() {
   const two = "My Events";
   const [selector, setSelector] = useState(one);
 
-  function handlePressAttending() {
+  function handlePressOne() {
     setSelector(one);
   }
-  function handlePressMyEvents() {
+  function handlePressTwo() {
     setSelector(two);
   }
 
@@ -79,8 +79,8 @@ function AttendingPage() {
     <SafeAreaView style={styles.safeArea}>
       <SubSectionHeader
         selected={selector}
-        handlePressOne={handlePressAttending}
-        handlePressTwo={handlePressMyEvents}
+        handlePressOne={handlePressOne}
+        handlePressTwo={handlePressTwo}
         one={one}
         two={two}
         title="Attending"
@@ -140,7 +140,7 @@ function AttendingPage() {
           overScrollMode="never"
         >
           {events?.length > 0 ? (
-            events.map((event) => (
+            events.map((event, index) => (
               <View key={event.id} style={styles.eventContainer}>
                 <EventCard
                   eventName={event?.event_name}
@@ -166,6 +166,7 @@ function AttendingPage() {
                   }
                   style={{ marginBottom: 12 }}
                 />
+                {index < events.length - 1 && <View style={styles.separator} />}
               </View>
             ))
           ) : (
@@ -244,5 +245,11 @@ const styles = StyleSheet.create({
     fontSize: 21,
     fontWeight: "500",
     color: Colors.accent.secondary,
+  },
+  separator: {
+    height: StyleSheet.hairlineWidth,
+    backgroundColor: Colors.gray.darkest,
+    marginVertical: 12,
+    marginHorizontal: 15,
   },
 });

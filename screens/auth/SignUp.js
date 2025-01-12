@@ -1,13 +1,14 @@
-import { StyleSheet, View, ImageBackground, Image } from "react-native";
+import { StyleSheet, View, Text, Image } from "react-native";
 import { useContext, useState } from "react";
-import AuthTitle from "../../components/ui/AuthUi/AuthTitle";
 import AuthTextInput from "../../components/ui/AuthUi/AuthTextInput";
 import AuthButton from "../../components/ui/AuthUi/AuthButton";
 import AuthRedirectButton from "../../components/ui/AuthUi/AuthRedirectButton";
 import BoldText from "../../components/ui/BoldText";
+import AuthTitle from "../../components/ui/AuthUi/AuthTitle";
 
 import { useDispatch, useSelector } from "react-redux";
 import { signup } from "../../API/action/auth";
+import Colors from "../../src/constants/Colors";
 
 function SignUp({ navigation }) {
   const dispatch = useDispatch();
@@ -27,22 +28,18 @@ function SignUp({ navigation }) {
   }
 
   return (
-    <ImageBackground
-      source={require("../../assets/BG.png")}
-      style={styles.container}
-    >
-      <View style={styles.contentContainer}>
+    <View style={styles.contentContainer}>
+      <View style={styles.appLogo}>
         <Image
           source={require("../../assets/icon.png")}
           style={[styles.icon, { width: 300, height: 300 }]}
           resizeMode="contain"
         />
-
-        <AuthTitle>Create Account</AuthTitle>
-
+      </View>
+      <View style={styles.formContainer}>
+        <AuthTitle>Ready to join the fun? Let's get started!</AuthTitle>
         <AuthTextInput
           placeholder="Email"
-          placeholderTextColor="#000000"
           value={displayEmail}
           onChangeText={(text) => {
             setDisplayEmail(text);
@@ -54,22 +51,16 @@ function SignUp({ navigation }) {
         />
         <AuthTextInput
           placeholder="Name"
-          placeholderTextColor="#000000"
           value={formData.name}
           onChangeText={(text) => setFormData({ ...formData, name: text })}
         />
         <AuthTextInput
           placeholder="Password"
           secureTextEntry
-          placeholderTextColor="#000000"
           value={formData.password}
           onChangeText={(text) => setFormData({ ...formData, password: text })}
         />
-        <AuthTextInput
-          placeholder="Confirm Password"
-          secureTextEntry
-          placeholderTextColor="#000000"
-        />
+        <AuthTextInput placeholder="Confirm Password" secureTextEntry />
 
         <AuthButton onPress={handleSignUp}>Sign Up</AuthButton>
 
@@ -77,26 +68,27 @@ function SignUp({ navigation }) {
           Already have an account? {<BoldText>Log In</BoldText>}
         </AuthRedirectButton>
       </View>
-    </ImageBackground>
+    </View>
   );
 }
 
 export default SignUp;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    borderRadius: 0,
-    alignItems: "center",
-    justifyContent: "flex-end",
-    padding: 16,
-  },
   contentContainer: {
+    flex: 1,
+    justifyContent: "center",
     alignItems: "center",
+    backgroundColor: Colors.background.base,
   },
+  appLogo: {},
   icon: {
     width: 100,
     height: 100,
-    marginBottom: 200,
+    marginBottom: -90,
+  },
+  formContainer: {
+    alignItems: "center",
+    marginTop: 200,
   },
 });

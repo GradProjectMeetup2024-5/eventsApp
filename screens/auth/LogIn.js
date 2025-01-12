@@ -1,17 +1,12 @@
-import {
-  StyleSheet,
-  View,
-  Text,
-  Pressable,
-  StatusBar,
-  ImageBackground,
-  Image,
-} from "react-native";
+import { StyleSheet, View, Text, Pressable, Image } from "react-native";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { signin } from "../../API/action/auth";
 
+import Colors from "../../src/constants/Colors";
+
 import AuthTextInput from "../../components/ui/AuthUi/AuthTextInput";
+import AuthTitle from "../../components/ui/AuthUi/AuthTitle";
 import AuthButton from "../../components/ui/AuthUi/AuthButton";
 import AuthRedirectButton from "../../components/ui/AuthUi/AuthRedirectButton";
 import BoldText from "../../components/ui/BoldText";
@@ -40,37 +35,32 @@ function LogIn({ navigation }) {
   }
 
   return (
-    <ImageBackground
-      source={require("../../assets/BG.png")}
-      style={styles.container}
-    >
-      <StatusBar barStyle="light-content" backgroundColor="#000000" />
-      <View style={styles.contentContainer}>
+    <View style={styles.contentContainer}>
+      <View style={styles.appLogo}>
         <Image
           source={require("../../assets/icon.png")}
           style={[styles.icon, { width: 300, height: 300 }]}
           resizeMode="contain"
         />
+      </View>
 
+      <View style={styles.formContainer}>
+        <AuthTitle>Back for more? Let's get you logged in!</AuthTitle>
         <AuthTextInput
           placeholder="Email"
-          placeholderTextColor="#000000"
           value={displayEmail}
           onChangeText={(text) => {
             setDisplayEmail(text);
             setFormData({ ...formData, email: text.toLowerCase().trim() });
           }}
-          style={styles.inputField}
           autoCapitalize="none"
           keyboardType="email-address"
         />
         <AuthTextInput
           placeholder="Password"
-          placeholderTextColor="#000000"
           secureTextEntry
           value={formData.password}
           onChangeText={(text) => setFormData({ ...formData, password: text })}
-          style={styles.inputField}
         />
 
         <AuthButton onPress={handleLogin} textStyle={styles.whiteText}>
@@ -86,22 +76,23 @@ function LogIn({ navigation }) {
           <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
         </Pressable>
       </View>
-    </ImageBackground>
+    </View>
   );
 }
 
 export default LogIn;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    borderRadius: 0,
-    padding: 16,
-  },
   contentContainer: {
     flex: 1,
-    justifyContent: "flex-end",
+    justifyContent: "center",
     alignItems: "center",
+    backgroundColor: Colors.background.base,
+  },
+  appLogo: {},
+  formContainer: {
+    alignItems: "center",
+    marginTop: 200,
   },
   icon: {
     width: 100,
@@ -117,13 +108,5 @@ const styles = StyleSheet.create({
   },
   whiteText: {
     color: "#FFFFFF",
-  },
-  inputField: {
-    backgroundColor: "#FFFFFF",
-    color: "#000000",
-    padding: 10,
-    borderRadius: 5,
-    marginBottom: 10,
-    width: "100%",
   },
 });

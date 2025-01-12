@@ -18,6 +18,64 @@ function AltEventCard({
   pageType = null,
   noEvents = false,
 }) {
+  function formatTime(dateString) {
+    const date = new Date(dateString);
+    let hours = date.getHours();
+    const minutes = date.getMinutes().toString().padStart(2, "0");
+
+    const period = hours >= 12 ? "PM" : "AM";
+    hours = hours % 12 || 12;
+
+    return `${hours}:${minutes} ${period}`;
+  }
+
+  const formatDate = (eventDate) => {
+    const event = new Date(eventDate);
+    const today = new Date();
+    const tomorrow = new Date();
+    tomorrow.setDate(today.getDate() + 1);
+
+    const months = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ];
+
+    const getDaySuffix = (day) => {
+      if (day >= 11 && day <= 13) return "th";
+      switch (day % 10) {
+        case 1:
+          return "st";
+        case 2:
+          return "nd";
+        case 3:
+          return "rd";
+        default:
+          return "th";
+      }
+    };
+
+    if (event.toDateString() === today.toDateString()) {
+      return "Today";
+    } else if (event.toDateString() === tomorrow.toDateString()) {
+      return "Tomorrow";
+    } else {
+      const dayOfMonth = event.getDate();
+      const month = months[event.getMonth()];
+      const suffix = getDaySuffix(dayOfMonth);
+      return `${dayOfMonth}${suffix} of ${month}`;
+    }
+  };
+
   return (
     <View style={[styles.container, style]}>
       <Shadow
@@ -37,7 +95,16 @@ function AltEventCard({
           {!noEvents ? (
             <>
               <View style={styles.cardInfo}>
-                <Text style={styles.time}>{eventDate}</Text>
+                <View style={styles.eventDetailsContainer}>
+                  <Text style={styles.eventDetailsText}>
+                    {formatDate(eventDate)}
+                  </Text>
+                  <Text style={styles.eventDetailsText}> · </Text>
+                  <Text style={styles.eventDetailsText}>
+                    {formatTime(eventDate)}
+                  </Text>
+                </View>
+
                 <Text
                   style={[
                     styles.title,
@@ -73,6 +140,7 @@ function AltEventCard({
                     "https://picsum.photos/100/100",
                   ]}
                   enableAttendeeCount={true}
+                  pageType={pageType}
                 />
               </View>
             </>
@@ -118,9 +186,13 @@ const styles = StyleSheet.create({
     marginHorizontal: 14,
     marginVertical: 12,
   },
-  time: {
+  eventDetailsContainer: {
+    flexDirection: "row",
+  },
+  eventDetailsText: {
     fontSize: 18,
     color: Colors.gray.light,
+    maxWidth: 150,
   },
   title: {
     fontSize: 24,
