@@ -8,7 +8,6 @@ import {
 } from "react-native";
 
 import { SafeAreaView } from "react-native-safe-area-context";
-
 import { useNavigation } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -16,35 +15,42 @@ import {
   showMyCreatedEvents,
 } from "../../API/action/eventUser";
 import { groupEventsByMonth } from "../../utils/groupEventsByMonth";
-// import moment from "moment";
-
-// import EventCard from "../../components/ui/EventCard";
-import * as actionType from "../../API/actionTypes";
 
 import Colors from "../../src/constants/Colors";
 import SubSectionHeader from "../../components/Headers/SubSectionHeader";
-// import { back } from "../../assets/eventplaceholder.png";
 import AltEventCard from "../../components/Cards/AltEventCard";
 import EventCard from "../../components/Cards/EventCard";
 import NoEvents from "../../components/NoEvents";
 
 function AttendingPage() {
   const dispatch = useDispatch();
+  const navigation = useNavigation();
+
   const [loading, setLoading] = useState(true);
+  const [selector, setSelector] = useState("Attending");
+  const [groupedEvents, setGroupedEvents] = useState({});
+
   const events = useSelector((state) => state.eventUser || []);
   const myJoinedEvent = useSelector(
     (state) => state.eventUser.myJoinedEvents || []
   );
-  const [groupedEvents, setGroupedEvents] = useState({});
 
   const fetchData = async () => {
-    await dispatch(myJoinedEvents());
-    await dispatch(showMyCreatedEvents({ type: actionType.MY_CREATED_EVENT }));
-    setLoading(false);
+    try {
+      setLoading(true);
+      if (selector === "Attending") {
+        await dispatch(myJoinedEvents());
+      } else {
+        await dispatch(showMyCreatedEvents());
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
-    setLoading(true);
     fetchData();
   }, [selector]);
 
@@ -52,28 +58,19 @@ function AttendingPage() {
     if (myJoinedEvent.length > 0) {
       const grouped = groupEventsByMonth(myJoinedEvent);
       setGroupedEvents(grouped);
+    } else {
+      setGroupedEvents({});
     }
   }, [myJoinedEvent]);
 
-  const one = "Attending";
-  const two = "My Events";
-  const [selector, setSelector] = useState(one);
-
-  function handlePressAttending() {
-    setSelector(one);
-  }
-  function handlePressMyEvents() {
-    setSelector(two);
-  }
+  const handlePressAttending = () => setSelector("Attending");
+  const handlePressMyEvents = () => setSelector("My Events");
 
   const noEventsMessage =
-    selector === one
+    selector === "Attending"
       ? "You haven't joined any events yet, time to find something exciting!"
       : "You're not hosting anything right now,\nready to make your mark?";
-
-  const noEventsIcon = selector === one ? "rocket" : "footsteps";
-
-  const navigation = useNavigation();
+  const noEventsIcon = selector === "Attending" ? "rocket" : "footsteps";
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -81,22 +78,19 @@ function AttendingPage() {
         selected={selector}
         handlePressOne={handlePressAttending}
         handlePressTwo={handlePressMyEvents}
-        one={one}
-        two={two}
+        one="Attending"
+        two="My Events"
         title="Attending"
       />
       {loading ? (
-        <SafeAreaView style={styles.safeArea}>
+        <View style={styles.loaderContainer}>
           <ActivityIndicator size="large" color={Colors.accent.secondary} />
-        </SafeAreaView>
-      ) : selector === one ? (
+        </View>
+      ) : selector === "Attending" ? (
         Object.keys(groupedEvents).length === 0 ? (
           <NoEvents icon={noEventsIcon} message={noEventsMessage} />
         ) : (
-          <ScrollView
-            contentContainerStyle={styles.container}
-            overScrollMode="never"
-          >
+          <ScrollView contentContainerStyle={styles.container}>
             {Object.keys(groupedEvents).map((month) => (
               <View key={month}>
                 <View style={styles.dateContainer}>
@@ -135,10 +129,7 @@ function AttendingPage() {
           </ScrollView>
         )
       ) : (
-        <ScrollView
-          contentContainerStyle={[styles.container, { marginTop: 20 }]}
-          overScrollMode="never"
-        >
+        <ScrollView contentContainerStyle={[styles.container, { marginTop: 20 }]}>
           {events?.length > 0 ? (
             events.map((event) => (
               <View key={event.id} style={styles.eventContainer}>
@@ -181,6 +172,7 @@ function AttendingPage() {
     </SafeAreaView>
   );
 }
+
 export default AttendingPage;
 
 const styles = StyleSheet.create({
