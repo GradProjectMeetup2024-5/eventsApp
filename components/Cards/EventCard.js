@@ -18,6 +18,7 @@ export default function EventCard({
   eventOrganizer,
   eventImage,
   onPress,
+  edit = false,
 }) {
   const [imageError, setImageError] = useState(false);
 
@@ -133,10 +134,12 @@ export default function EventCard({
               color={Colors.gray.light}
               onPress={shareFunction}
             />
-            <EventCardButton
-              icon="create-outline"
-              color={Colors.accent.secondary}
-            />
+            {edit && (
+              <EventCardButton
+                icon="create-outline"
+                color={Colors.accent.secondary}
+              />
+            )}
           </View>
         </View>
         <View style={styles.detailsContainer}>

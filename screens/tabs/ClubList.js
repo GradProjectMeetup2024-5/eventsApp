@@ -63,7 +63,7 @@ function ClubList() {
                   navigation.navigate("ClubDetails", { clubId: club.id })
                 }
               />
-              {index < clubs?.length && <View style={styles.separator} />}
+              {index < clubs?.length - 1 && <View style={styles.separator} />}
             </View>
           ))
         ) : (

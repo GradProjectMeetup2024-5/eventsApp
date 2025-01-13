@@ -150,6 +150,7 @@ function AttendingPage() {
                   image={event?.image}
                   eventDate={event?.event_date}
                   eventId={event?.id}
+                  edit={true}
                   onPress={() =>
                     navigation.navigate("EventDetails", {
                       eventId: event?.id,

@@ -1,4 +1,5 @@
 import { Pressable, Text, StyleSheet } from "react-native";
+import Colors from "../../../src/constants/Colors";
 
 function AuthRedirectButton({ children, onPress }) {
   return (
@@ -15,6 +16,6 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   text: {
-    color: "#FFFFFF",
+    color: Colors.gray.light,
   },
 });

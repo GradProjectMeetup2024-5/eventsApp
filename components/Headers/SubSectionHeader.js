@@ -52,13 +52,25 @@ function SubSectionHeader({
             {
               backgroundColor:
                 selected === one
-                  ? Colors.background.surface
-                  : Colors.gray.darkest,
+                  ? Colors.accent.secondary
+                  : Colors.background.surface,
             },
           ]}
           onPress={handlePressOne}
         >
-          <Text style={styles.subButtonText}>{one}</Text>
+          <Text
+            style={[
+              styles.subButtonText,
+              {
+                color:
+                  selected === one
+                    ? Colors.background.surface
+                    : Colors.gray.light,
+              },
+            ]}
+          >
+            {one}
+          </Text>
         </Pressable>
         <Pressable
           style={[
@@ -66,13 +78,25 @@ function SubSectionHeader({
             {
               backgroundColor:
                 selected === two
-                  ? Colors.background.surface
-                  : Colors.gray.darkest,
+                  ? Colors.accent.secondary
+                  : Colors.background.surface,
             },
           ]}
           onPress={handlePressTwo}
         >
-          <Text style={styles.subButtonText}>{two}</Text>
+          <Text
+            style={[
+              styles.subButtonText,
+              {
+                color:
+                  selected === two
+                    ? Colors.background.surface
+                    : Colors.gray.light,
+              },
+            ]}
+          >
+            {two}
+          </Text>
         </Pressable>
       </View>
     </View>
@@ -99,7 +123,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginVertical: 8,
     marginHorizontal: 2,
-    height: 28,
+    height: 31,
     width: 130,
     borderRadius: 8,
     justifyContent: "center",
@@ -107,7 +131,7 @@ const styles = StyleSheet.create({
   },
   subButtonText: {
     fontSize: 16,
-    color: Colors.gray.light,
+    fontWeight: 500,
   },
   titleContainer: {
     flexDirection: "row",

@@ -1,15 +1,12 @@
-import { StyleSheet, View, Text, Pressable, Image } from "react-native";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { signin } from "../../API/action/auth";
 
-import Colors from "../../src/constants/Colors";
-
 import AuthTextInput from "../../components/ui/AuthUi/AuthTextInput";
-import AuthTitle from "../../components/ui/AuthUi/AuthTitle";
 import AuthButton from "../../components/ui/AuthUi/AuthButton";
 import AuthRedirectButton from "../../components/ui/AuthUi/AuthRedirectButton";
 import BoldText from "../../components/ui/BoldText";
+import AuthLayout from "../../components/ui/AuthUi/AuthLayout";
 
 function LogIn({ navigation }) {
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -35,78 +32,35 @@ function LogIn({ navigation }) {
   }
 
   return (
-    <View style={styles.contentContainer}>
-      <View style={styles.appLogo}>
-        <Image
-          source={require("../../assets/icon.png")}
-          style={[styles.icon, { width: 300, height: 300 }]}
-          resizeMode="contain"
-        />
-      </View>
+    <AuthLayout message="Back for more? Let's get you logged in!">
+      <AuthTextInput
+        placeholder="Email"
+        value={displayEmail}
+        onChangeText={(text) => {
+          setDisplayEmail(text);
+          setFormData({ ...formData, email: text.toLowerCase().trim() });
+        }}
+        autoCapitalize="none"
+        keyboardType="email-address"
+      />
+      <AuthTextInput
+        placeholder="Password"
+        secureTextEntry
+        value={formData.password}
+        onChangeText={(text) => setFormData({ ...formData, password: text })}
+      />
 
-      <View style={styles.formContainer}>
-        <AuthTitle>Back for more? Let's get you logged in!</AuthTitle>
-        <AuthTextInput
-          placeholder="Email"
-          value={displayEmail}
-          onChangeText={(text) => {
-            setDisplayEmail(text);
-            setFormData({ ...formData, email: text.toLowerCase().trim() });
-          }}
-          autoCapitalize="none"
-          keyboardType="email-address"
-        />
-        <AuthTextInput
-          placeholder="Password"
-          secureTextEntry
-          value={formData.password}
-          onChangeText={(text) => setFormData({ ...formData, password: text })}
-        />
+      <AuthButton onPress={handleLogin}>Log In</AuthButton>
 
-        <AuthButton onPress={handleLogin} textStyle={styles.whiteText}>
-          Log In
-        </AuthButton>
+      <AuthRedirectButton onPress={handleSignUp}>
+        Don't have an account? {<BoldText>Sign Up</BoldText>}
+      </AuthRedirectButton>
 
-        <AuthRedirectButton onPress={handleSignUp} textStyle={styles.whiteText}>
-          Don't have an account?{" "}
-          {<BoldText style={styles.whiteText}>Sign Up</BoldText>}
-        </AuthRedirectButton>
-
-        <Pressable style={styles.forgotPassword} onPress={handleForgotPass}>
-          <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
-        </Pressable>
-      </View>
-    </View>
+      <AuthRedirectButton onPress={handleForgotPass}>
+        Forgot Password?
+      </AuthRedirectButton>
+    </AuthLayout>
   );
 }
 
 export default LogIn;
-
-const styles = StyleSheet.create({
-  contentContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: Colors.background.base,
-  },
-  appLogo: {},
-  formContainer: {
-    alignItems: "center",
-    marginTop: 200,
-  },
-  icon: {
-    width: 100,
-    height: 100,
-    marginBottom: -90,
-  },
-  forgotPassword: {
-    marginTop: 20,
-  },
-  forgotPasswordText: {
-    fontSize: 14,
-    color: "#FFFFFF",
-  },
-  whiteText: {
-    color: "#FFFFFF",
-  },
-});
