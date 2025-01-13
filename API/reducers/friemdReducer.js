@@ -3,7 +3,8 @@ import {
     ACCEPT_FRIEND_REQUEST, 
     REJECT_FRIEND_REQUEST, 
     SHOW_PENDING_REQUESTS, 
-    FETCH_FRIENDS_LIST 
+    FETCH_FRIENDS_LIST, 
+    SHOW_PROFILE
 } from '../actionTypes';
 
 const initialState = {
@@ -13,6 +14,14 @@ const initialState = {
 
 export default (friendState = initialState, action) => {
     switch (action.type) {
+        case SHOW_PROFILE:
+            // Update profile
+            console.log('Profile Reducer:', action.payload);
+            return {
+               
+                profile: action.payload
+            };
+
         case SEND_FRIEND_REQUEST:
             // Assuming action.payload contains the new friend request
             return {

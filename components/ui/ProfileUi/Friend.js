@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Button, FlatList, Alert, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, FlatList, Alert } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import {
     sendFriendRequest,
@@ -7,19 +7,34 @@ import {
     rejectFriendRequest,
     showPendingRequests,
     fetchFriendsList,
-} from '../../../API/action/friend'; // Adjust the path as necessary
-import { Key } from 'lucide-react-native';
+    showProfile,
+} from '../../../API/action/friend';
 
 const Friends = () => {
     const dispatch = useDispatch();
-    const [receiverId, setReceiverId] = useState(''); // ID of the user to send a request
+    const [receiverId, setReceiverId] = useState('');
+    const [searchQuery, setSearchQuery] = useState('');
+    const [filteredProfiles, setFilteredProfiles] = useState([]);
+    const [viewAll, setViewAll] = useState(false);
+
     const pendingRequests = useSelector((state) => state.friemdReducer.pendingRequests || []);
     const friendsList = useSelector((state) => state.friemdReducer.friendsList || []);
+    const showProfiles = useSelector((state) => state.friemdReducer.profile || []);
 
     useEffect(() => {
         dispatch(showPendingRequests());
         dispatch(fetchFriendsList());
+        dispatch(showProfile());
     }, [dispatch]);
+
+    useEffect(() => {
+        if (viewAll) {
+            const results = showProfiles.filter((profile) =>
+                profile.name.toLowerCase().includes(searchQuery.toLowerCase())
+            );
+            setFilteredProfiles(results);
+        }
+    }, [searchQuery, showProfiles, viewAll]);
 
     const handleSendRequest = () => {
         if (receiverId) {
@@ -38,6 +53,11 @@ const Friends = () => {
         dispatch(rejectFriendRequest(requestId));
     };
 
+    const handleViewAll = () => {
+        setViewAll(true);
+        setFilteredProfiles(showProfiles);
+    };
+
     return (
         <View style={styles.container}>
             <Text style={styles.heading}>Send Friend Request</Text>
@@ -54,36 +74,60 @@ const Friends = () => {
             </View>
 
             <Text style={styles.heading}>Pending Requests</Text>
-            {
-                pendingRequests.map((item) => (
-                    <View style={styles.requestItem} key={item?.id} >
-                        <Text style={styles.requestText}>{item?.name}</Text>
-                        <View style={styles.requestActions}>
-                            <TouchableOpacity
-                                style={styles.acceptButton}
-                                onPress={() => handleAcceptRequest(item?.id)}
-                            >
-                                <Text style={styles.buttonText}>Accept</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                style={styles.rejectButton}
-                                onPress={() => handleRejectRequest(item?.id)}
-                            >
-                                <Text style={styles.buttonText}>Reject</Text>
-                            </TouchableOpacity>
-                        </View>
+            {pendingRequests.map((item) => (
+                <View style={styles.requestItem} key={item?.id}>
+                    <Text style={styles.requestText}>{item?.sender?.name}</Text>
+                    <View style={styles.requestActions}>
+                        <TouchableOpacity
+                            style={styles.acceptButton}
+                            onPress={() => handleAcceptRequest(item?.id)}
+                        >
+                            <Text style={styles.acceptButtonText}>Accept</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={styles.rejectButton}
+                            onPress={() => handleRejectRequest(item?.id)}
+                        >
+                            <Text style={styles.rejectButtonText}>Reject</Text>
+                        </TouchableOpacity>
                     </View>
-                ))
-            }
+                </View>
+            ))}
 
             <Text style={styles.heading}>Friends List</Text>
-            {
-                friendsList.map((item) => (
-                   <View key={item.id}>
-                    <Text style={styles.friendItem}>{item?.name}</Text>
-                     </View>
+            {friendsList.map((item) => (
+                <View key={item.id}>
+                    <Text style={styles.friendItem}>{item.name}</Text>
+                </View>
+            ))}
+
+            <Text style={styles.heading}>Search and View All Profiles</Text>
+            {viewAll && (
+                <TextInput
+                    style={styles.input}
+                    placeholder="Search by name..."
+                    value={searchQuery}
+                    onChangeText={setSearchQuery}
+                />
+            )}
+            <TouchableOpacity style={styles.viewAllButton} onPress={handleViewAll}>
+                <Text style={styles.viewAllButtonText}>View All</Text>
+            </TouchableOpacity>
+
+            {viewAll && (
+                filteredProfiles.map((item) => (
+                    <View style={styles.profileItem} key={item.id}>
+                        <Text style={styles.profileText}>{item.name}</Text>
+                        <Text style={styles.profileSubText}>{item.email}</Text>
+                        <TouchableOpacity
+                            style={styles.sendButton}
+                            onPress={() => dispatch(sendFriendRequest(item.id))}
+                        >
+                            <Text style={styles.sendButtonText}>Send Request</Text>
+                        </TouchableOpacity>
+                    </View>
                 ))
-            }
+            )}
         </View>
     );
 };
@@ -127,9 +171,6 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
     requestItem: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
         padding: 10,
         marginBottom: 10,
         backgroundColor: '#FFFFFF',
@@ -146,21 +187,24 @@ const styles = StyleSheet.create({
     },
     requestActions: {
         flexDirection: 'row',
+        marginTop: 10,
     },
     acceptButton: {
-        backgroundColor: '#10B981',
-        paddingVertical: 6,
-        paddingHorizontal: 15,
+        backgroundColor: '#22C55E',
+        padding: 10,
         borderRadius: 8,
-        marginRight: 8,
+        marginRight: 10,
+    },
+    acceptButtonText: {
+        color: '#FFFFFF',
+        fontWeight: 'bold',
     },
     rejectButton: {
         backgroundColor: '#EF4444',
-        paddingVertical: 6,
-        paddingHorizontal: 15,
+        padding: 10,
         borderRadius: 8,
     },
-    buttonText: {
+    rejectButtonText: {
         color: '#FFFFFF',
         fontWeight: 'bold',
     },
@@ -171,10 +215,31 @@ const styles = StyleSheet.create({
         backgroundColor: '#FFFFFF',
         borderRadius: 8,
         marginBottom: 10,
-        shadowColor: '#000',
-        shadowOpacity: 0.1,
-        shadowRadius: 3,
-        shadowOffset: { width: 0, height: 2 },
-        elevation: 2,
+    },
+    viewAllButton: {
+        backgroundColor: '#6B7280',
+        padding: 10,
+        borderRadius: 8,
+        marginTop: 10,
+    },
+    viewAllButtonText: {
+        color: '#FFFFFF',
+        textAlign: 'center',
+    },
+    profileItem: {
+        padding: 10,
+        marginBottom: 10,
+        backgroundColor: '#FFFFFF',
+        borderRadius: 8,
+    },
+    profileText: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        color: '#374151',
+    },
+    profileSubText: {
+        fontSize: 14,
+        color: '#6B7280',
+        marginBottom: 10,
     },
 });

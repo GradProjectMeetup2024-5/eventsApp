@@ -3,9 +3,20 @@ import {
     ACCEPT_FRIEND_REQUEST, 
     REJECT_FRIEND_REQUEST, 
     SHOW_PENDING_REQUESTS, 
-    FETCH_FRIENDS_LIST 
+    FETCH_FRIENDS_LIST,
+    SHOW_PROFILE 
 } from '../actionTypes';
 import * as api from './API';
+
+export const showProfile = () => async (dispatch) => {
+    try {
+        const { data } = await api.showProfile();
+        dispatch({ type: SHOW_PROFILE, payload: data });
+        console.log('Profile:', data);
+    } catch (error) {
+        console.error('Error fetching profile:', error);
+    }
+}
 
 // Action to send a friend request
 export const sendFriendRequest = (receiverId) => async (dispatch) => {
@@ -65,4 +76,5 @@ module.export = {
     rejectFriendRequest,
     showPendingRequests,
     fetchFriendsList,
+    showProfile
 };

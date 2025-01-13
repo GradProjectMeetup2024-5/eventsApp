@@ -55,3 +55,6 @@ export const acceptFriendRequest =(senderId)=>API.patch(`/friend/accept-request/
 export const rejectFriendRequest =(senderId)=>API.patch(`/friend/reject-request/${senderId}`)
 export const showPendingRequest =()=>API.get('/friend/pending-requests')
 export const showFriendsList =()=>API.get('/friend/friends-list')
+
+// User
+export const showProfile =()=>API.get('/user/all')
