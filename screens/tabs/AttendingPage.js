@@ -77,9 +77,11 @@ const AttendingPage = () => {
       />
 
       {loading ? (
-        <View style={styles.loaderContainer}>
-          <ActivityIndicator size="large" color={Colors.accent.secondary} />
-        </View>
+        <ActivityIndicator
+          size="large"
+          style={{ marginTop: 15 }}
+          color={Colors.accent.secondary}
+        />
       ) : selector === "Attending" ? (
         Object.keys(groupedEvents).length === 0 ? (
           <NoEvents icon={noEventsIcon} message={noEventsMessage} />
@@ -124,7 +126,6 @@ const AttendingPage = () => {
                 <EventCard
                   {...event}
                   edit={true}
-
                   onPress={() =>
                     navigation.navigate("EventDetails", {
                       ...event,
@@ -150,7 +151,6 @@ const AttendingPage = () => {
 };
 
 export default AttendingPage;
-
 
 const styles = StyleSheet.create({
   safeArea: {
