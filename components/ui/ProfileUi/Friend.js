@@ -80,13 +80,13 @@ const Friends = () => {
                     <View style={styles.requestActions}>
                         <TouchableOpacity
                             style={styles.acceptButton}
-                            onPress={() => handleAcceptRequest(item?.id)}
+                            onPress={() => handleAcceptRequest(item?.sender?.id)}
                         >
                             <Text style={styles.acceptButtonText}>Accept</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
                             style={styles.rejectButton}
-                            onPress={() => handleRejectRequest(item?.id)}
+                            onPress={() => handleRejectRequest(item?.sender?.id)}
                         >
                             <Text style={styles.rejectButtonText}>Reject</Text>
                         </TouchableOpacity>
