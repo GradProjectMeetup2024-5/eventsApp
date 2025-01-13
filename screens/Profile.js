@@ -14,6 +14,7 @@ import * as actionType from "../API/actionTypes";
 import * as SecureStore from "expo-secure-store";
 
 import Friends from "../components/ui/ProfileUi/Friend";
+import Colors from "../src/constants/Colors";
 
 export default function Profile({ navigation }) {
   const dispatch = useDispatch();
@@ -63,23 +64,7 @@ export default function Profile({ navigation }) {
             major={user?.user?.user?.major}
           />
 
-          <Text style={styles.sectionTitle}>General</Text>
-
-          <View style={styles.settingsSection}>
-            <ButtonItem
-              icon={<CheckCircle2 size={16} color="#000000" />}
-              style={styles.buttonItem}
-            >
-              Request Status
-            </ButtonItem>
-
-            <ButtonItem
-              icon={<History size={16} color="#000000" />}
-              style={styles.buttonItem}
-            >
-              History
-            </ButtonItem>
-          </View>
+          <Text style={styles.sectionTitle}>Friends</Text>
 
           <View>
             <Friends/>
@@ -112,6 +97,7 @@ export default function Profile({ navigation }) {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
+    backgroundColor: Colors.background.base,
   },
   container: {
     flex: 1,
