@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   View,
   Text,
@@ -22,49 +22,42 @@ import AltEventCard from "../../components/Cards/AltEventCard";
 import EventCard from "../../components/Cards/EventCard";
 import NoEvents from "../../components/NoEvents";
 
-function AttendingPage() {
+const AttendingPage = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
   const [loading, setLoading] = useState(true);
   const [selector, setSelector] = useState("Attending");
-  const [groupedEvents, setGroupedEvents] = useState({});
 
   const events = useSelector((state) => state.eventUser || []);
   const myJoinedEvent = useSelector(
     (state) => state.eventUser.myJoinedEvents || []
   );
 
-  const fetchData = async () => {
-    try {
+  useEffect(() => {
+    const fetchData = async () => {
       setLoading(true);
-      if (selector === "Attending") {
-        await dispatch(myJoinedEvents());
-      } else {
-        await dispatch(showMyCreatedEvents());
+      try {
+        if (selector === "Attending") {
+          await dispatch(myJoinedEvents());
+        } else {
+          await dispatch(showMyCreatedEvents());
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
+    };
     fetchData();
-  }, [selector]);
+  }, [selector, dispatch]);
 
-  useEffect(() => {
+  const groupedEvents = useMemo(() => {
     if (myJoinedEvent.length > 0) {
-      const grouped = groupEventsByMonth(myJoinedEvent);
-      setGroupedEvents(grouped);
-    } else {
-      setGroupedEvents({});
+      return groupEventsByMonth(myJoinedEvent);
     }
+    return {};
   }, [myJoinedEvent]);
-
-  const handlePressAttending = () => setSelector("Attending");
-  const handlePressMyEvents = () => setSelector("My Events");
 
   const noEventsMessage =
     selector === "Attending"
@@ -76,12 +69,13 @@ function AttendingPage() {
     <SafeAreaView style={styles.safeArea}>
       <SubSectionHeader
         selected={selector}
-        handlePressOne={handlePressAttending}
-        handlePressTwo={handlePressMyEvents}
+        handlePressOne={() => setSelector("Attending")}
+        handlePressTwo={() => setSelector("My Events")}
         one="Attending"
         two="My Events"
         title="Attending"
       />
+
       {loading ? (
         <View style={styles.loaderContainer}>
           <ActivityIndicator size="large" color={Colors.accent.secondary} />
@@ -98,26 +92,17 @@ function AttendingPage() {
                 </View>
                 {groupedEvents[month].map((event) => (
                   <AltEventCard
-                    key={event?.id}
-                    eventName={event?.event_name}
-                    faculty={event?.faculty}
-                    floor={event?.floor}
-                    room={event?.room}
-                    image={event?.image}
-                    eventDate={event?.event_date}
-                    eventId={event?.id}
+                    key={event.id}
+                    eventName={event.event_name}
+                    faculty={event.faculty}
+                    floor={event.floor}
+                    room={event.room}
+                    image={event.image}
+                    eventDate={event.event_date}
+                    eventId={event.id}
                     onPress={() =>
                       navigation.navigate("EventDetails", {
-                        eventId: event?.id,
-                        creatorName: event?.createrName,
-                        eventName: event?.event_name,
-                        eventDate: event?.event_date,
-                        floor: event?.floor,
-                        room: event?.room,
-                        about: event?.event_desc,
-                        image: event?.image,
-                        faculty: event?.faculty,
-                        joinedUsers: event?.joined_users,
+                        ...event,
                       })
                     }
                     style={{ marginBottom: 12 }}
@@ -130,29 +115,14 @@ function AttendingPage() {
         )
       ) : (
         <ScrollView contentContainerStyle={[styles.container, { marginTop: 20 }]}>
-          {events?.length > 0 ? (
+          {events.length > 0 ? (
             events.map((event) => (
               <View key={event.id} style={styles.eventContainer}>
                 <EventCard
-                  eventName={event?.event_name}
-                  faculty={event?.faculty}
-                  floor={event?.floor}
-                  room={event?.room}
-                  image={event?.image}
-                  eventDate={event?.event_date}
-                  eventId={event?.id}
+                  {...event}
                   onPress={() =>
                     navigation.navigate("EventDetails", {
-                      eventId: event?.id,
-                      creatorName: event?.createrName,
-                      eventName: event?.event_name,
-                      eventDate: event?.event_date,
-                      floor: event?.floor,
-                      room: event?.room,
-                      about: event?.event_desc,
-                      image: event?.image,
-                      faculty: event?.faculty,
-                      joinedUsers: event?.joined_users,
+                      ...event,
                     })
                   }
                   style={{ marginBottom: 12 }}
@@ -171,9 +141,10 @@ function AttendingPage() {
       )}
     </SafeAreaView>
   );
-}
+};
 
 export default AttendingPage;
+
 
 const styles = StyleSheet.create({
   safeArea: {

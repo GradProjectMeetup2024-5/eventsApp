@@ -5,6 +5,7 @@ import eventUser from './eventUserReducer';
 import clubReducer from './clubReducer';
 import clubEventsReducer from './clubEventsReducer';
 import commentReducer from './commentReducer';
+import friemdReducer from './friemdReducer';
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -12,7 +13,8 @@ const rootReducer = combineReducers({
   eventUser,
   clubReducer,
   clubEventsReducer,
-  commentReducer
+  commentReducer,
+  friemdReducer
 });
 
 export default rootReducer;
