@@ -17,7 +17,7 @@ import { useRoute } from "@react-navigation/native";
 
 import Colors from "../src/constants/Colors";
 import EventDetailsHeader from "../components/Headers/EventDetailsHeader";
-import JoinClubButton from "../components/JoinClubButton";
+
 import RefreshableScrollView from "../components/RefreshableScrollView";
 import TextDetails from "../components/TextDetails";
 import DetailCardSeparator from "../components/Event Details/DetailCardSeparator";
@@ -33,6 +33,7 @@ import * as actionType from "../API/actionTypes";
 import CommentSection from "../components/Event Details/Comments/CommentSection";
 import EventDetailsFooter from "../components/Event Details/EventDetailsFooter";
 import ImageSlider from "../components/Event Details/ImageSlider";
+import PosterDetails from "../components/PosterDetails";
 
 function EventDetails() {
   const [joinState, setJoinState] = useState(false);
@@ -73,10 +74,6 @@ function EventDetails() {
     setJoinState(checkIfUserJoined);
   }, [dispatch, eventId, checkIfUserJoined]);
 
-  function toggleExpanded() {
-    setIsExpanded(!isExpanded);
-  }
-
   function joinHandler() {
     setJoinState(!joinState);
   }
@@ -89,6 +86,54 @@ function EventDetails() {
       await dispatch(leaveEvent(eventId));
       setJoinState(false);
     }
+  }
+
+  function formatTime(dateString) {
+    const date = new Date(dateString);
+    let hours = date.getHours();
+    const minutes = date.getMinutes().toString().padStart(2, "0");
+
+    const period = hours >= 12 ? "PM" : "AM";
+    hours = hours % 12 || 12;
+
+    return `${hours}:${minutes} ${period}`;
+  }
+
+  function formatDate(dateString) {
+    const date = new Date(dateString);
+
+    const daysOfWeek = [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+    ];
+    const dayOfWeek = daysOfWeek[date.getDay()];
+
+    const dayOfMonth = date.getDate();
+
+    const monthsOfYear = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ];
+    const month = monthsOfYear[date.getMonth()];
+
+    const year = date.getFullYear();
+
+    return `${dayOfWeek}, ${dayOfMonth} ${month} ${year}`;
   }
 
   return (
@@ -113,32 +158,14 @@ function EventDetails() {
             <View style={styles.titleContainer}>
               <Text style={styles.titleText}>{eventName}</Text>
             </View>
-            <View style={styles.posterContainer}>
-              <Pressable style={styles.navigationContainer}>
-                <Image
-                  style={styles.posterImage}
-                  source={{
-                    uri: "https://d1csarkz8obe9u.cloudfront.net/posterpreviews/art-club-logo-design-template-7363f499d408b8d5aa636f25e135ce56_screen.jpg?ts=1688208799",
-                  }}
-                />
-                <Text style={styles.posterName}>{creatorName}</Text>
 
-                {isApproved ? (
-                  <Ionicons
-                    name="checkmark-circle"
-                    size={24}
-                    color={Colors.accent.secondary}
-                  />
-                ) : (
-                  <View style={{ width: 24, height: 24 }} />
-                )}
-              </Pressable>
-
-              <View style={styles.joinButtonContaienr}>
-                <JoinClubButton />
-              </View>
-            </View>
-
+            <PosterDetails
+              isApproved={isApproved}
+              creatorImage="https://d1csarkz8obe9u.cloudfront.net/posterpreviews/art-club-logo-design-template-7363f499d408b8d5aa636f25e135ce56_screen.jpg?ts=1688208799"
+              creatorName={creatorName}
+              inEventDetails={true}
+              club={true}
+            />
             {/* DETAILS SECTION */}
             <View style={styles.detailsContainer}>
               <Shadow
@@ -158,8 +185,8 @@ function EventDetails() {
                   {/* DATE AND TIME SUB-SECTION*/}
                   <DetailCardSection
                     iconName="calendar-clear-outline"
-                    primary={eventDate}
-                    secondary="1:00 PM - 3:00 PM"
+                    primary={formatDate(eventDate)}
+                    secondary={formatTime(eventDate)}
                   >
                     <Ionicons
                       name="chevron-forward"

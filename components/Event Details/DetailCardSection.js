@@ -50,13 +50,13 @@ const styles = StyleSheet.create({
   primary: {
     marginHorizontal: 10,
     color: Colors.gray.light,
-    fontSize: 16,
-    fontWeight: 500,
+    fontSize: 17,
+    fontWeight: 600,
   },
   secondary: {
     marginHorizontal: 10,
     color: Colors.gray.light,
-    fontSize: 13,
+    fontSize: 14,
     fontWeight: 400,
   },
 });

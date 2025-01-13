@@ -2,6 +2,8 @@ import { Pressable, Text, StyleSheet, Dimensions } from "react-native";
 
 const { width } = Dimensions.get("window");
 
+import Colors from "../../../src/constants/Colors";
+
 function AuthButton({ children, onPress }) {
   return (
     <Pressable
@@ -20,14 +22,15 @@ export default AuthButton;
 
 const styles = StyleSheet.create({
   buttonText: {
-    color: "#FFFFFF",
+    color: Colors.background.surface,
     // fontFamily: "WorkSans-Medium",
-    fontSize: 16,
+    fontWeight: 600,
+    fontSize: 18,
   },
   authButton: {
     width: width - 32,
     height: 47,
-    backgroundColor: "#FF0000",
+    backgroundColor: Colors.accent.secondary,
     borderRadius: 24,
     justifyContent: "center",
     alignItems: "center",

@@ -18,6 +18,64 @@ function AltEventCard({
   pageType = null,
   noEvents = false,
 }) {
+  function formatTime(dateString) {
+    const date = new Date(dateString);
+    let hours = date.getHours();
+    const minutes = date.getMinutes().toString().padStart(2, "0");
+
+    const period = hours >= 12 ? "PM" : "AM";
+    hours = hours % 12 || 12;
+
+    return `${hours}:${minutes} ${period}`;
+  }
+
+  const formatDate = (eventDate) => {
+    const event = new Date(eventDate);
+    const today = new Date();
+    const tomorrow = new Date();
+    tomorrow.setDate(today.getDate() + 1);
+
+    const months = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ];
+
+    const getDaySuffix = (day) => {
+      if (day >= 11 && day <= 13) return "th";
+      switch (day % 10) {
+        case 1:
+          return "st";
+        case 2:
+          return "nd";
+        case 3:
+          return "rd";
+        default:
+          return "th";
+      }
+    };
+
+    if (event.toDateString() === today.toDateString()) {
+      return "Today";
+    } else if (event.toDateString() === tomorrow.toDateString()) {
+      return "Tomorrow";
+    } else {
+      const dayOfMonth = event.getDate();
+      const month = months[event.getMonth()];
+      const suffix = getDaySuffix(dayOfMonth);
+      return `${dayOfMonth}${suffix} of ${month}`;
+    }
+  };
+
   return (
     <View style={[styles.container, style]}>
       <Shadow
@@ -35,32 +93,57 @@ function AltEventCard({
       >
         <Pressable style={styles.card} onPress={onPress}>
           {!noEvents ? (
-            <View style={styles.cardInfo}>
-              <Text style={styles.time}>{eventDate}</Text>
-              <Text
-                style={[
-                  styles.title,
-                  {
-                    color:
-                      pageType == "History"
-                        ? Colors.gray.muted
-                        : Colors.accent.primary,
-                  },
-                ]}
-              >
-                {eventName}
-              </Text>
-              <View style={styles.location}>
-                <Ionicons
-                  name="location-outline"
-                  size={20}
-                  color={Colors.gray.dark}
-                />
-                <Text style={styles.locationText}>
-                  {faculty + "-" + floor + "-" + room}
+            <>
+              <View style={styles.cardInfo}>
+                <View style={styles.eventDetailsContainer}>
+                  <Text style={styles.eventDetailsText}>
+                    {formatDate(eventDate)}
+                  </Text>
+                  <Text style={styles.eventDetailsText}> · </Text>
+                  <Text style={styles.eventDetailsText}>
+                    {formatTime(eventDate)}
+                  </Text>
+                </View>
+
+                <Text
+                  style={[
+                    styles.title,
+                    {
+                      color:
+                        pageType == "History"
+                          ? Colors.gray.muted
+                          : Colors.accent.primary,
+                    },
+                  ]}
+                >
+                  {eventName}
                 </Text>
+                <View style={styles.location}>
+                  <Ionicons
+                    name="location-outline"
+                    size={20}
+                    color={Colors.gray.dark}
+                  />
+                  <Text style={styles.locationText}>
+                    {faculty + "-" + floor + "-" + room}
+                  </Text>
+                </View>
               </View>
-            </View>
+              <View style={styles.attendeeContainer}>
+                <AttendeePictures
+                  attendees={[
+                    "https://picsum.photos/100/100",
+                    "https://picsum.photos/200/100",
+                    "https://picsum.photos/400/300",
+                    "https://picsum.photos/100/100",
+                    "https://picsum.photos/100/100",
+                    "https://picsum.photos/100/100",
+                  ]}
+                  enableAttendeeCount={true}
+                  pageType={pageType}
+                />
+              </View>
+            </>
           ) : (
             <View style={styles.noEventsCard}>
               <Text style={styles.noEventsText}>
@@ -79,7 +162,7 @@ export default AltEventCard;
 const styles = StyleSheet.create({
   container: {
     marginHorizontal: 16,
-    marginBottom: 6, // same amount as the distance of the shadow, cause it was getting cut off
+    marginBottom: 6, // same amount as the distance of the shadow, cause it was getting cut off in clubDetails
   },
   card: {
     flexDirection: "row",
@@ -103,9 +186,13 @@ const styles = StyleSheet.create({
     marginHorizontal: 14,
     marginVertical: 12,
   },
-  time: {
+  eventDetailsContainer: {
+    flexDirection: "row",
+  },
+  eventDetailsText: {
     fontSize: 18,
     color: Colors.gray.light,
+    maxWidth: 150,
   },
   title: {
     fontSize: 24,
@@ -121,23 +208,12 @@ const styles = StyleSheet.create({
     margin: 0,
     marginLeft: 4,
     lineHeight: 20,
-    maxWidth: 230,
+    maxWidth: 228,
   },
-  attending: {
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "flex-end",
-    paddingVertical: 10,
-    paddingHorizontal: 12,
-  },
-  attendingImages: {
-    flexDirection: "row",
-    alignItems: "center",
-    width: 68,
-    height: 40,
-  },
-  attendingCount: {
-    fontSize: 15,
-    color: Colors.gray.light,
+  attendeeContainer: {
+    position: "absolute",
+    right: 2,
+    bottom: 0,
+    zIndex: 1,
   },
 });

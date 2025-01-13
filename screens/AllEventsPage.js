@@ -124,10 +124,10 @@ function AllEventsPage() {
     setLoading(false);
   }, []);
 
-  function handlePressAttending() {
+  function handlePressOne() {
     setSelector(one);
   }
-  function handlePressMyEvents() {
+  function handlePressTwo() {
     setSelector(two);
   }
 
@@ -135,8 +135,8 @@ function AllEventsPage() {
     <SafeAreaView style={styles.safeArea}>
       <SubSectionHeader
         selected={selector}
-        handlePressOne={handlePressAttending}
-        handlePressTwo={handlePressMyEvents}
+        handlePressOne={handlePressOne}
+        handlePressTwo={handlePressTwo}
         one={one}
         two={two}
         title="All Events"

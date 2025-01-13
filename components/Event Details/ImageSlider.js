@@ -21,6 +21,7 @@ const images = [
 function ImageSlider() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [shouldAnimatePagination, setShouldAnimatePagination] = useState(true);
 
   const renderItem = ({ item, index }) => (
     <View style={styles.imageSliderContainer}>
@@ -53,8 +54,10 @@ function ImageSlider() {
   );
 
   const handleModalClose = (currentIndex) => {
+    setShouldAnimatePagination(false);
     setActiveIndex(currentIndex);
     setIsModalVisible(false);
+    setTimeout(() => setShouldAnimatePagination(true), 0.2);
   };
   return (
     <View>
@@ -67,9 +70,6 @@ function ImageSlider() {
             renderItem={renderItem}
             sliderWidth={width}
             itemWidth={380}
-            loop={false}
-            autoplay={false}
-            autoplayInterval={3000}
             onBeforeSnapToItem={(index) => setActiveIndex(index)}
             firstItem={activeIndex}
           />
@@ -81,6 +81,8 @@ function ImageSlider() {
                 dotStyle={styles.dotStyle}
                 inactiveDotStyle={styles.inactiveDotStyle}
                 inactiveDotScale={0.6}
+                animatedDuration={shouldAnimatePagination ? 200 : 0}
+                animatedTension={shouldAnimatePagination ? null : 0}
               />
             </View>
           )}

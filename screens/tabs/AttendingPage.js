@@ -114,12 +114,17 @@ const AttendingPage = () => {
           </ScrollView>
         )
       ) : (
-        <ScrollView contentContainerStyle={[styles.container, { marginTop: 20 }]}>
+        <ScrollView
+          contentContainerStyle={[styles.container, { marginTop: 20 }]}
+          overScrollMode="never"
+        >
           {events.length > 0 ? (
-            events.map((event) => (
+            events.map((event, index) => (
               <View key={event.id} style={styles.eventContainer}>
                 <EventCard
                   {...event}
+                  edit={true}
+
                   onPress={() =>
                     navigation.navigate("EventDetails", {
                       ...event,
@@ -127,6 +132,7 @@ const AttendingPage = () => {
                   }
                   style={{ marginBottom: 12 }}
                 />
+                {index < events.length - 1 && <View style={styles.separator} />}
               </View>
             ))
           ) : (
@@ -181,10 +187,6 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
     maxWidth: 307,
   },
-  footer: {
-    padding: 16,
-    paddingBottom: 24,
-  },
   button: {
     backgroundColor: "#DC143C",
     borderRadius: 100,
@@ -207,5 +209,11 @@ const styles = StyleSheet.create({
     fontSize: 21,
     fontWeight: "500",
     color: Colors.accent.secondary,
+  },
+  separator: {
+    height: StyleSheet.hairlineWidth,
+    backgroundColor: Colors.gray.darkest,
+    marginVertical: 12,
+    marginHorizontal: 15,
   },
 });
