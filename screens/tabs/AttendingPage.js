@@ -84,10 +84,7 @@ const AttendingPage = () => {
         Object.keys(groupedEvents).length === 0 ? (
           <NoEvents icon={noEventsIcon} message={noEventsMessage} />
         ) : (
-          <ScrollView
-            contentContainerStyle={styles.container}
-            overScrollMode="never"
-          >
+          <ScrollView contentContainerStyle={styles.container}>
             {Object.keys(groupedEvents).map((month) => (
               <View key={month}>
                 <View style={styles.dateContainer}>
@@ -127,6 +124,7 @@ const AttendingPage = () => {
                 <EventCard
                   {...event}
                   edit={true}
+
                   onPress={() =>
                     navigation.navigate("EventDetails", {
                       ...event,
@@ -152,6 +150,7 @@ const AttendingPage = () => {
 };
 
 export default AttendingPage;
+
 
 const styles = StyleSheet.create({
   safeArea: {
