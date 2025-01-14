@@ -15,7 +15,7 @@ const App = () => {
   const [loading, setLoading] = useState(true);
   const [searchText, setSearchText] = useState(""); 
 
-  const allEvents = useSelector((state) => state.event || []); 
+  const allEvents = useSelector((state) => state.event.events || []); 
   console.log(allEvents);
   const fetchEvents = () => {
     dispatch(showEvents({ type: actionType.FETCH_ALL }));

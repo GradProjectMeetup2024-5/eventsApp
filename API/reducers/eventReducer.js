@@ -9,7 +9,10 @@ export default (event = [], action) => {
               return [...event,action.payload]
 
               case FETCH_ALL:
-                return action.payload 
+                return {
+                  ...event,
+                  events: action.payload,
+                }
 
                 case FETCH_ONE_EVENT:
                   return {

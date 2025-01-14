@@ -18,6 +18,7 @@ export default function EventCard({
   eventOrganizer,
   eventImage,
   onPress,
+  faculty,
   edit = false,
 }) {
   const [imageError, setImageError] = useState(false);
@@ -149,12 +150,13 @@ export default function EventCard({
             <Text style={styles.eventDetailsText}> · </Text>
             <Text style={styles.eventDetailsText}>{formatTime(eventDate)}</Text>
             <Text style={styles.eventDetailsText}> · </Text>
-            <Text style={styles.eventDetailsText}>{/*{eventLocation}*/}</Text>
+            <Text style={styles.eventDetailsText}>{faculty}</Text>
           </View>
           <View
             style={[styles.posterContainer, { transform: [{ scale: 0.8 }] }]}
           >
             <PosterDetails creatorImage="https://d1csarkz8obe9u.cloudfront.net/posterpreviews/art-club-logo-design-template-7363f499d408b8d5aa636f25e135ce56_screen.jpg?ts=1688208799" />
+            <Text style={styles.eventOrganizer}>{faculty}</Text>
           </View>
         </View>
       </Pressable>
@@ -184,6 +186,11 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     resizeMode: "cover",
+  },
+  eventOrganizer: {
+    fontSize: 12,
+    color: "white",
+    textAlign: "left",
   },
   gradientOverlay: {
     position: "absolute",

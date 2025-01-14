@@ -61,7 +61,7 @@ function EventDetails() {
   } = route.params;
 
   const oneEvent = useSelector((state) => state.event.oneEvent || {});
-   
+   console.log("TEST",oneEvent);
   useEffect(() => {
     dispatch(findOneEvent(eventId)); 
   }, [dispatch, eventId]);
@@ -74,14 +74,14 @@ function EventDetails() {
 
   const fetchStatus = async () => {
     setLoading(true);
-    await dispatch(checkIfUserJoinedEvent(eventId));
+    await dispatch(checkIfUserJoinedEvent(oneEvent?.id));
     setLoading(false);
   };
 
   useEffect(() => {
     fetchStatus();
     setJoinState(checkIfUserJoined);
-  }, [dispatch, eventId, checkIfUserJoined]);
+  }, [dispatch, oneEvent?.id, checkIfUserJoined]);
 
   function joinHandler() {
     setJoinState(!joinState);
@@ -89,10 +89,10 @@ function EventDetails() {
 
   async function joinHandler() {
     if (!joinState) {
-      await dispatch(joinEvent(eventId));
+      await dispatch(joinEvent(oneEvent?.id));
       setJoinState(true);
     } else {
-      await dispatch(leaveEvent(eventId));
+      await dispatch(leaveEvent(oneEvent?.id));
       setJoinState(false);
     }
   }
@@ -142,8 +142,12 @@ function EventDetails() {
 
     const year = date.getFullYear();
 
+
+
     return `${dayOfWeek}, ${dayOfMonth} ${month} ${year}`;
   }
+
+  const isClub = oneEvent?.clubId ? true : false;
 
   return (
     <SafeAreaView style={styles.container}>
@@ -165,16 +169,29 @@ function EventDetails() {
             </View>
 
             <View style={styles.titleContainer}>
-              <Text style={styles.titleText}>{oneEvent.eventName}</Text>
+              <Text style={styles.titleText}>{oneEvent?.event_name}</Text>
             </View>
 
-            <PosterDetails
-              isApproved={isApproved}
-              creatorImage="https://d1csarkz8obe9u.cloudfront.net/posterpreviews/art-club-logo-design-template-7363f499d408b8d5aa636f25e135ce56_screen.jpg?ts=1688208799"
-              creatorName={creatorName}
-              inEventDetails={true}
-              club={true}
-            />
+            {
+              isClub ? (
+                <PosterDetails
+                  isApproved={isApproved}
+                  creatorImage="https://d1csarkz8obe9u.cloudfront.net/posterpreviews/art-club-logo-design-template-7363f499d408b8d5aa636f25e135ce56_screen.jpg?ts=1688208799"
+                  creatorName={oneEvent?.club?.name}
+                  inEventDetails={true}
+                  club={true}
+                />
+              ) : (
+                <PosterDetails
+                  isApproved={isApproved}
+                  creatorImage="https://d1csarkz8obe9u.cloudfront.net/posterpreviews/art-club-logo-design-template-7363f499d408b8d5aa636f25e135ce56_screen.jpg?ts=1688208799"
+                  creatorName={oneEvent?.user?.name}
+                  inEventDetails={true}
+                  club={false}
+                />
+              )
+            }
+
             {/* DETAILS SECTION */}
             <View style={styles.detailsContainer}>
               <Shadow
@@ -194,8 +211,8 @@ function EventDetails() {
                   {/* DATE AND TIME SUB-SECTION*/}
                   <DetailCardSection
                     iconName="calendar-clear-outline"
-                    primary={formatDate(eventDate)}
-                    secondary={formatTime(eventDate)}
+                    primary={formatDate(oneEvent?.event_date)}
+                    secondary={formatTime(oneEvent?.eventDate)}
                   >
                     <Ionicons
                       name="chevron-forward"
@@ -210,8 +227,8 @@ function EventDetails() {
                   {/* LOCATION SUB-SECTION*/}
                   <DetailCardSection
                     iconName="location-outline"
-                    primary={faculty}
-                    secondary={room + ", " + floor}
+                    primary={oneEvent?.faculty}
+                    secondary={oneEvent?.room + ", " + oneEvent?.floor}
                   >
                     <Ionicons
                       name="chevron-forward"
@@ -228,9 +245,9 @@ function EventDetails() {
                     iconName="checkmark-circle-outline"
                     primary="Attendees"
                     secondary={
-                      joinedUsers?.length == 0
+                      oneEvent?.joined_users?.length == 0
                         ? "No Attendees"
-                        : joinedUsers?.length
+                        : oneEvent?.joined_users?.length
                     }
                   >
                     <AttendeePictures
@@ -250,14 +267,14 @@ function EventDetails() {
             <View style={styles.aboutContainer}>
               <Text style={styles.aboutTitle}>About</Text>
               <TextDetails
-                description={about}
+                description={oneEvent?.event_desc}
                 textStyle={styles.sectionText}
                 maxLines={5}
               />
             </View>
 
             {/* COMMENTS SECTION */}
-            <CommentSection eventId={eventId} />
+            <CommentSection eventId={oneEvent?.id} />
           </RefreshableScrollView>
           <EventDetailsFooter
             isAttending={joinState}

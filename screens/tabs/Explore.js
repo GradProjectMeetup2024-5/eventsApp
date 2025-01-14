@@ -17,8 +17,8 @@ export default function Explore() {
   const [searchText, setSearchText] = useState("");
   const [activeTab, setActiveTab] = useState("Upcoming"); 
 
-  const allEvents = useSelector((state) => state.event);
-
+  const allEvents = useSelector((state) => state.event.events || []);
+  console.log("allEvents", allEvents);  
   const fetchEvents = () => {
     dispatch(showEvents({ type: actionType.FETCH_ALL }));
   };
@@ -71,22 +71,14 @@ export default function Explore() {
               eventName={event?.event_name}
               eventDate={event?.event_date}
               eventLocation={event?.event_desc}
-              eventOrganizer={event?.userId}
+              eventOrganizer={event?.user?.name}
+              faculty={event?.faculty}
               // eventImage={back}
               // profileImageSource={back}
               textColor="#FFFFFF"
               onPress={() =>
                 navigation.navigate("EventDetails", {
                   eventId: event?.id,
-                  creatorName: event?.createrName,
-                  eventName: event?.event_name,
-                  eventDate: event?.event_date,
-                  floor: event?.floor,
-                  room: event?.room,
-                  about: event?.event_desc,
-                  image: event?.image,
-                  faculty: event?.faculty,
-                  joinedUsers: event?.joined_users,
                 })
               }
             />

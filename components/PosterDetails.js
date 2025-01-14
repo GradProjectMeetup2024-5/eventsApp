@@ -25,7 +25,7 @@ function PosterDetails({
             uri: creatorImage,
           }}
         />
-        <Text style={styles.posterName}>{creatorName}Placeholder Name</Text>
+        <Text style={styles.posterName}>{creatorName}</Text>
 
         {isApproved ? (
           <Ionicons
