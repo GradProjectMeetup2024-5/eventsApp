@@ -35,16 +35,21 @@ export default function Explore() {
     const weekend = new Date();
     weekend.setDate(today.getDate() + (6 - today.getDay())); // Next Sunday
 
+    let dateMatches;
     if (activeTab === "Today") {
-      return eventDate.toDateString() === today.toDateString();
+        dateMatches = eventDate.toDateString() === today.toDateString();
     } else if (activeTab === "Tomorrow") {
-      return eventDate.toDateString() === tomorrow.toDateString();
+        dateMatches = eventDate.toDateString() === tomorrow.toDateString();
     } else if (activeTab === "Weekend") {
-      return eventDate.toDateString() === weekend.toDateString();
-    } else { // "Upcoming"
-      return eventDate > today;
+        dateMatches = eventDate.toDateString() === weekend.toDateString();
+    } else { 
+        dateMatches = eventDate > today;
     }
-  });
+
+    const nameMatches = event.event_name.toLowerCase().includes(searchText.toLowerCase());
+
+    return dateMatches && nameMatches;
+});
 
   const navigation = useNavigation();
 

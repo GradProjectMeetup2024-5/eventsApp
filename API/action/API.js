@@ -28,6 +28,7 @@ export const signup  =(formData)=>API.post('/auth/signup',formData)
 // Event
 export const showEvents =()=>API.get('/event')
 export const createEvent = (formData)=>API.post('/event',formData)
+export const findOneEvent =(id)=>API.get(`/event/${id}`)
 
 // Event user
 export const joinEvent = (id)=>API.patch(`/event-user/${id}`)

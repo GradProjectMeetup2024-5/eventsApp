@@ -19,8 +19,18 @@ const createEvent = (formData)=>async(dispatch)=>{
     }
 }
 
+const findOneEvent = (id)=>async(dispatch)=>{
+    try {
+        const {data} = await api.findOneEvent(id);
+        dispatch({type:FETCH_ONE,payload:data});
+    } catch (error) {
+        console.log(error);
+    }
+}   
+
 
 module.exports = {
     showEvents,
     createEvent,
+    findOneEvent
 }
