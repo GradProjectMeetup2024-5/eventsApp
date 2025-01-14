@@ -15,7 +15,7 @@ export default function Explore() {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
   const [searchText, setSearchText] = useState("");
-  const [activeTab, setActiveTab] = useState("Upcoming"); // New state for active tab
+  const [activeTab, setActiveTab] = useState("Upcoming"); 
 
   const allEvents = useSelector((state) => state.event);
 
@@ -33,7 +33,7 @@ export default function Explore() {
     const tomorrow = new Date();
     tomorrow.setDate(today.getDate() + 1);
     const weekend = new Date();
-    weekend.setDate(today.getDate() + (6 - today.getDay())); // Next Sunday
+    weekend.setDate(today.getDate() + (6 - today.getDay()));
 
     let dateMatches;
     if (activeTab === "Today") {

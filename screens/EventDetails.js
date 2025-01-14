@@ -29,6 +29,9 @@ import {
   checkIfUserJoinedEvent,
   leaveEvent,
 } from "../API/action/eventUser";
+
+import {findOneEvent} from "../API/action/event";
+
 import * as actionType from "../API/actionTypes";
 import CommentSection from "../components/Event Details/Comments/CommentSection";
 import EventDetailsFooter from "../components/Event Details/EventDetailsFooter";
@@ -56,6 +59,12 @@ function EventDetails() {
     eventId,
     joinedUsers,
   } = route.params;
+
+  const oneEvent = useSelector((state) => state.event.oneEvent || {});
+   
+  useEffect(() => {
+    dispatch(findOneEvent(eventId)); 
+  }, [dispatch, eventId]);
 
   const dispatch = useDispatch();
 
@@ -156,7 +165,7 @@ function EventDetails() {
             </View>
 
             <View style={styles.titleContainer}>
-              <Text style={styles.titleText}>{eventName}</Text>
+              <Text style={styles.titleText}>{oneEvent.eventName}</Text>
             </View>
 
             <PosterDetails
