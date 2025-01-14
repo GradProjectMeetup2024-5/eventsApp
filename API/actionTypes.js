@@ -45,3 +45,6 @@ export const FETCH_FRIENDS_LIST = 'FETCH_FRIENDS_LIST';
 
 // User
 export const SHOW_PROFILE = 'SHOW_PROFILE';
+
+// Event 
+export const FETCH_ONE_EVENT = 'FETCH_ONE_EVENT';

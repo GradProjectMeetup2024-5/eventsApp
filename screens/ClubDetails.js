@@ -131,14 +131,15 @@ function ClubDetails() {
                       image={event?.image}
                       onPress={() =>
                         navigation.navigate("EventDetails", {
-                          clubName: club?.name,
-                          eventName: event?.event_name,
-                          eventDate: event?.event_date,
-                          floor: event?.floor,
-                          room: event?.room,
-                          about: event?.event_desc,
-                          image: event?.image,
-                          faculty: event?.faculty,
+                          eventId: event?.id,
+                          // clubName: club?.name,
+                          // eventName: event?.event_name,
+                          // eventDate: event?.event_date,
+                          // floor: event?.floor,
+                          // room: event?.room,
+                          // about: event?.event_desc,
+                          // image: event?.image,
+                          // faculty: event?.faculty,
                         })
                       }
                     />

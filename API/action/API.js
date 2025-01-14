@@ -13,10 +13,10 @@ API.interceptors.request.use(async (req) => {
     if (parsedProfile?.token) {
       req.headers.Authorization = `Bearer ${parsedProfile.token}`;
     } else {
-      console.error('Token is missing in profile');
+      console.log('Token is missing in profile');
     }
   } catch (error) {
-    console.error('Error fetching profile:', error);
+    console.log('Error fetching profile:', error);
   }
   return req;
 });
@@ -28,6 +28,7 @@ export const signup  =(formData)=>API.post('/auth/signup',formData)
 // Event
 export const showEvents =()=>API.get('/event')
 export const createEvent = (formData)=>API.post('/event',formData)
+export const findOneEvent =(id)=>API.get(`/event/${id}`)
 
 // Event user
 export const joinEvent = (id)=>API.patch(`/event-user/${id}`)
