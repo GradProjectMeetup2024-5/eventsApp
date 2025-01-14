@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState} from "react";
 import { View, TextInput, Pressable, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import Colors from "../../src/constants/Colors";
@@ -7,12 +7,15 @@ import { useNavigation } from "@react-navigation/native";
 import BottomNavigation from "../ui/BottomNavigation";
 import TabBar from "../ui/TabBar";
 
-const Header = ({ searchText, onSearchChange }) => {
+
+
+const Header = ({ searchText, onSearchChange, activeTab, setActiveTab }) => {
   const navigation = useNavigation();
 
   function pressHandler() {
     navigation.navigate("Profile");
   }
+
   return (
     <View style={styles.headerContainer}>
       <View style={styles.titleContainer}>
@@ -31,11 +34,10 @@ const Header = ({ searchText, onSearchChange }) => {
           />
         </Pressable>
       </View>
-      <TabBar />
+      <TabBar activeTab={activeTab} setActiveTab={setActiveTab} /> {/* Use props */}
     </View>
   );
 };
-
 export default Header;
 
 const styles = StyleSheet.create({

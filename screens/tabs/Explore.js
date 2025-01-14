@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, TextInput, Pressable, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
 import Colors from "../../src/constants/Colors";
@@ -9,13 +9,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { showEvents } from "../../API/action/event";
 import * as actionType from "../../API/actionTypes";
 import Header from "../../components/Headers/Header";
-
-import { back } from "../../assets/eventplaceholder.png";
+import TabBar from "../../components/ui/TabBar";
 
 export default function Explore() {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
   const [searchText, setSearchText] = useState("");
+  const [activeTab, setActiveTab] = useState("Upcoming"); // New state for active tab
 
   const allEvents = useSelector((state) => state.event);
 
@@ -27,15 +27,35 @@ export default function Explore() {
     fetchEvents();
   }, []);
 
-  const filteredEvents = allEvents?.filter((event) =>
-    event.event_name.toLowerCase().includes(searchText.toLowerCase())
-  );
+  const filteredEvents = allEvents?.filter((event) => {
+    const eventDate = new Date(event.event_date);
+    const today = new Date();
+    const tomorrow = new Date();
+    tomorrow.setDate(today.getDate() + 1);
+    const weekend = new Date();
+    weekend.setDate(today.getDate() + (6 - today.getDay())); // Next Sunday
+
+    if (activeTab === "Today") {
+      return eventDate.toDateString() === today.toDateString();
+    } else if (activeTab === "Tomorrow") {
+      return eventDate.toDateString() === tomorrow.toDateString();
+    } else if (activeTab === "Weekend") {
+      return eventDate.toDateString() === weekend.toDateString();
+    } else { // "Upcoming"
+      return eventDate > today;
+    }
+  });
 
   const navigation = useNavigation();
 
   return (
     <SafeAreaView style={styles.container}>
-      <Header searchText={searchText} onSearchChange={setSearchText} />
+      <Header
+        searchText={searchText} 
+        onSearchChange={setSearchText}  
+        activeTab={activeTab} 
+        setActiveTab={setActiveTab}
+      />
       <RefreshableScrollView
         onRefresh={fetchEvents}
         style={styles.bodyContainer}
@@ -47,8 +67,8 @@ export default function Explore() {
               eventDate={event?.event_date}
               eventLocation={event?.event_desc}
               eventOrganizer={event?.userId}
-              eventImage={back}
-              profileImageSource={back}
+              // eventImage={back}
+              // profileImageSource={back}
               textColor="#FFFFFF"
               onPress={() =>
                 navigation.navigate("EventDetails", {

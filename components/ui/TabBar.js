@@ -1,19 +1,17 @@
-import React, { useState } from "react";
+import React from "react";
 import { View, Text, Pressable, StyleSheet } from "react-native";
 import Colors from "../../src/constants/Colors";
 
 const tabs = ["Upcoming", "Today", "Tomorrow", "Weekend"];
 
-export default function TabBar() {
-  const [activeTab, setActiveTab] = useState("Upcoming");
-
+export default function TabBar({ activeTab, setActiveTab }) { // Accept props
   return (
     <View style={styles.container}>
       {tabs.map((tab) => (
         <Pressable
           key={tab}
           style={[styles.tab, activeTab === tab && styles.activeTab]}
-          onPress={() => setActiveTab(tab)}
+          onPress={() => setActiveTab(tab)} // Use the passed function
         >
           <Text
             style={[styles.tabText, activeTab === tab && styles.activeTabText]}
