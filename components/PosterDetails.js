@@ -13,6 +13,7 @@ function PosterDetails({
   club = false,
   inEventDetails = false,
 }) {
+
   return (
     <View style={styles.posterContainer}>
       <Pressable

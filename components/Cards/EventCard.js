@@ -20,6 +20,7 @@ export default function EventCard({
   eventImage,
   onPress,
   faculty,
+  logo,
   edit = false,
 }) {
   function formatTime(dateString) {
@@ -151,7 +152,7 @@ export default function EventCard({
           >
             <PosterDetails
               creatorName={eventOrganizer}
-              // creatorImage={}
+              creatorImage={logo}
             />
             {/* <Text style={styles.eventOrganizer}>{eventOrganizer}</Text> */}
           </View>

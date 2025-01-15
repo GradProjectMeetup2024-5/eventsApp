@@ -48,7 +48,7 @@ export default function Profile({ navigation }) {
   const goBack = () => {
     navigation.goBack();
   };
-  return (
+  return ( 
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
         <Pressable onPress={goBack} style={styles.backButton}>
@@ -57,7 +57,7 @@ export default function Profile({ navigation }) {
         </Pressable>
         <ScrollView contentContainerStyle={styles.scrollViewContent}>
           <UserDetails
-            image="https://example.com/profile-image.jpg"
+            image={user?.user?.user?.image}
             name={user?.user?.user?.name}
             email={user?.user?.user?.email}
             studentId={user?.user?.user?.studentId}

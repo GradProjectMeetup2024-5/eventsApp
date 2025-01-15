@@ -73,6 +73,7 @@ export default function Explore() {
               eventName={event?.event_name}
               eventDate={event?.event_date}
               eventLocation={event?.event_desc}
+              logo={event?.user?.image}
               eventOrganizer={event?.user?.name}
               eventImage={event?.posters[0]}
               faculty={event?.faculty}
