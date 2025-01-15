@@ -41,7 +41,7 @@ function ClubList() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Header clubList={true} />
+      <Header noTabBar={true} />
       <RefreshableScrollView
         onRefresh={fetchClubs}
         style={styles.clubListContainer}

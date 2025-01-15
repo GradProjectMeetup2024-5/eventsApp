@@ -42,7 +42,6 @@ function EventDetails() {
   const [joinState, setJoinState] = useState(false);
   const [isApproved, setIsApproved] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [isExpanded, setIsExpanded] = useState(false);
 
   const route = useRoute();
 
@@ -151,9 +150,7 @@ function EventDetails() {
             onRefresh={fetchStatus}
           >
             <View style={styles.imagesContainer}>
-              <ImageSlider
-               images={oneEvent?.posters} 
-              />
+              <ImageSlider images={oneEvent?.posters} />
             </View>
 
             <View style={styles.titleContainer}>

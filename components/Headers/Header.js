@@ -12,7 +12,7 @@ const Header = ({
   onSearchChange,
   activeTab,
   setActiveTab,
-  clubList = false,
+  noTabBar = false,
 }) => {
   const navigation = useNavigation();
 
@@ -38,7 +38,7 @@ const Header = ({
           />
         </Pressable>
       </View>
-      {!clubList && (
+      {!noTabBar && (
         <TabBar activeTab={activeTab} setActiveTab={setActiveTab} />
       )}
       ;

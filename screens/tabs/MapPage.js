@@ -27,8 +27,9 @@ const App = () => {
   return (
     <SafeAreaView style={styles.safeArea}>
       <Header
-      // searchText={searchText}
-      // onSearchChange={setSearchText}
+        // searchText={searchText}
+        // onSearchChange={setSearchText}
+        noTabBar={true}
       />
       <View style={styles.container}>
         <MapView

@@ -8,7 +8,7 @@ import Colors from "../src/constants/Colors";
 function PosterDetails({
   creatorImage,
   isApproved,
-  onPress,
+  onPress = null,
   creatorName,
   club = false,
   inEventDetails = false,
@@ -17,7 +17,11 @@ function PosterDetails({
     <View style={styles.posterContainer}>
       <Pressable
         style={styles.navigationContainer}
-        onPress={club && inEventDetails && onPress}
+        onPress={() => {
+          if (club && inEventDetails && onPress) {
+            onPress();
+          }
+        }}
       >
         <Image
           style={styles.posterImage}
