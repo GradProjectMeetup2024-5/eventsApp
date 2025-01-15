@@ -6,13 +6,14 @@ import Colors from "../../src/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 
 function SubSectionHeader({
-  selected,
-  handlePressOne,
-  handlePressTwo,
-  one,
-  two,
+  selected = null,
+  handlePressOne = null,
+  handlePressTwo = null,
+  one = null,
+  two = null,
   title,
   backButton = false,
+  subPageButtons = true,
 }) {
   const navigation = useNavigation();
   const goBack = () => {
@@ -24,7 +25,12 @@ function SubSectionHeader({
 
   return (
     <View style={styles.headerContainer}>
-      <View style={styles.titleContainer}>
+      <View
+        style={[
+          styles.titleContainer,
+          { marginBottom: subPageButtons ? 0 : 10 },
+        ]}
+      >
         {backButton && (
           <Pressable style={styles.backButton} onPress={goBack}>
             <Ionicons
@@ -45,60 +51,62 @@ function SubSectionHeader({
           </Pressable>
         )}
       </View>
-      <View style={styles.buttonContainer}>
-        <Pressable
-          style={[
-            styles.subPageButtons,
-            {
-              backgroundColor:
-                selected === one
-                  ? Colors.accent.secondary
-                  : Colors.background.surface,
-            },
-          ]}
-          onPress={handlePressOne}
-        >
-          <Text
+      {subPageButtons && (
+        <View style={styles.buttonContainer}>
+          <Pressable
             style={[
-              styles.subButtonText,
+              styles.subPageButtons,
               {
-                color:
+                backgroundColor:
                   selected === one
-                    ? Colors.background.surface
-                    : Colors.gray.light,
+                    ? Colors.accent.secondary
+                    : Colors.background.surface,
               },
             ]}
+            onPress={handlePressOne}
           >
-            {one}
-          </Text>
-        </Pressable>
-        <Pressable
-          style={[
-            styles.subPageButtons,
-            {
-              backgroundColor:
-                selected === two
-                  ? Colors.accent.secondary
-                  : Colors.background.surface,
-            },
-          ]}
-          onPress={handlePressTwo}
-        >
-          <Text
+            <Text
+              style={[
+                styles.subButtonText,
+                {
+                  color:
+                    selected === one
+                      ? Colors.background.surface
+                      : Colors.gray.light,
+                },
+              ]}
+            >
+              {one}
+            </Text>
+          </Pressable>
+          <Pressable
             style={[
-              styles.subButtonText,
+              styles.subPageButtons,
               {
-                color:
+                backgroundColor:
                   selected === two
-                    ? Colors.background.surface
-                    : Colors.gray.light,
+                    ? Colors.accent.secondary
+                    : Colors.background.surface,
               },
             ]}
+            onPress={handlePressTwo}
           >
-            {two}
-          </Text>
-        </Pressable>
-      </View>
+            <Text
+              style={[
+                styles.subButtonText,
+                {
+                  color:
+                    selected === two
+                      ? Colors.background.surface
+                      : Colors.gray.light,
+                },
+              ]}
+            >
+              {two}
+            </Text>
+          </Pressable>
+        </View>
+      )}
     </View>
   );
 }
@@ -117,11 +125,11 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flexDirection: "row",
     justifyContent: "center",
+    marginTop: 10,
+    marginVertical: 8,
   },
   subPageButtons: {
     backgroundColor: Colors.background.muted,
-    marginTop: 10,
-    marginVertical: 8,
     marginHorizontal: 2,
     height: 31,
     width: 130,
@@ -137,7 +145,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    // borderWidth: 1,
   },
   backButton: { position: "absolute", left: 7 },
   profileButton: { position: "absolute", right: 0 },
@@ -145,6 +152,5 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "600",
     color: Colors.gray.light,
-    // borderWidth: 1,
   },
 });

@@ -36,8 +36,8 @@ const styles = StyleSheet.create({
     top: 50,
   },
   logo: {
-    width: 400,
-    height: 400,
+    width: 340,
+    height: 340,
   },
   formContainer: {
     width: "80%",

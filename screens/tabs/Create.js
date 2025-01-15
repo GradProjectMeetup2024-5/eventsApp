@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -7,14 +7,24 @@ import {
   StyleSheet,
   ScrollView,
   Alert,
+  Dimensions,
+  Image,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Colors from "../../src/constants/Colors";
-import { useDispatch } from 'react-redux';
-import { createEvent } from '../../API/action/event';
-import DateTimePicker from '@react-native-community/datetimepicker';
-import { Picker } from '@react-native-picker/picker';
+import { useDispatch } from "react-redux";
+import { createEvent } from "../../API/action/event";
 
+import SubSectionHeader from "../../components/Headers/SubSectionHeader";
+
+import DateTimePicker from "@react-native-community/datetimepicker";
+import { Picker } from "@react-native-picker/picker";
+import * as ImagePicker from "expo-image-picker";
+
+import AuthTextInput from "../../components/ui/AuthUi/AuthTextInput";
+import AuthButton from "../../components/ui/AuthUi/AuthButton";
+
+const { width } = Dimensions.get("window");
 
 const Create = () => {
   const dispatch = useDispatch();
@@ -30,15 +40,101 @@ const Create = () => {
   const [eventImage, setEventImage] = useState("");
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
-  const [locationData, setLocationData] = useState({});
+  const [images, setImages] = useState([]);
+  // const [locationData, setLocationData] = useState({});
+
+  const requestPermissions = async () => {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (status !== "granted") {
+      alert("Permission required to access the media library");
+    }
+  };
+
+  useEffect(() => {
+    requestPermissions();
+  }, []);
+
+  const pickImages = async () => {
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      const totalImages = images.length + result.assets.length;
+
+      if (totalImages > 6) {
+        Alert.alert(
+          "Image Limit Reached",
+          "You can only upload up to 6 images."
+        );
+      } else {
+        setImages((prevImages) => [
+          ...prevImages,
+          ...result.assets.slice(0, 6 - prevImages.length),
+        ]);
+      }
+    }
+  };
+
+  const handleImagePress = (index) => {
+    Alert.alert(
+      "Confirm Removal",
+      "Are you sure you want to remove this image?",
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "Yes",
+          onPress: () => removeImage(index),
+        },
+      ]
+    );
+  };
+
+  const removeImage = (index) => {
+    setImages((prevImages) => prevImages.filter((_, i) => i !== index));
+  };
+
+  // const uploadImages = async () => {
+  //   const formData = new FormData();
+
+  //   images.forEach((image, index) => {
+  //     formData.append("file[]", {
+  //       uri: image.uri,
+  //       name: `image${index + 1}.jpg`,
+  //       type: "image/jpeg",
+  //     });
+  //   });
+
+  //   try {
+  //     const response = await fetch("YOUR_SERVER_URL", {
+  //       method: "POST",
+  //       body: formData,
+  //       headers: {
+  //         "Content-Type": "multipart/form-data",
+  //       },
+  //     });
+  //     const data = await response.json();
+  //     console.log("Images uploaded:", data);
+  //   } catch (error) {
+  //     console.error("Error uploading images:", error);
+  //   }
+  // };
 
   const faculties = {
     "Conference Hall": "32.04235706530699, 35.90077170744573",
     // "\u0645\u0631\u0643\u0632 \u0627\u0644\u0627\u0633\u062a\u0634\u0627\u0631\u0627\u062a \u0648\u0627\u0644\u062a\u062f\u0631\u064a\u0628 - \u062c\u0627\u0645\u0639\u0629 \u0627\u0644\u0639\u0644\u0648\u0645 \u0627\u0644\u062a\u0637\u0628\u064a\u0642\u064a\u0629 \u0627\u0644\u062e\u0627\u0635\u0629": "32.04106475017362, 35.9014549889317",
-    "Faculty of Sharia & Islamic Studies": "32.04147166360305, 35.90049085546174",
+    "Faculty of Sharia & Islamic Studies":
+      "32.04147166360305, 35.90049085546174",
     "Faculty of Engineering": "32.04110517252083, 35.90046230634091",
     "Student Activities Building": "32.041927962418825, 35.899582162383595",
-    "Faculty of Economics and Administrative Sciences": "32.04044638372422, 35.90106738527859",
+    "Faculty of Economics and Administrative Sciences":
+      "32.04044638372422, 35.90106738527859",
     "Faculty of IT": "32.040468804302854, 35.901375581054666",
     "Faculty of Pharmacy": "32.04022038450591, 35.90199291891347",
     "Presidency Building": "32.041619257774244, 35.902921284895164",
@@ -47,11 +143,12 @@ const Create = () => {
     "University Library": "32.0384689358981, 35.90094348597592",
     "Faculty of Nursing": "32.038288381582205, 35.90200846069219",
     "Faculty of Dentistry": "32.03955906760852, 35.902149117734986",
-    "Faculty of Allied Medical Sciences": "32.03827496940359, 35.902139639993976",
+    "Faculty of Allied Medical Sciences":
+      "32.03827496940359, 35.902139639993976",
     "ASU Stadium": "32.03847634377796, 35.8982060809678",
     "Animal House": "32.0375780674437, 35.90048945904207",
-    "Square 360": "32.04117773331819, 35.90179475191668"
-};
+    "Square 360": "32.04117773331819, 35.90179475191668",
+  };
 
   const handleDateChange = (event, selectedDate) => {
     const currentDate = selectedDate || eventDate;
@@ -67,13 +164,19 @@ const Create = () => {
 
   const handleFacultyChange = (faculty) => {
     setEventFaculty(faculty);
-    const coords = faculties[faculty].split(', ');
+    const coords = faculties[faculty].split(", ");
     setLatitude(parseFloat(coords[0]));
     setLongitude(parseFloat(coords[1]));
   };
 
   const handleSubmit = () => {
-    if (!eventName || !eventFaculty || !eventFloor || !eventRoom || !eventDescription) {
+    if (
+      !eventName ||
+      !eventFaculty ||
+      !eventFloor ||
+      !eventRoom ||
+      !eventDescription
+    ) {
       Alert.alert("Error", "All fields are required.");
       return;
     }
@@ -91,7 +194,7 @@ const Create = () => {
       floor: eventFloor,
       room: eventRoom,
       latitude,
-      longitude
+      longitude,
     };
 
     dispatch(createEvent(eventData));
@@ -99,113 +202,179 @@ const Create = () => {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <ScrollView contentContainerStyle={styles.scrollViewContent}>
+      <SubSectionHeader title="Create" subPageButtons={false} />
+      <ScrollView
+        contentContainerStyle={styles.scrollViewContent}
+        overScrollMode="never"
+      >
         <View style={styles.container}>
-          <Text style={styles.title}>Create New Event</Text>
-
           <View style={styles.inputContainer}>
             <Text style={styles.label}>Event Name</Text>
-            <TextInput
-              style={styles.input}
+
+            <AuthTextInput
+              placeholder="Event Name"
               value={eventName}
               onChangeText={setEventName}
-              placeholder="Enter event name"
-              placeholderTextColor="#808080"
             />
           </View>
 
-          <View style={styles.inputContainer}>
-            <Text style={styles.label}>Date</Text>
-            <Pressable style={styles.dateButton} onPress={() => setShowDatePicker(true)}>
-              <Text style={styles.dateButtonText}>{eventDate.toLocaleDateString()}</Text>
-            </Pressable>
-            {showDatePicker && (
-              <DateTimePicker
-                value={eventDate}
-                mode="date"
-                display="default"
-                onChange={handleDateChange}
+          <Text style={[styles.label, { alignSelf: "flex-start" }]}>
+            Date & Time
+          </Text>
+
+          <View style={styles.inputContainerRow}>
+            <View style={styles.inputContainer}>
+              <Pressable
+                style={styles.dateButton}
+                onPress={() => setShowDatePicker(true)}
+              >
+                <Text style={styles.text}>
+                  {eventDate.toLocaleDateString()}
+                </Text>
+              </Pressable>
+              {showDatePicker && (
+                <DateTimePicker
+                  value={eventDate}
+                  mode="date"
+                  display="calendar"
+                  onChange={handleDateChange}
+                />
+              )}
+            </View>
+
+            <View style={styles.inputContainer}>
+              <Pressable
+                style={styles.timeButton}
+                onPress={() => setShowTimePicker(true)}
+              >
+                <Text style={styles.text}>
+                  {eventTime.toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    hour12: true,
+                  })}
+                </Text>
+              </Pressable>
+              {showTimePicker && (
+                <DateTimePicker
+                  value={eventTime}
+                  mode="time"
+                  display="default"
+                  onChange={handleTimeChange}
+                />
+              )}
+            </View>
+          </View>
+          <View style={{ alignSelf: "flex-start" }}>
+            <Text style={styles.label}>Faculty</Text>
+          </View>
+          <View
+            style={[
+              styles.inputContainer,
+              { borderRadius: 50, overflow: "hidden" },
+            ]}
+          >
+            <Picker
+              selectedValue={eventFaculty}
+              onValueChange={handleFacultyChange}
+              style={styles.picker}
+              dropdownIconColor={Colors.accent.secondary}
+            >
+              <Picker.Item
+                label="Select a faculty"
+                value=""
+                color={eventFaculty === "" ? Colors.gray.dark : "#000"}
               />
-            )}
+              {Object.keys(faculties).map((faculty) => (
+                <Picker.Item
+                  key={faculty}
+                  label={faculty}
+                  value={faculty}
+                  color={faculty === eventFaculty ? Colors.gray.light : "black"}
+                />
+              ))}
+            </Picker>
           </View>
 
-          <View style={styles.inputContainer}>
-            <Text style={styles.label}>Time</Text>
-            <Pressable style={styles.timeButton} onPress={() => setShowTimePicker(true)}>
-              <Text style={styles.timeButtonText}>{eventTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })}</Text>
-            </Pressable>
-            {showTimePicker && (
-              <DateTimePicker
-                value={eventTime}
-                mode="time"
-                display="default"
-                onChange={handleTimeChange}
+          <Text style={styles.label}>Floor & Room</Text>
+
+          <View style={styles.inputContainerRow}>
+            <View style={styles.inputContainer}>
+              <TextInput
+                style={styles.input}
+                value={eventFloor}
+                onChangeText={setEventFloor}
+                placeholder="Enter Floor"
+                placeholderTextColor={Colors.gray.dark}
               />
+            </View>
+
+            <View style={styles.inputContainer}>
+              <TextInput
+                style={styles.input}
+                value={eventRoom}
+                onChangeText={setEventRoom}
+                placeholder="Enter Room"
+                placeholderTextColor={Colors.gray.dark}
+              />
+            </View>
+          </View>
+
+          <Text style={styles.label}>Image</Text>
+
+          <View style={styles.uploadImagesContainer}>
+            <View style={[styles.uploadButtonRow]}>
+              <Pressable onPress={pickImages} style={styles.button}>
+                <Text style={styles.buttonText}>Upload Image</Text>
+              </Pressable>
+
+              <Text style={[styles.text, { marginLeft: 10 }]}>
+                {images.length} {images.length === 1 ? "Image" : "Images"}{" "}
+                selected
+              </Text>
+            </View>
+
+            {images.length > 0 && (
+              <ScrollView
+                horizontal
+                overScrollMode="never"
+                contentContainerStyle={{
+                  // flexDirection: "row",
+                  marginTop: 2,
+                  marginBottom: 0,
+                }}
+              >
+                {images.map((image, index) => (
+                  <Pressable onPress={() => handleImagePress(index)}>
+                    <View key={index}>
+                      <Image
+                        source={{ uri: image.uri }}
+                        style={{ width: 100, height: 100, margin: 5 }}
+                      />
+                    </View>
+                  </Pressable>
+                ))}
+              </ScrollView>
             )}
-          </View>
-
-          <View style={styles.inputContainer}>
-      <Text style={styles.label}>Faculty</Text>
-      <Picker
-        selectedValue={eventFaculty}
-        onValueChange={handleFacultyChange}
-        style={styles.picker}
-      >
-        <Picker.Item label="Select a faculty" value="" />
-        {Object.keys(faculties).map((faculty) => (
-          <Picker.Item key={faculty} label={faculty} value={faculty} />
-        ))}
-      </Picker>
-    </View>
-
-          <View style={styles.inputContainer}>
-            <Text style={styles.label}>Floor</Text>
-            <TextInput
-              style={styles.input}
-              value={eventFloor}
-              onChangeText={setEventFloor}
-              placeholder="Enter event Floor"
-              placeholderTextColor="#808080"
-            />
-          </View>
-
-          <View style={styles.inputContainer}>
-            <Text style={styles.label}>Room</Text>
-            <TextInput
-              style={styles.input}
-              value={eventRoom}
-              onChangeText={setEventRoom}
-              placeholder="Enter event Room"
-              placeholderTextColor="#808080"
-            />
-          </View>
-
-          <View style={styles.inputContainer}>
-            <Text style={styles.label}>Image URL</Text>
-            <TextInput
-              style={styles.input}
-              value={eventImage}
-              onChangeText={setEventImage}
-              placeholder="Enter image URL"
-              placeholderTextColor="#808080"
-            />
           </View>
 
           <View style={styles.inputContainer}>
             <Text style={styles.label}>Description</Text>
             <TextInput
-              style={[styles.input, styles.descriptionInput]}
+              style={[
+                styles.input,
+                styles.descriptionInput,
+                { borderRadius: 18 },
+              ]}
               value={eventDescription}
               onChangeText={setEventDescription}
-              placeholder="Enter event description"
-              placeholderTextColor="#808080"
+              placeholder="Event description"
+              placeholderTextColor={Colors.gray.dark}
               multiline
             />
           </View>
 
-          <Pressable style={styles.button} onPress={handleSubmit}>
-            <Text style={styles.buttonText}>Create Event</Text>
-          </Pressable>
+          <AuthButton onPress={handleSubmit}>Create Event</AuthButton>
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -217,77 +386,98 @@ export default Create;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#000000",
-    paddingHorizontal: 20,
-    justifyContent: "center",
+    paddingHorizontal: 15,
+    alignItems: "center",
     backgroundColor: Colors.background.base,
+    paddingTop: 15,
+    paddingBottom: 10,
   },
   scrollViewContent: {
     flexGrow: 1,
     justifyContent: "center",
   },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 20,
-    textAlign: "center",
-    color: "#FFFFFF",
-  },
   inputContainer: {
     marginBottom: 15,
   },
+  inputContainerRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: width - 32,
+  },
   label: {
     fontSize: 16,
-    marginBottom: 5,
+    marginBottom: 10,
+    marginTop: 5,
+    marginLeft: 15,
     fontWeight: "600",
-    color: "#FFFFFF",
+    color: Colors.gray.light,
+    alignSelf: "flex-start",
   },
   input: {
-    backgroundColor: "white",
+    backgroundColor: Colors.background.surface,
     paddingHorizontal: 15,
     paddingVertical: 10,
-    borderRadius: 10,
+    borderRadius: 24,
     fontSize: 16,
-    borderWidth: 1,
-    borderColor: "#ddd",
-    color: "#000000",
+    color: Colors.gray.light,
+    minHeight: 47,
+    width: 147,
+    alignSelf: "center",
   },
   descriptionInput: {
-    height: 100,
+    minHeight: 95,
+    lineHeight: 20,
     textAlignVertical: "top",
+    width: width - 32,
   },
   dateButton: {
-    backgroundColor: "white",
-    padding: 15,
-    borderRadius: 10,
+    backgroundColor: Colors.background.surface,
+    width: 147,
+    borderRadius: 24,
+    height: 47,
+    justifyContent: "center",
     alignItems: "center",
-  },
-  dateButtonText: {
-    fontSize: 16,
-    color: "#000000",
   },
   timeButton: {
-    backgroundColor: "white",
-    padding: 15,
-    borderRadius: 10,
+    backgroundColor: Colors.background.surface,
+    width: 147,
+    borderRadius: 24,
+    height: 47,
+    justifyContent: "center",
     alignItems: "center",
   },
-  timeButtonText: {
+  text: {
     fontSize: 16,
-    color: "#000000",
+    color: Colors.gray.light,
+  },
+  uploadImagesContainer: {
+    marginBottom: 15,
+    width: width - 32,
+  },
+  uploadButtonRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    width: width - 32,
   },
   button: {
-    backgroundColor: "#DC143C",
+    backgroundColor: Colors.background.surface,
     borderRadius: 20,
     padding: 8,
     alignItems: "center",
-    marginTop: 20,
+    width: 150,
   },
   buttonText: {
     fontFamily: "Roboto",
     fontWeight: "500",
     fontSize: 14,
     lineHeight: 24,
-    color: "#FFFFFF",
+    color: Colors.accent.secondary,
+  },
+  picker: {
+    height: 55,
+    width: width - 32,
+    backgroundColor: Colors.background.surface,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
