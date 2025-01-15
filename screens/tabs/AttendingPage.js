@@ -132,6 +132,7 @@ const AttendingPage = () => {
                   eventDate={event?.event_date}
                   eventLocation={event?.event_desc}
                   eventOrganizer={event?.user?.name}
+                  eventImage={event?.posters[0]}
                   faculty={event?.faculty}
                   onPress={() =>
                     navigation.navigate("EventDetails", {
