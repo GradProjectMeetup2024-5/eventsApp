@@ -1,21 +1,22 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, Modal, Button } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import MapView, { Marker, Callout } from "react-native-maps";
+import MapView, { Marker } from "react-native-maps";
 import Colors from "../../src/constants/Colors";
 import Header from "../../components/Headers/Header";
-import RefreshableScrollView from "../../components/RefreshableScrollView";
 import { showEvents } from "../../API/action/event";
 import * as actionType from "../../API/actionTypes";
 import { useDispatch, useSelector } from "react-redux";
-import { icon } from "../../assets/map/marker-1.png";
+import { useNavigation } from "@react-navigation/native";
+
 const App = () => {
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState(true);
-  const [searchText, setSearchText] = useState("");
+  const navigation = useNavigation();
+  const [selectedEvent, setSelectedEvent] = useState(null); // State for selected event
 
   const allEvents = useSelector((state) => state.event.events || []);
   console.log(allEvents);
+
   const fetchEvents = () => {
     dispatch(showEvents({ type: actionType.FETCH_ALL }));
   };
@@ -26,10 +27,7 @@ const App = () => {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <Header
-      // searchText={searchText}
-      // onSearchChange={setSearchText}
-      />
+      <Header />
       <View style={styles.container}>
         <MapView
           style={styles.mapStyle}
@@ -47,28 +45,47 @@ const App = () => {
                 latitude: marker?.latitude || 32.0401803456018,
                 longitude: marker?.longitude || 35.900398904295194,
               }}
-              title={marker?.event_name}
-              description={marker?.event_desc}
-              draggable
-              onDragEnd={(e) =>
-                alert(
-                  `New position: ${JSON.stringify(e.nativeEvent.coordinate)}`
-                )
-              }
-            >
-              <Callout onPress={() => console.log("Callout pressed!")}>
-                <View style={[styles.calloutContainer, { width: 250 }]}>
-                  <Text style={styles.calloutTitle}>
-                    {marker?.event_name || "No Name Available"}
-                  </Text>
-                  <Text style={styles.calloutDescription}>
-                    {marker?.event_desc || "No Description Available"}
-                  </Text>
-                </View>
-              </Callout>
-            </Marker>
+              onPress={() => setSelectedEvent(marker)} 
+              
+            />
           ))}
         </MapView>
+
+        {/* Modal for displaying selected event details */}
+        {selectedEvent && (
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={!!selectedEvent}
+            onRequestClose={() => setSelectedEvent(null)}
+          >
+            <View style={styles.modalContainer}>
+              <View style={styles.modalContent}>
+                <Text style={styles.modalTitle}>
+                  {selectedEvent.event_name || "Event Name"}
+                  
+                </Text>
+                <Text style={styles.modalDescription}>
+                  {selectedEvent.event_desc || "No Description Available"}
+                </Text>
+                <Button
+                  title="Event Details"
+                  onPress={() =>
+                    navigation.navigate("EventDetails", {
+                      eventId: selectedEvent?.id,
+                    })
+                  }
+                  color={Colors.primary}
+                />
+                <Button
+                  title="Close"
+                  onPress={() => setSelectedEvent(null)}
+                  color={Colors.primary}
+                />
+              </View>
+            </View>
+          </Modal>
+        )}
       </View>
     </SafeAreaView>
   );
@@ -89,27 +106,30 @@ const styles = StyleSheet.create({
   mapStyle: {
     flex: 1,
   },
-  calloutContainer: {
-    width: 250,
-    padding: 10,
-    borderRadius: 10,
+  modalContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+  modalContent: {
+    width: "80%",
     backgroundColor: "#fff",
+    borderRadius: 10,
+    padding: 20,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 5,
-    elevation: 2,
-    alignItems: "center",
-    justifyContent: "center",
-    zIndex: 2,
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
   },
-  calloutTitle: {
+  modalTitle: {
+    fontSize: 20,
     fontWeight: "bold",
-    fontSize: 16,
-    marginBottom: 5,
+    marginBottom: 10,
   },
-  calloutDescription: {
-    fontSize: 14,
-    color: "#555",
+  modalDescription: {
+    fontSize: 16,
+    marginBottom: 20,
   },
 });

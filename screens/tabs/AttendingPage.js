@@ -126,21 +126,21 @@ const AttendingPage = () => {
           {events.length > 0 ? (
             events.map((event, index) => (
               <View key={event.id} style={styles.eventContainer}>
-                <EventCard
-                  edit={true}
-                  eventName={event?.event_name}
-                  eventDate={event?.event_date}
-                  eventLocation={event?.event_desc}
-                  eventOrganizer={event?.user?.name}
-                  eventImage={event?.posters[0]}
-                  faculty={event?.faculty}
-                  onPress={() =>
-                    navigation.navigate("EventDetails", {
-                      eventId: event?.id,
-                    })
-                  }
-                  style={{ marginBottom: 12 }}
-                />
+            <EventCard
+              edit={true}
+              eventName={event?.event_name}
+              eventDate={event?.event_date}
+              eventLocation={event?.event_desc}
+              logo={event?.user?.image}
+              eventOrganizer={event?.user?.name}
+              eventImage={event?.posters[0]}
+              faculty={event?.faculty}
+              onPress={() =>
+                navigation.navigate("EventDetails", {
+                  eventId: event?.id,
+                })
+              }
+            />
                 {index < events.length - 1 && <View style={styles.separator} />}
               </View>
             ))
