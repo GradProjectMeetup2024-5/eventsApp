@@ -41,7 +41,7 @@ function ClubList() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Header />
+      <Header clubList={true} />
       <RefreshableScrollView
         onRefresh={fetchClubs}
         style={styles.clubListContainer}
@@ -56,7 +56,7 @@ function ClubList() {
           clubs?.map((club, index) => (
             <View key={club.id}>
               <ClubCard
-                image="https://d1csarkz8obe9u.cloudfront.net/posterpreviews/art-club-logo-design-template-7363f499d408b8d5aa636f25e135ce56_screen.jpg?ts=1688208799"
+                image={club.posters[0]}
                 title={club.name}
                 description={club.desc}
                 onPress={() =>

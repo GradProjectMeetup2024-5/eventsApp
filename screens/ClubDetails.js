@@ -79,7 +79,7 @@ function ClubDetails() {
             <Image
               style={styles.clubImg}
               source={{
-                uri: "https://d1csarkz8obe9u.cloudfront.net/posterpreviews/art-club-logo-design-template-7363f499d408b8d5aa636f25e135ce56_screen.jpg?ts=1688208799",
+                uri: club?.posters[0],
               }}
             />
             <View style={styles.clubInfo}>
@@ -290,7 +290,7 @@ const styles = StyleSheet.create({
     color: Colors.gray.light,
     fontSize: 14,
     lineHeight: 20,
-    fontWeight: 500,
+    fontWeight: 400,
   },
   buttonsContainer: {
     flexDirection: "row",

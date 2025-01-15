@@ -15,10 +15,10 @@ export default function Explore() {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
   const [searchText, setSearchText] = useState("");
-  const [activeTab, setActiveTab] = useState("Upcoming"); 
+  const [activeTab, setActiveTab] = useState("Upcoming");
 
   const allEvents = useSelector((state) => state.event.events || []);
-  console.log("allEvents", allEvents);  
+  console.log("allEvents", allEvents);
   const fetchEvents = () => {
     dispatch(showEvents({ type: actionType.FETCH_ALL }));
   };
@@ -37,28 +37,30 @@ export default function Explore() {
 
     let dateMatches;
     if (activeTab === "Today") {
-        dateMatches = eventDate.toDateString() === today.toDateString();
+      dateMatches = eventDate.toDateString() === today.toDateString();
     } else if (activeTab === "Tomorrow") {
-        dateMatches = eventDate.toDateString() === tomorrow.toDateString();
+      dateMatches = eventDate.toDateString() === tomorrow.toDateString();
     } else if (activeTab === "Weekend") {
-        dateMatches = eventDate.toDateString() === weekend.toDateString();
-    } else { 
-        dateMatches = eventDate > today;
+      dateMatches = eventDate.toDateString() === weekend.toDateString();
+    } else {
+      dateMatches = eventDate > today;
     }
 
-    const nameMatches = event.event_name.toLowerCase().includes(searchText.toLowerCase());
+    const nameMatches = event.event_name
+      .toLowerCase()
+      .includes(searchText.toLowerCase());
 
     return dateMatches && nameMatches;
-});
+  });
 
   const navigation = useNavigation();
 
   return (
     <SafeAreaView style={styles.container}>
       <Header
-        searchText={searchText} 
-        onSearchChange={setSearchText}  
-        activeTab={activeTab} 
+        searchText={searchText}
+        onSearchChange={setSearchText}
+        activeTab={activeTab}
         setActiveTab={setActiveTab}
       />
       <RefreshableScrollView
@@ -72,10 +74,8 @@ export default function Explore() {
               eventDate={event?.event_date}
               eventLocation={event?.event_desc}
               eventOrganizer={event?.user?.name}
+              eventImage={event?.image}
               faculty={event?.faculty}
-              // eventImage={back}
-              // profileImageSource={back}
-              textColor="#FFFFFF"
               onPress={() =>
                 navigation.navigate("EventDetails", {
                   eventId: event?.id,

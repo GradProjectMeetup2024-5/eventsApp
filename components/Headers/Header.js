@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React, { useState } from "react";
 import { View, TextInput, Pressable, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import Colors from "../../src/constants/Colors";
@@ -7,9 +7,13 @@ import { useNavigation } from "@react-navigation/native";
 import BottomNavigation from "../ui/BottomNavigation";
 import TabBar from "../ui/TabBar";
 
-
-
-const Header = ({ searchText, onSearchChange, activeTab, setActiveTab }) => {
+const Header = ({
+  searchText,
+  onSearchChange,
+  activeTab,
+  setActiveTab,
+  clubList = false,
+}) => {
   const navigation = useNavigation();
 
   function pressHandler() {
@@ -34,7 +38,10 @@ const Header = ({ searchText, onSearchChange, activeTab, setActiveTab }) => {
           />
         </Pressable>
       </View>
-      <TabBar activeTab={activeTab} setActiveTab={setActiveTab} /> {/* Use props */}
+      {!clubList && (
+        <TabBar activeTab={activeTab} setActiveTab={setActiveTab} />
+      )}
+      ;
     </View>
   );
 };

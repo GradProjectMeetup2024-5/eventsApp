@@ -9,6 +9,7 @@ import Colors from "../../src/constants/Colors";
 import EventCardButton from "../EventCardButton";
 import AttendeePictures from "../AttendeePictures";
 import PosterDetails from "../PosterDetails";
+import EventImage from "./EventImage";
 
 export default function EventCard({
   eventName,
@@ -21,12 +22,6 @@ export default function EventCard({
   faculty,
   edit = false,
 }) {
-  const [imageError, setImageError] = useState(false);
-
-  const handleImageError = (e) => {
-    setImageError(true);
-  };
-
   function formatTime(dateString) {
     const date = new Date(dateString);
     let hours = date.getHours();
@@ -90,31 +85,23 @@ export default function EventCard({
   return (
     <View style={styles.container}>
       <Pressable onPress={onPress}>
-        <View style={styles.imageContainer}>
-          {imageError ? (
-            <View style={styles.errorImagePlaceholder}>
-              <Text style={styles.errorText}>Image Error</Text>
-            </View>
-          ) : (
-            <>
-              <Image
-                source={back}
-                style={styles.image}
-                onError={handleImageError}
-                // defaultSource={require("../path/to/placeholder.png")}
-              />
-              <LinearGradient
-                colors={[
-                  "rgba(0, 0, 0, 0.8)",
-                  "rgba(0, 0, 0, 0.3)",
-                  "rgba(0, 0, 0, 0)",
-                ]}
-                start={{ x: 0.5, y: 1 }}
-                end={{ x: 0.5, y: 0 }}
-                style={styles.gradientOverlay}
-              />
-            </>
-          )}
+        {/* <View style={styles.imageContainer}>
+          <Image
+            source={back}
+            style={styles.image}
+            defaultSource={require("../../assets/icon.png")}
+          />
+          <LinearGradient
+            colors={[
+              "rgba(0, 0, 0, 0.8)",
+              "rgba(0, 0, 0, 0.3)",
+              "rgba(0, 0, 0, 0)",
+            ]}
+            start={{ x: 0.5, y: 1 }}
+            end={{ x: 0.5, y: 0 }}
+            style={styles.gradientOverlay}
+          />
+
           <View
             style={[styles.attendeeContainer, { transform: [{ scale: 0.9 }] }]}
           >
@@ -142,7 +129,14 @@ export default function EventCard({
               />
             )}
           </View>
-        </View>
+        </View> */}
+
+        <EventImage
+          imageSource={eventImage}
+          shareFunction={shareFunction}
+          edit={edit}
+        />
+
         <View style={styles.detailsContainer}>
           <Text style={styles.eventTitle}>{eventName}</Text>
           <View style={styles.eventDetailsContainer}>
@@ -155,8 +149,11 @@ export default function EventCard({
           <View
             style={[styles.posterContainer, { transform: [{ scale: 0.8 }] }]}
           >
-            <PosterDetails creatorImage="https://d1csarkz8obe9u.cloudfront.net/posterpreviews/art-club-logo-design-template-7363f499d408b8d5aa636f25e135ce56_screen.jpg?ts=1688208799" />
-            <Text style={styles.eventOrganizer}>{faculty}</Text>
+            <PosterDetails
+              creatorName={eventOrganizer}
+              // creatorImage={}
+            />
+            {/* <Text style={styles.eventOrganizer}>{eventOrganizer}</Text> */}
           </View>
         </View>
       </Pressable>
@@ -213,7 +210,6 @@ const styles = StyleSheet.create({
     right: 0,
     marginTop: 5,
     marginRight: 0,
-    // zIndex: 2,
   },
   detailsContainer: {
     alignItems: "flex-start",
@@ -240,7 +236,7 @@ const styles = StyleSheet.create({
     fontWeight: 500,
     lineHeight: 20,
     flexWrap: "wrap",
-    maxWidth: 150,
+    maxWidth: 160,
     textAlign: "center",
   },
   posterContainer: {

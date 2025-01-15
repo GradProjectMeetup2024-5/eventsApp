@@ -86,7 +86,10 @@ const AttendingPage = () => {
         Object.keys(groupedEvents).length === 0 ? (
           <NoEvents icon={noEventsIcon} message={noEventsMessage} />
         ) : (
-          <ScrollView contentContainerStyle={styles.container}>
+          <ScrollView
+            contentContainerStyle={styles.container}
+            overScrollMode="never"
+          >
             {Object.keys(groupedEvents).map((month) => (
               <View key={month}>
                 <View style={styles.dateContainer}>
@@ -124,11 +127,15 @@ const AttendingPage = () => {
             events.map((event, index) => (
               <View key={event.id} style={styles.eventContainer}>
                 <EventCard
-                  {...event}
                   edit={true}
+                  eventName={event?.event_name}
+                  eventDate={event?.event_date}
+                  eventLocation={event?.event_desc}
+                  eventOrganizer={event?.user?.name}
+                  faculty={event?.faculty}
                   onPress={() =>
                     navigation.navigate("EventDetails", {
-                      ...event,
+                      eventId: event?.id,
                     })
                   }
                   style={{ marginBottom: 12 }}

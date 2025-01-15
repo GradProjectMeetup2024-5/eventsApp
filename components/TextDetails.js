@@ -37,7 +37,7 @@ function TextDetails({
       <View style={styles.rowEnd}>
         {shouldShowButton ? (
           <View style={styles.buttonContainer}>
-            <Pressable onPress={toggleExpanded} hitSlop={20}>
+            <Pressable onPress={toggleExpanded} hitSlop={10}>
               <Text
                 style={[
                   styles.readMoreButton,
