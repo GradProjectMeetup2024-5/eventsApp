@@ -97,17 +97,17 @@ const AttendingPage = () => {
                 </View>
                 {groupedEvents[month].map((event) => (
                   <AltEventCard
-                    key={event.id}
-                    eventName={event.event_name}
-                    faculty={event.faculty}
-                    floor={event.floor}
-                    room={event.room}
-                    image={event.image}
-                    eventDate={event.event_date}
-                    eventId={event.id}
+                    key={event?.id}
+                    eventName={event?.event_name}
+                    faculty={event?.faculty}
+                    floor={event?.floor}
+                    room={event?.room}
+                    image={event?.image}
+                    eventDate={event?.event_date}
+                    eventId={event?.id}
                     onPress={() =>
                       navigation.navigate("EventDetails", {
-                        ...event,
+                        eventId: event?.id,
                       })
                     }
                     style={{ marginBottom: 12 }}

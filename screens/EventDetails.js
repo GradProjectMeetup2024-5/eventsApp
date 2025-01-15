@@ -47,21 +47,11 @@ function EventDetails() {
   const route = useRoute();
 
   const {
-    eventName,
-    eventDate,
-    floor,
-    room,
-    about,
-    image,
-    clubName,
-    faculty,
-    creatorName,
-    eventId,
-    joinedUsers,
+    eventId
   } = route.params;
 
   const oneEvent = useSelector((state) => state.event.oneEvent || {});
-   console.log("TEST",oneEvent);
+
   useEffect(() => {
     dispatch(findOneEvent(eventId)); 
   }, [dispatch, eventId]);
