@@ -61,7 +61,7 @@ function ImageSlider({images}) {
   };
   return (
     <View>
-      {images.length > 0 && (
+      {images?.length > 0 && (
         <View
           style={[styles.container, { height: images.length > 1 ? 320 : 310 }]}
         >
@@ -73,7 +73,7 @@ function ImageSlider({images}) {
             onBeforeSnapToItem={(index) => setActiveIndex(index)}
             firstItem={activeIndex}
           />
-          {images.length > 1 && (
+          {images?.length > 1 && (
             <View style={styles.paginationContainer}>
               <Pagination
                 dotsLength={images.length}
