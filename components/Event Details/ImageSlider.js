@@ -9,16 +9,16 @@ import ImageViewerModal from "./ImageViewerModal";
 
 const { width } = Dimensions.get("window");
 
-const images = [
-  "https://assets.cntraveller.in/photos/66667d71fec9b2e737ab2480/master/w_1600%2Cc_limit/DAG%2520-%2520Caption%2520_Installation%2520shot%2520at%2520DAG%25201_%2520(1).jpg",
-  "https://picsum.photos/700/500",
-  "https://picsum.photos/1000/600",
-  //   "https://picsum.photos/500/600",
-  //   "https://picsum.photos/1000/500",
-  "https://picsum.photos/2500/1500",
-];
+// const images = [
+//   "https://assets.cntraveller.in/photos/66667d71fec9b2e737ab2480/master/w_1600%2Cc_limit/DAG%2520-%2520Caption%2520_Installation%2520shot%2520at%2520DAG%25201_%2520(1).jpg",
+//   "https://picsum.photos/700/500",
+//   "https://picsum.photos/1000/600",
+//   //   "https://picsum.photos/500/600",
+//   //   "https://picsum.photos/1000/500",
+//   "https://picsum.photos/2500/1500",
+// ];
 
-function ImageSlider() {
+function ImageSlider({images}) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [shouldAnimatePagination, setShouldAnimatePagination] = useState(true);
@@ -61,7 +61,7 @@ function ImageSlider() {
   };
   return (
     <View>
-      {images.length > 0 && (
+      {images?.length > 0 && (
         <View
           style={[styles.container, { height: images.length > 1 ? 320 : 310 }]}
         >
@@ -73,7 +73,7 @@ function ImageSlider() {
             onBeforeSnapToItem={(index) => setActiveIndex(index)}
             firstItem={activeIndex}
           />
-          {images.length > 1 && (
+          {images?.length > 1 && (
             <View style={styles.paginationContainer}>
               <Pagination
                 dotsLength={images.length}
