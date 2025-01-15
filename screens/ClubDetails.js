@@ -17,8 +17,8 @@ import { Ionicons } from "@expo/vector-icons";
 
 import Colors from "../src/constants/Colors";
 
-import { useContext, useState, useEffect } from "react";
-import { Provider, useSelector, useDispatch } from "react-redux";
+import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 
 import { findOneClub } from "../API/action/club";
 import { showClubEvents } from "../API/action/clubEvent";
