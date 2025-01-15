@@ -5,8 +5,8 @@ import AttendeePictures from "../AttendeePictures";
 import EventCardButton from "../EventCardButton";
 import Colors from "../../src/constants/Colors";
 
-function EventImage({ imageSource, shareFunction, edit = false }) {
-
+function EventImage({ imageSource, shareFunction, edit = true, eventId }) {
+  console.log("eventId dawd", eventId);
   return (
     <View style={styles.imageContainer}>
       <Image
@@ -49,6 +49,7 @@ function EventImage({ imageSource, shareFunction, edit = false }) {
           <EventCardButton
             icon="create-outline"
             color={Colors.accent.secondary}
+            eventId={eventId}
           />
         )}
       </View>

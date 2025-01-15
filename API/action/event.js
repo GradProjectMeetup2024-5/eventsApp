@@ -1,4 +1,4 @@
-import {FETCH_ALL,CREATE_EVENT,MY_JOINED_EVENTS,FETCH_ONE_EVENT} from '../actionTypes'
+import {FETCH_ALL,CREATE_EVENT,MY_JOINED_EVENTS,FETCH_ONE_EVENT,UPDATE_EVENT} from '../actionTypes'
 import * as api from './API'
 
 const showEvents = ()=>async(dispatch)=>{
@@ -26,11 +26,21 @@ const findOneEvent = (id)=>async(dispatch)=>{
     } catch (error) {
         console.log(error);
     }
-}   
+}
+
+const updateEvent = (id,formData)=>async(dispatch)=>{
+    try {
+        const {data} = await api.updateEvent(id,formData);
+        dispatch({type:UPDATE_EVENT,payload:data});
+    } catch (error) {
+        console.log(error);
+    }
+}
 
 
 module.exports = {
     showEvents,
     createEvent,
-    findOneEvent
+    findOneEvent,
+    updateEvent
 }

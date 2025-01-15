@@ -48,3 +48,4 @@ export const SHOW_PROFILE = 'SHOW_PROFILE';
 
 // Event 
 export const FETCH_ONE_EVENT = 'FETCH_ONE_EVENT';
+export const UPDATE_EVENT = 'UPDATE_EVENT';

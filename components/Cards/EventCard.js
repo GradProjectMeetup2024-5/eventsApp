@@ -22,6 +22,7 @@ export default function EventCard({
   faculty,
   logo,
   edit = false,
+  eventId
 }) {
   function formatTime(dateString) {
     const date = new Date(dateString);
@@ -136,6 +137,7 @@ export default function EventCard({
           imageSource={eventImage}
           shareFunction={shareFunction}
           edit={edit}
+          eventId={eventId}
         />
 
         <View style={styles.detailsContainer}>

@@ -24,6 +24,8 @@ import * as SecureStore from "expo-secure-store";
 import * as actionType from "./API/actionTypes";
 import AllEventsPage from "./screens/AllEventsPage";
 
+import Edit from "./screens/tabs/Edit";
+
 const Stack = createNativeStackNavigator();
 
 const AppNavigator = () => {
@@ -70,6 +72,7 @@ const AppNavigator = () => {
             <Stack.Screen name="ClubDetails" component={ClubDetails} />
             <Stack.Screen name="AllEvents" component={AllEventsPage} />
             <Stack.Screen name="EventDetails" component={EventDetails} />
+            <Stack.Screen name="Edit" component={Edit} />
           </>
         )}
       </Stack.Navigator>

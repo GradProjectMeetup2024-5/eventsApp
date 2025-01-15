@@ -128,6 +128,7 @@ const AttendingPage = () => {
               <View key={event.id} style={styles.eventContainer}>
             <EventCard
               edit={true}
+              eventId={event?.id}
               eventName={event?.event_name}
               eventDate={event?.event_date}
               eventLocation={event?.event_desc}

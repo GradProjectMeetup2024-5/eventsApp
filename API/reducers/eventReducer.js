@@ -1,5 +1,5 @@
 import { EDIT_ID, CREATE,FETCH_ALL, FETCH_ID ,CREATE_EVENT,
-  EDIT_SUBJECT_ID,ADD_SUBJECT_STUDENT,MY_JOINED_EVENTS,FETCH_ONE_EVENT} from '../actionTypes';
+  EDIT_SUBJECT_ID,ADD_SUBJECT_STUDENT,MY_JOINED_EVENTS,FETCH_ONE_EVENT,UPDATE_EVENT} from '../actionTypes';
 
 export default (event = [], action) => {
   switch (action.type) {
@@ -19,6 +19,9 @@ export default (event = [], action) => {
                     ...event,
                     oneEvent: action.payload,
                   }
+                  case UPDATE_EVENT:
+                    return [...event,action.payload] 
+
         case FETCH_ID:
           return [action.payload]
           case EDIT_ID:
