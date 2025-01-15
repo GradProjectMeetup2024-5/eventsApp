@@ -4,7 +4,8 @@ import Colors from "../../src/constants/Colors";
 
 const tabs = ["Upcoming", "Today", "Tomorrow", "Weekend"];
 
-export default function TabBar({ activeTab, setActiveTab }) { // Accept props
+export default function TabBar({ activeTab, setActiveTab }) {
+  // Accept props
   return (
     <View style={styles.container}>
       {tabs.map((tab) => (
@@ -29,13 +30,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     backgroundColor: Colors.background.surface,
     padding: 4,
-    borderRadius: 10,
-    gap: 4,
+    borderRadius: 12,
+    gap: 6,
   },
   tab: {
     paddingVertical: 8,
     paddingHorizontal: 16,
-    borderRadius: 10,
+    borderRadius: 14,
   },
   activeTab: {
     backgroundColor: Colors.accent.secondary,
