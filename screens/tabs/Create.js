@@ -8,7 +8,6 @@ import {
   ScrollView,
   Alert,
   Dimensions,
-  Button,
   Image,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -42,7 +41,7 @@ const Create = () => {
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
   const [images, setImages] = useState([]);
-  const [locationData, setLocationData] = useState({});
+  // const [locationData, setLocationData] = useState({});
 
   const requestPermissions = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -57,42 +56,75 @@ const Create = () => {
 
   const pickImages = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      mediaTypes: ImagePicker.Images,
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
     });
 
     if (!result.canceled) {
-      setImages((prevImages) => [...prevImages, ...result.assets]);
+      const totalImages = images.length + result.assets.length;
+
+      if (totalImages > 6) {
+        Alert.alert(
+          "Image Limit Reached",
+          "You can only upload up to 6 images."
+        );
+      } else {
+        setImages((prevImages) => [
+          ...prevImages,
+          ...result.assets.slice(0, 6 - prevImages.length),
+        ]);
+      }
     }
   };
 
-  const uploadImages = async () => {
-    const formData = new FormData();
-
-    images.forEach((image, index) => {
-      formData.append("file[]", {
-        uri: image.uri,
-        name: `image${index + 1}.jpg`,
-        type: "image/jpeg",
-      });
-    });
-
-    try {
-      const response = await fetch("YOUR_SERVER_URL", {
-        method: "POST",
-        body: formData,
-        headers: {
-          "Content-Type": "multipart/form-data",
+  const handleImagePress = (index) => {
+    Alert.alert(
+      "Confirm Removal",
+      "Are you sure you want to remove this image?",
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
         },
-      });
-      const data = await response.json();
-      console.log("Images uploaded:", data);
-    } catch (error) {
-      console.error("Error uploading images:", error);
-    }
+        {
+          text: "Yes",
+          onPress: () => removeImage(index),
+        },
+      ]
+    );
   };
+
+  const removeImage = (index) => {
+    setImages((prevImages) => prevImages.filter((_, i) => i !== index));
+  };
+
+  // const uploadImages = async () => {
+  //   const formData = new FormData();
+
+  //   images.forEach((image, index) => {
+  //     formData.append("file[]", {
+  //       uri: image.uri,
+  //       name: `image${index + 1}.jpg`,
+  //       type: "image/jpeg",
+  //     });
+  //   });
+
+  //   try {
+  //     const response = await fetch("YOUR_SERVER_URL", {
+  //       method: "POST",
+  //       body: formData,
+  //       headers: {
+  //         "Content-Type": "multipart/form-data",
+  //       },
+  //     });
+  //     const data = await response.json();
+  //     console.log("Images uploaded:", data);
+  //   } catch (error) {
+  //     console.error("Error uploading images:", error);
+  //   }
+  // };
 
   const faculties = {
     "Conference Hall": "32.04235706530699, 35.90077170744573",
@@ -290,29 +322,39 @@ const Create = () => {
 
           <Text style={styles.label}>Image</Text>
 
-          <View style={{ marginBottom: 15 }}>
-            <View style={{ flexDirection: "row", alignItems: "flex-start" }}>
+          <View style={styles.uploadImagesContainer}>
+            <View style={[styles.uploadButtonRow]}>
               <Pressable onPress={pickImages} style={styles.button}>
-                <Text style={styles.buttonText}>Pick multiple images</Text>
+                <Text style={styles.buttonText}>Upload Image</Text>
               </Pressable>
-              {/* {images.length > 0 && ( */}
-              <>
-                <Text>{images.length} image(s) selected</Text>
-              </>
-              {/* )} */}
+
+              <Text style={[styles.text, { marginLeft: 10 }]}>
+                {images.length} {images.length === 1 ? "Image" : "Images"}{" "}
+                selected
+              </Text>
             </View>
-            {/* Display selected images */}
+
             {images.length > 0 && (
-              <View style={{ flexDirection: "row" }}>
+              <ScrollView
+                horizontal
+                overScrollMode="never"
+                contentContainerStyle={{
+                  // flexDirection: "row",
+                  marginTop: 2,
+                  marginBottom: 0,
+                }}
+              >
                 {images.map((image, index) => (
-                  <View key={index}>
-                    <Image
-                      source={{ uri: image.uri }}
-                      style={{ width: 100, height: 100, margin: 5 }}
-                    />
-                  </View>
+                  <Pressable onPress={() => handleImagePress(index)}>
+                    <View key={index}>
+                      <Image
+                        source={{ uri: image.uri }}
+                        style={{ width: 100, height: 100, margin: 5 }}
+                      />
+                    </View>
+                  </Pressable>
                 ))}
-              </View>
+              </ScrollView>
             )}
           </View>
 
@@ -348,6 +390,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: Colors.background.base,
     paddingTop: 15,
+    paddingBottom: 10,
   },
   scrollViewContent: {
     flexGrow: 1,
@@ -407,11 +450,21 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: Colors.gray.light,
   },
+  uploadImagesContainer: {
+    marginBottom: 15,
+    width: width - 32,
+  },
+  uploadButtonRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    width: width - 32,
+  },
   button: {
     backgroundColor: Colors.background.surface,
     borderRadius: 20,
     padding: 8,
     alignItems: "center",
+    width: 150,
   },
   buttonText: {
     fontFamily: "Roboto",
