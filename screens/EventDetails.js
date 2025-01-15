@@ -30,7 +30,7 @@ import {
   leaveEvent,
 } from "../API/action/eventUser";
 
-import {findOneEvent} from "../API/action/event";
+import { findOneEvent } from "../API/action/event";
 
 import * as actionType from "../API/actionTypes";
 import CommentSection from "../components/Event Details/Comments/CommentSection";
@@ -46,14 +46,12 @@ function EventDetails() {
 
   const route = useRoute();
 
-  const {
-    eventId
-  } = route.params;
+  const { eventId } = route.params;
 
   const oneEvent = useSelector((state) => state.event.oneEvent || {});
 
   useEffect(() => {
-    dispatch(findOneEvent(eventId)); 
+    dispatch(findOneEvent(eventId));
   }, [dispatch, eventId]);
 
   const dispatch = useDispatch();
@@ -132,8 +130,6 @@ function EventDetails() {
 
     const year = date.getFullYear();
 
-
-
     return `${dayOfWeek}, ${dayOfMonth} ${month} ${year}`;
   }
 
@@ -162,25 +158,23 @@ function EventDetails() {
               <Text style={styles.titleText}>{oneEvent?.event_name}</Text>
             </View>
 
-            {
-              isClub ? (
-                <PosterDetails
-                  isApproved={isApproved}
-                  creatorImage="https://d1csarkz8obe9u.cloudfront.net/posterpreviews/art-club-logo-design-template-7363f499d408b8d5aa636f25e135ce56_screen.jpg?ts=1688208799"
-                  creatorName={oneEvent?.club?.name}
-                  inEventDetails={true}
-                  club={true}
-                />
-              ) : (
-                <PosterDetails
-                  isApproved={isApproved}
-                  creatorImage="https://d1csarkz8obe9u.cloudfront.net/posterpreviews/art-club-logo-design-template-7363f499d408b8d5aa636f25e135ce56_screen.jpg?ts=1688208799"
-                  creatorName={oneEvent?.user?.name}
-                  inEventDetails={true}
-                  club={false}
-                />
-              )
-            }
+            {isClub ? (
+              <PosterDetails
+                isApproved={isApproved}
+                creatorImage="https://d1csarkz8obe9u.cloudfront.net/posterpreviews/art-club-logo-design-template-7363f499d408b8d5aa636f25e135ce56_screen.jpg?ts=1688208799"
+                creatorName={oneEvent?.club?.name}
+                inEventDetails={true}
+                club={true}
+              />
+            ) : (
+              <PosterDetails
+                isApproved={isApproved}
+                creatorImage="https://d1csarkz8obe9u.cloudfront.net/posterpreviews/art-club-logo-design-template-7363f499d408b8d5aa636f25e135ce56_screen.jpg?ts=1688208799"
+                creatorName={oneEvent?.user?.name}
+                inEventDetails={true}
+                club={false}
+              />
+            )}
 
             {/* DETAILS SECTION */}
             <View style={styles.detailsContainer}>

@@ -65,6 +65,7 @@ const styles = StyleSheet.create({
     height: 50,
     width: 50,
     borderRadius: 25,
+    backgroundColor: Colors.gray.dark,
   },
   posterName: {
     fontSize: 18,

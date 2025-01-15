@@ -62,6 +62,7 @@ const styles = StyleSheet.create({
     height: 84,
     width: 84,
     borderRadius: 42,
+    backgroundColor: Colors.gray.dark,
   },
   clubDescription: {
     color: Colors.gray.light,
