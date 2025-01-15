@@ -155,7 +155,9 @@ function EventDetails() {
             onRefresh={fetchStatus}
           >
             <View style={styles.imagesContainer}>
-              <ImageSlider />
+              <ImageSlider
+               images={oneEvent?.posters} 
+              />
             </View>
 
             <View style={styles.titleContainer}>

@@ -6,6 +6,8 @@ import EventCardButton from "../EventCardButton";
 import Colors from "../../src/constants/Colors";
 
 function EventImage({ imageSource, shareFunction, edit = false }) {
+  console.log("imageSource Event Image", imageSource);
+
   return (
     <View style={styles.imageContainer}>
       <Image

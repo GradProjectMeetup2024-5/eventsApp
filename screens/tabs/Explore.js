@@ -74,7 +74,7 @@ export default function Explore() {
               eventDate={event?.event_date}
               eventLocation={event?.event_desc}
               eventOrganizer={event?.user?.name}
-              eventImage={event?.image}
+              eventImage={event?.posters[0]}
               faculty={event?.faculty}
               onPress={() =>
                 navigation.navigate("EventDetails", {
