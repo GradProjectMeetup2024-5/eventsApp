@@ -10,12 +10,11 @@ import * as actionType from "../../API/actionTypes";
 import { useDispatch, useSelector } from "react-redux";
 import { icon } from "../../assets/map/marker-1.png";
 const App = () => {
-
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
-  const [searchText, setSearchText] = useState(""); 
+  const [searchText, setSearchText] = useState("");
 
-  const allEvents = useSelector((state) => state.event.events || []); 
+  const allEvents = useSelector((state) => state.event.events || []);
   console.log(allEvents);
   const fetchEvents = () => {
     dispatch(showEvents({ type: actionType.FETCH_ALL }));
@@ -24,7 +23,6 @@ const App = () => {
   useEffect(() => {
     fetchEvents();
   }, []);
-
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -41,38 +39,35 @@ const App = () => {
             latitudeDelta: 0.009,
             longitudeDelta: 0.009,
           }}
-          customMapStyle={mapStyle}
         >
-            {allEvents?.map((marker) => (
-              <Marker
-                key={marker.id}
-                coordinate={{
-                  latitude: marker?.latitude || 32.0401803456018,
-                  longitude: marker?.longitude || 35.900398904295194,
-                }}
-                title={marker?.event_name} // Optional
-                description={marker?.event_desc} // Optional
-                icon={icon} // Ensure the icon path is valid
-                draggable
-                onDragEnd={(e) =>
-                  alert(
-                    `New position: ${JSON.stringify(e.nativeEvent.coordinate)}`
-                  )
-                }
-              >
-                <Callout>
-                  <View style={styles.calloutContainer}>
-                    <Text style={styles.calloutTitle}>
-                      {marker?.event_name || "No Name Available"}
-                    </Text>
-                    <Text style={styles.calloutDescription}>
-                      {marker?.event_desc || "No Description Available"}
-                    </Text>
-                  </View>
-                </Callout>
-              </Marker>
-            ))}
-
+          {allEvents?.map((marker) => (
+            <Marker
+              key={marker.id}
+              coordinate={{
+                latitude: marker?.latitude || 32.0401803456018,
+                longitude: marker?.longitude || 35.900398904295194,
+              }}
+              title={marker?.event_name}
+              description={marker?.event_desc}
+              draggable
+              onDragEnd={(e) =>
+                alert(
+                  `New position: ${JSON.stringify(e.nativeEvent.coordinate)}`
+                )
+              }
+            >
+              <Callout onPress={() => console.log("Callout pressed!")}>
+                <View style={[styles.calloutContainer, { width: 250 }]}>
+                  <Text style={styles.calloutTitle}>
+                    {marker?.event_name || "No Name Available"}
+                  </Text>
+                  <Text style={styles.calloutDescription}>
+                    {marker?.event_desc || "No Description Available"}
+                  </Text>
+                </View>
+              </Callout>
+            </Marker>
+          ))}
         </MapView>
       </View>
     </SafeAreaView>
@@ -80,101 +75,6 @@ const App = () => {
 };
 
 export default App;
-
-const mapStyle = [
-  {
-    elementType: "geometry",
-    stylers: [{ color: "#242f3e" }],
-  },
-  {
-    elementType: "labels.text.stroke",
-    stylers: [{ color: "#242f3e" }],
-  },
-  {
-    elementType: "labels.text.fill",
-    stylers: [{ color: "#746855" }],
-  },
-  {
-    featureType: "administrative.locality",
-    elementType: "labels.text.fill",
-    stylers: [{ color: "#d59563" }],
-  },
-  {
-    featureType: "poi",
-    elementType: "labels.text.fill",
-    stylers: [{ color: "#d59563" }],
-  },
-  {
-    featureType: "poi.park",
-    elementType: "geometry",
-    stylers: [{ color: "#263c3f" }],
-  },
-  {
-    featureType: "poi.park",
-    elementType: "labels.text.fill",
-    stylers: [{ color: "#6b9a76" }],
-  },
-  {
-    featureType: "road",
-    elementType: "geometry",
-    stylers: [{ color: "#38414e" }],
-  },
-  {
-    featureType: "road",
-    elementType: "geometry.stroke",
-    stylers: [{ color: "#212a37" }],
-  },
-  {
-    featureType: "road",
-    elementType: "labels.text.fill",
-    stylers: [{ color: "#9ca5b3" }],
-  },
-  {
-    featureType: "road.highway",
-    elementType: "geometry",
-    stylers: [{ color: "#746855" }],
-  },
-  {
-    featureType: "road.highway",
-    elementType: "geometry.stroke",
-    stylers: [{ color: "#1f2835" }],
-  },
-  {
-    featureType: "road.highway",
-    elementType: "labels.text.fill",
-    stylers: [{ color: "#f3d19c" }],
-  },
-  {
-    featureType: "transit",
-    elementType: "geometry",
-    stylers: [{ color: "#2f3948" }],
-  },
-  {
-    featureType: "transit.station",
-    elementType: "labels.text.fill",
-    stylers: [{ color: "#d59563" }],
-  },
-  {
-    featureType: "water",
-    elementType: "geometry",
-    stylers: [{ color: "#17263c" }],
-  },
-  {
-    featureType: "water",
-    elementType: "labels.text.fill",
-    stylers: [{ color: "#515c6d" }],
-  },
-  {
-    featureType: "water",
-    elementType: "labels.text.stroke",
-    stylers: [{ color: "#17263c" }],
-  },
-  {
-    featureType: "building",
-    elementType: "geometry",
-    stylers: [{ color: "#d59563" }],
-  },
-];
 
 const styles = StyleSheet.create({
   safeArea: {
@@ -190,7 +90,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   calloutContainer: {
-    width: 250, 
+    width: 250,
     padding: 10,
     borderRadius: 10,
     backgroundColor: "#fff",
@@ -199,6 +99,9 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 5,
     elevation: 2,
+    alignItems: "center",
+    justifyContent: "center",
+    zIndex: 2,
   },
   calloutTitle: {
     fontWeight: "bold",
