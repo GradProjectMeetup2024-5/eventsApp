@@ -185,11 +185,11 @@ function EventDetails() {
                     primary={formatDate(oneEvent?.event_date)}
                     secondary={formatTime(oneEvent?.eventDate)}
                   >
-                    {/* <Ionicons
+                    <Ionicons
                       name="chevron-forward"
                       size={30}
                       color={Colors.gray.light}
-                    /> */}
+                    />
                   </DetailCardSection>
 
                   {/* SEPARATOR */}
@@ -201,11 +201,11 @@ function EventDetails() {
                     primary={oneEvent?.faculty}
                     secondary={oneEvent?.room + ", " + oneEvent?.floor}
                   >
-                    {/* <Ionicons
+                    <Ionicons
                       name="chevron-forward"
                       size={30}
                       color={Colors.gray.light}
-                    /> */}
+                    />
                   </DetailCardSection>
 
                   {/* SEPARATOR */}
