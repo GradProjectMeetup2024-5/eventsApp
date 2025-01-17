@@ -68,6 +68,7 @@ function EventDetails() {
   useEffect(() => {
     fetchStatus();
     setJoinState(checkIfUserJoined);
+    console.log(oneEvent?.Date);
   }, [dispatch, oneEvent?.id, checkIfUserJoined]);
 
   function joinHandler() {
@@ -183,7 +184,7 @@ function EventDetails() {
                   <DetailCardSection
                     iconName="calendar-clear-outline"
                     primary={formatDate(oneEvent?.event_date)}
-                    secondary={formatTime(oneEvent?.eventDate)}
+                    secondary={formatTime(oneEvent?.event_date)}
                   >
                     <Ionicons
                       name="chevron-forward"
