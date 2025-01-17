@@ -1,11 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { View, Text, ScrollView, StyleSheet, Pressable } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
 
-import { CheckCircle2, History, Bell, LogOut } from "lucide-react-native";
-
-import ButtonItem from "../components/ui/ProfileUi/ButtonItem";
 import UserDetails from "../components/ui/ProfileUi/UserDetails";
 
 import { useDispatch } from "react-redux";
@@ -15,6 +11,10 @@ import * as SecureStore from "expo-secure-store";
 
 import Friends from "../components/ui/ProfileUi/Friend";
 import Colors from "../src/constants/Colors";
+import SubSectionHeader from "../components/Headers/SubSectionHeader";
+import DetailCardSection from "../components/Event Details/DetailCardSection";
+import DetailCardSeparator from "../components/Event Details/DetailCardSeparator";
+import { Ionicons } from "@expo/vector-icons";
 
 export default function Profile({ navigation }) {
   const dispatch = useDispatch();
@@ -45,17 +45,14 @@ export default function Profile({ navigation }) {
     navigation.navigate("LogIn");
   }
 
-  const goBack = () => {
-    navigation.goBack();
-  };
-  return ( 
+  return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
-        <Pressable onPress={goBack} style={styles.backButton}>
-          <Ionicons name="arrow-back" size={24} color="#FFFFFF" />
-          <Text style={styles.backButtonText}>Profile</Text>
-        </Pressable>
-        <ScrollView contentContainerStyle={styles.scrollViewContent}>
+        <SubSectionHeader backButton subPageButtons={false} title="Profile" />
+        <ScrollView
+          contentContainerStyle={styles.scrollViewContent}
+          overScrollMode="never"
+        >
           <UserDetails
             image={user?.user?.user?.image}
             name={user?.user?.user?.name}
@@ -67,26 +64,31 @@ export default function Profile({ navigation }) {
           <Text style={styles.sectionTitle}>Friends</Text>
 
           <View>
-            <Friends/>
+            <Friends />
           </View>
 
           <Text style={styles.sectionTitle}>App Settings</Text>
 
           <View style={styles.settingsSection}>
-            <ButtonItem
-              icon={<Bell size={16} color="#000000" />}
-              style={styles.buttonItem}
+            <DetailCardSection
+              iconName="notifications-outline"
+              settingText="Notifications"
+              profilePage
             >
-              Notifications
-            </ButtonItem>
-
-            <ButtonItem
-              icon={<LogOut size={16} color="#000000" />}
-              style={styles.buttonItem}
+              <Ionicons
+                name="chevron-forward"
+                size={30}
+                color={Colors.gray.light}
+              />
+            </DetailCardSection>
+            <DetailCardSeparator />
+            <DetailCardSection
               onPress={handleLogOut}
-            >
-              Log Out
-            </ButtonItem>
+              iconName="log-out-outline"
+              iconSize={32}
+              settingText="Log Out"
+              profilePage
+            />
           </View>
         </ScrollView>
       </View>
@@ -101,7 +103,6 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    paddingBottom: 80,
   },
   backButton: {
     flexDirection: "row",
@@ -119,18 +120,16 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   settingsSection: {
-    backgroundColor: "#FFFFFF",
-    borderWidth: 1,
-    borderColor: "#E2E8F0",
+    backgroundColor: Colors.background.surface,
     borderRadius: 12,
     marginBottom: 24,
     overflow: "hidden",
   },
   sectionTitle: {
-    fontFamily: "Roboto",
     fontWeight: "600",
-    fontSize: 18,
-    color: "#FFFFFF",
+    fontSize: 22,
+    paddingLeft: 5,
+    color: Colors.accent.primary,
     marginTop: 24,
     marginBottom: 16,
   },

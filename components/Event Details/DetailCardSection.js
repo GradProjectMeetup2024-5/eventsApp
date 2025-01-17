@@ -5,20 +5,29 @@ import { Ionicons } from "@expo/vector-icons";
 
 function DetailCardSection({
   iconName,
-  primary,
-  secondary,
+  primary = null,
+  secondary = null,
   children,
   onPress,
+  profilePage = false,
+  settingText = null,
 }) {
   return (
     <Pressable style={styles.detailRow} onPress={onPress}>
       <View style={styles.iconContainer}>
         <Ionicons name={iconName} size={32} color={Colors.accent.primary} />
       </View>
-      <View style={styles.infoContainer}>
-        <Text style={styles.primary}>{primary}</Text>
-        <Text style={styles.secondary}>{secondary}</Text>
-      </View>
+      {!profilePage ? (
+        <View style={styles.infoContainer}>
+          <Text style={styles.primary}>{primary}</Text>
+          <Text style={styles.secondary}>{secondary}</Text>
+        </View>
+      ) : (
+        <View style={styles.infoContainer}>
+          <Text style={styles.settingText}>{settingText}</Text>
+        </View>
+      )}
+
       <View style={styles.endItemContainer}>{children}</View>
     </Pressable>
   );
@@ -58,5 +67,11 @@ const styles = StyleSheet.create({
     color: Colors.gray.light,
     fontSize: 14,
     fontWeight: 400,
+  },
+  settingText: {
+    marginHorizontal: 10,
+    color: Colors.gray.light,
+    fontSize: 18,
+    fontWeight: 600,
   },
 });

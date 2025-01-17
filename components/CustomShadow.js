@@ -1,8 +1,8 @@
-import { Shadow } from "react-native-shadow-2";
+import { View, Shadow } from "react-native-shadow-2";
 
 function CustomShadow({ children }) {
   return (
-    <Shadow
+    /*<Shadow
       sides={{ bottom: true, top: false, start: false, end: true }}
       corners={{
         topStart: false,
@@ -16,7 +16,8 @@ function CustomShadow({ children }) {
       endColor="rgba(0, 0, 0, 0.05)"
     >
       {children}
-    </Shadow>
+     </Shadow> */
+    <>{children}</>
   );
 }
 

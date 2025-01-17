@@ -1,4 +1,7 @@
-import { StyleSheet, View, Image, Text } from "react-native";
+import { StyleSheet, View, Image, Text, Dimensions } from "react-native";
+import Colors from "../../../src/constants/Colors";
+
+const { width } = Dimensions.get("window");
 
 function UserDetails({ name, email, studentId, major, image }) {
   return (
@@ -18,33 +21,31 @@ export default UserDetails;
 
 const styles = StyleSheet.create({
   card: {
+    alignSelf: "center",
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#FFFFFF",
-    borderWidth: 1,
-    borderColor: "#E2E8F0",
+    backgroundColor: Colors.background.surface,
     borderRadius: 12,
     padding: 16,
     marginHorizontal: 16,
     marginTop: 16,
+    width: width - 32,
   },
   image: {
     width: 80,
     height: 80,
     borderRadius: 40,
-    backgroundColor: "#ecebeb",
+    backgroundColor: Colors.gray.darkest,
   },
   detailsContainer: { marginLeft: 12 },
   name: {
-    fontFamily: "Roboto",
     fontWeight: "bold",
     fontSize: 18,
-    color: "black",
+    color: Colors.accent.primary,
   },
   text: {
-    fontFamily: "Roboto",
-    fontSize: 12,
-    color: "black",
+    fontSize: 14,
+    color: Colors.gray.light,
     marginTop: 4,
   },
 });
