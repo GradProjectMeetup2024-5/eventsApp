@@ -1,15 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { Image, View, Text, Pressable, StyleSheet } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
+import React from "react";
+import { View, Text, Pressable, StyleSheet } from "react-native";
 
-import profileImage from "../../assets/image 86.png";
-import back from "../../assets/eventplaceholder.png";
 import Colors from "../../src/constants/Colors";
 
-import EventCardButton from "../EventCardButton";
-import AttendeePictures from "../AttendeePictures";
 import PosterDetails from "../PosterDetails";
 import EventImage from "./EventImage";
+import CustomShadow from "../CustomShadow";
 
 export default function EventCard({
   eventName,
@@ -22,7 +18,7 @@ export default function EventCard({
   faculty,
   logo,
   edit = false,
-  eventId
+  eventId,
 }) {
   function formatTime(dateString) {
     const date = new Date(dateString);
@@ -85,82 +81,39 @@ export default function EventCard({
   function shareFunction() {}
 
   return (
-    <View style={styles.container}>
-      <Pressable onPress={onPress}>
-        {/* <View style={styles.imageContainer}>
-          <Image
-            source={back}
-            style={styles.image}
-            defaultSource={require("../../assets/icon.png")}
-          />
-          <LinearGradient
-            colors={[
-              "rgba(0, 0, 0, 0.8)",
-              "rgba(0, 0, 0, 0.3)",
-              "rgba(0, 0, 0, 0)",
-            ]}
-            start={{ x: 0.5, y: 1 }}
-            end={{ x: 0.5, y: 0 }}
-            style={styles.gradientOverlay}
+    <CustomShadow>
+      <View style={styles.container}>
+        <Pressable onPress={onPress}>
+          <EventImage
+            imageSource={eventImage}
+            shareFunction={shareFunction}
+            edit={edit}
+            eventId={eventId}
           />
 
-          <View
-            style={[styles.attendeeContainer, { transform: [{ scale: 0.9 }] }]}
-          >
-            <AttendeePictures
-              enableAttendeeCount={true}
-              attendees={[
-                "https://picsum.photos/100/300",
-                "https://picsum.photos/200/100",
-                "https://picsum.photos/100/100",
-                "https://picsum.photos/300/100",
-                "https://picsum.photos/300/150",
-              ]}
-            />
+          <View style={styles.detailsContainer}>
+            <Text style={styles.eventTitle}>{eventName}</Text>
+            <View style={styles.eventDetailsContainer}>
+              <Text style={styles.eventDetailsText}>
+                {formatDate(eventDate)}
+              </Text>
+              <Text style={styles.eventDetailsText}> · </Text>
+              <Text style={styles.eventDetailsText}>
+                {formatTime(eventDate)}
+              </Text>
+              <Text style={styles.eventDetailsText}> · </Text>
+              <Text style={styles.eventDetailsText}>{faculty}</Text>
+            </View>
+            <View
+              style={[styles.posterContainer, { transform: [{ scale: 0.8 }] }]}
+            >
+              <PosterDetails creatorName={eventOrganizer} creatorImage={logo} />
+              {/* <Text style={styles.eventOrganizer}>{eventOrganizer}</Text> */}
+            </View>
           </View>
-          <View style={styles.buttonsContainer}>
-            <EventCardButton
-              icon="share-outline"
-              color={Colors.gray.light}
-              onPress={shareFunction}
-            />
-            {edit && (
-              <EventCardButton
-                icon="create-outline"
-                color={Colors.accent.secondary}
-              />
-            )}
-          </View>
-        </View> */}
-
-        <EventImage
-          imageSource={eventImage}
-          shareFunction={shareFunction}
-          edit={edit}
-          eventId={eventId}
-        />
-
-        <View style={styles.detailsContainer}>
-          <Text style={styles.eventTitle}>{eventName}</Text>
-          <View style={styles.eventDetailsContainer}>
-            <Text style={styles.eventDetailsText}>{formatDate(eventDate)}</Text>
-            <Text style={styles.eventDetailsText}> · </Text>
-            <Text style={styles.eventDetailsText}>{formatTime(eventDate)}</Text>
-            <Text style={styles.eventDetailsText}> · </Text>
-            <Text style={styles.eventDetailsText}>{faculty}</Text>
-          </View>
-          <View
-            style={[styles.posterContainer, { transform: [{ scale: 0.8 }] }]}
-          >
-            <PosterDetails
-              creatorName={eventOrganizer}
-              creatorImage={logo}
-            />
-            {/* <Text style={styles.eventOrganizer}>{eventOrganizer}</Text> */}
-          </View>
-        </View>
-      </Pressable>
-    </View>
+        </Pressable>
+      </View>
+    </CustomShadow>
   );
 }
 
@@ -173,7 +126,7 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     marginBottom: 8,
     zIndex: 0,
-    marginHorizontal: 16,
+    // marginHorizontal: 16,
   },
   imageContainer: {
     width: "100%",
@@ -218,7 +171,6 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
     marginVertical: 10,
     marginHorizontal: 16,
-    // borderWidth: 1,
   },
   eventTitle: {
     color: Colors.accent.primary,

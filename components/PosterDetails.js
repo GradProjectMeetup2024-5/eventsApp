@@ -13,7 +13,6 @@ function PosterDetails({
   club = false,
   inEventDetails = false,
 }) {
-
   return (
     <View style={styles.posterContainer}>
       <Pressable
@@ -70,7 +69,7 @@ const styles = StyleSheet.create({
     height: 50,
     width: 50,
     borderRadius: 25,
-    backgroundColor: Colors.gray.dark,
+    backgroundColor: Colors.gray.darkest,
   },
   posterName: {
     fontSize: 18,

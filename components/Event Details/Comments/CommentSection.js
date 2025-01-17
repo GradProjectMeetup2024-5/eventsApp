@@ -4,6 +4,7 @@ import { View, Text, StyleSheet, Pressable, TextInput } from "react-native";
 
 import Colors from "../../../src/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
+import CustomShadow from "../../CustomShadow";
 
 import Comment from "./Comment";
 import { showComments, createComment } from "../../../API/action/comment";
@@ -34,80 +35,86 @@ function CommentSection({ eventId }) {
 
   return (
     <View style={styles.commentsContainer}>
-      <View style={styles.commentsCard}>
-        <View style={styles.commentsTitleContainer}>
-          <View style={styles.commentsTitle}>
-            <View style={styles.commentsIconContainer}>
-              <Ionicons name="chatbubble" size={24} color={Colors.gray.dark} />
-            </View>
-            <Text style={styles.commentsTitleText}>Comments</Text>
-          </View>
-        </View>
-        <View style={styles.commentInputContainer}>
-          <View style={styles.placeholderPFP}>
-            {/*Profile picture goes here*/}
-          </View>
-          <TextInput
-            style={styles.commentInput}
-            placeholder="Add Comment"
-            placeholderTextColor={Colors.gray.medium}
-            value={inputCommentText}
-            onChangeText={setInputCommentText}
-            multiline={true}
-            maxLength={180}
-            onSubmitEditing={handleSend}
-            submitBehavior="submit"
-          />
-          <Pressable onPress={handleSend} disabled={!inputCommentText.trim()}>
-            <View
-              style={[
-                styles.sendButton,
-                inputCommentText.trim() && {
-                  backgroundColor: Colors.accent.secondary,
-                },
-              ]}
-            >
-              <Text style={styles.sendButtonText}>Send</Text>
-            </View>
-          </Pressable>
-        </View>
-        <View style={styles.comments}>
-          {Array.isArray(comments) && comments.length > 0 ? (
-            [...comments]
-              .reverse()
-              .slice(0, visibleComments)
-              .map((comment, index) => (
-                <Comment
-                  key={index}
-                  text={comment?.text}
-                  creatorName={comment?.creatorName}
-                  createdAt={comment?.createdAt}
+      <CustomShadow>
+        <View style={styles.commentsCard}>
+          <View style={styles.commentsTitleContainer}>
+            <View style={styles.commentsTitle}>
+              <View style={styles.commentsIconContainer}>
+                <Ionicons
+                  name="chatbubble"
+                  size={24}
+                  color={Colors.gray.dark}
                 />
-              ))
-          ) : (
-            <View style={styles.emptyComments}>
-              <Text style={styles.noCommentsText}>
-                No comments yet. Be the first!
-              </Text>
-              <Ionicons
-                name="happy-outline"
-                size={30}
-                color={Colors.background.subtle}
-              />
+              </View>
+              <Text style={styles.commentsTitleText}>Comments</Text>
             </View>
+          </View>
+          <View style={styles.commentInputContainer}>
+            <View style={styles.placeholderPFP}>
+              {/*Profile picture goes here*/}
+            </View>
+            <TextInput
+              style={styles.commentInput}
+              placeholder="Add Comment"
+              placeholderTextColor={Colors.gray.medium}
+              value={inputCommentText}
+              onChangeText={setInputCommentText}
+              multiline={true}
+              maxLength={180}
+              onSubmitEditing={handleSend}
+              submitBehavior="submit"
+            />
+            <Pressable onPress={handleSend} disabled={!inputCommentText.trim()}>
+              <View
+                style={[
+                  styles.sendButton,
+                  inputCommentText.trim() && {
+                    backgroundColor: Colors.accent.secondary,
+                  },
+                ]}
+              >
+                <Text style={styles.sendButtonText}>Send</Text>
+              </View>
+            </Pressable>
+          </View>
+          <View style={styles.comments}>
+            {Array.isArray(comments) && comments.length > 0 ? (
+              [...comments]
+                .reverse()
+                .slice(0, visibleComments)
+                .map((comment, index) => (
+                  <Comment
+                    key={index}
+                    text={comment?.text}
+                    creatorName={comment?.creatorName}
+                    createdAt={comment?.createdAt}
+                  />
+                ))
+            ) : (
+              <View style={styles.emptyComments}>
+                <Text style={styles.noCommentsText}>
+                  No comments yet. Be the first!
+                </Text>
+                <Ionicons
+                  name="happy-outline"
+                  size={30}
+                  color={Colors.background.subtle}
+                />
+              </View>
+            )}
+          </View>
+          {Array.isArray(comments) && comments?.length > visibleComments && (
+            <Pressable onPress={handleSeeMore} style={styles.seeMoreButton}>
+              <Text style={styles.seeMoreText}>See More</Text>
+              <Ionicons
+                name="arrow-down-outline"
+                size={24}
+                color={Colors.accent.secondary}
+              />
+            </Pressable>
           )}
         </View>
-        {Array.isArray(comments) && comments?.length > visibleComments && (
-          <Pressable onPress={handleSeeMore} style={styles.seeMoreButton}>
-            <Text style={styles.seeMoreText}>See More</Text>
-            <Ionicons
-              name="arrow-down-outline"
-              size={24}
-              color={Colors.accent.secondary}
-            />
-          </Pressable>
-        )}
-      </View>
+      </CustomShadow>
     </View>
   );
 }

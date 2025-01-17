@@ -1,27 +1,14 @@
 import { View, Pressable, Text, Image, StyleSheet } from "react-native";
 
-import { Shadow } from "react-native-shadow-2";
-
 import TextDetails from "../TextDetails";
 
 import Colors from "../../src/constants/Colors";
+import CustomShadow from "../CustomShadow";
 
 function ClubCard({ image, title, description, onPress, clubId }) {
   return (
     <View style={styles.container}>
-      <Shadow
-        sides={{ bottom: true, top: false, start: false, end: true }}
-        corners={{
-          topStart: false,
-          topEnd: false,
-          bottomStart: false,
-          bottomEnd: true,
-        }}
-        offset={[0, 0]}
-        distance={6}
-        startColor="rgba(0, 0, 0, 0.20)"
-        endColor="rgba(0, 0, 0, 0.05)"
-      >
+      <CustomShadow>
         <Pressable style={styles.cardInfo} onPress={onPress}>
           <Image
             style={styles.clubImg}
@@ -40,7 +27,7 @@ function ClubCard({ image, title, description, onPress, clubId }) {
             />
           </View>
         </Pressable>
-      </Shadow>
+      </CustomShadow>
     </View>
   );
 }

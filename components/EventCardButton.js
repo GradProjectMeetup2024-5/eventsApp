@@ -1,19 +1,10 @@
 import React from "react";
 import { Pressable, View, StyleSheet } from "react-native";
-import Ionicons from "@expo/vector-icons/Ionicons"; // Ensure you have this package installed
-import { useNavigation } from "@react-navigation/native";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
-const EventCardButton = ({ icon, color, eventId }) => {
-  const navigation = useNavigation();
-  console.log("eventId FFFFF",eventId)
+const EventCardButton = ({ icon, color, eventId, onPress }) => {
   return (
-    <Pressable
-      onPress={() =>
-        navigation.navigate("Edit", {
-          eventId:eventId, 
-        })
-      }
-    >
+    <Pressable onPress={onPress}>
       <View style={styles.button}>
         <Ionicons name={icon} size={25} color={color} />
       </View>

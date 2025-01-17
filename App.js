@@ -13,6 +13,8 @@ import Tabs from "./navigators/Tabs";
 import Profile from "./screens/Profile";
 import ClubDetails from "./screens/ClubDetails";
 import EventDetails from "./screens/EventDetails";
+import AllEventsPage from "./screens/AllEventsPage";
+import Edit from "./screens/Edit";
 
 import LogIn from "./screens/auth/LogIn";
 import SignUp from "./screens/auth/SignUp";
@@ -22,9 +24,6 @@ import { useContext, useState, useEffect } from "react";
 import * as SecureStore from "expo-secure-store";
 
 import * as actionType from "./API/actionTypes";
-import AllEventsPage from "./screens/AllEventsPage";
-
-import Edit from "./screens/tabs/Edit";
 
 const Stack = createNativeStackNavigator();
 
@@ -56,7 +55,6 @@ const AppNavigator = () => {
       <Stack.Navigator
         screenOptions={{
           headerShown: false,
-          // animation: "reveal_from_bottom",
         }}
       >
         {!isLoggedIn ? (

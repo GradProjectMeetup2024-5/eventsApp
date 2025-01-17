@@ -31,12 +31,12 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.background.surface,
     padding: 4,
     borderRadius: 12,
-    gap: 6,
+    gap: 7,
   },
   tab: {
     paddingVertical: 8,
     paddingHorizontal: 16,
-    borderRadius: 14,
+    borderRadius: 12,
   },
   activeTab: {
     backgroundColor: Colors.accent.secondary,

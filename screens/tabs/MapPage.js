@@ -27,7 +27,7 @@ const App = () => {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <Header />
+      <Header noTabBar />
       <View style={styles.container}>
         <MapView
           style={styles.mapStyle}
@@ -45,8 +45,7 @@ const App = () => {
                 latitude: marker?.latitude || 32.0401803456018,
                 longitude: marker?.longitude || 35.900398904295194,
               }}
-              onPress={() => setSelectedEvent(marker)} 
-              
+              onPress={() => setSelectedEvent(marker)}
             />
           ))}
         </MapView>
@@ -63,7 +62,6 @@ const App = () => {
               <View style={styles.modalContent}>
                 <Text style={styles.modalTitle}>
                   {selectedEvent.event_name || "Event Name"}
-                  
                 </Text>
                 <Text style={styles.modalDescription}>
                   {selectedEvent.event_desc || "No Description Available"}

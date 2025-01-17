@@ -2,7 +2,7 @@ import { View, Pressable, Text, Image, StyleSheet } from "react-native";
 
 import Colors from "../../src/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
-import { Shadow } from "react-native-shadow-2";
+import CustomShadow from "../CustomShadow";
 import AttendeePictures from "../AttendeePictures";
 
 function AltEventCard({
@@ -78,19 +78,7 @@ function AltEventCard({
 
   return (
     <View style={[styles.container, style]}>
-      <Shadow
-        sides={{ bottom: true, top: false, start: false, end: true }}
-        corners={{
-          topStart: false,
-          topEnd: false,
-          bottomStart: false,
-          bottomEnd: true,
-        }}
-        offset={[0, 0]}
-        distance={6}
-        startColor="rgba(0, 0, 0, 0.20)"
-        endColor="rgba(0, 0, 0, 0.05)"
-      >
+      <CustomShadow>
         <Pressable style={styles.card} onPress={onPress}>
           {!noEvents ? (
             <>
@@ -152,7 +140,7 @@ function AltEventCard({
             </View>
           )}
         </Pressable>
-      </Shadow>
+      </CustomShadow>
     </View>
   );
 }

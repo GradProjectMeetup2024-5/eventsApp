@@ -10,7 +10,7 @@ import {
 } from "react-native";
 
 import { Ionicons } from "@expo/vector-icons";
-import { Shadow } from "react-native-shadow-2";
+import CustomShadow from "../components/CustomShadow";
 
 import { useDispatch, useSelector } from "react-redux";
 import { useRoute } from "@react-navigation/native";
@@ -177,19 +177,7 @@ function EventDetails() {
 
             {/* DETAILS SECTION */}
             <View style={styles.detailsContainer}>
-              <Shadow
-                sides={{ bottom: true, top: false, start: false, end: true }}
-                corners={{
-                  topStart: false,
-                  topEnd: false,
-                  bottomStart: false,
-                  bottomEnd: true,
-                }}
-                offset={[0, 0]}
-                distance={6}
-                startColor="rgba(0, 0, 0, 0.20)"
-                endColor="rgba(0, 0, 0, 0.05)"
-              >
+              <CustomShadow>
                 <View style={styles.detailsCard}>
                   {/* DATE AND TIME SUB-SECTION*/}
                   <DetailCardSection
@@ -243,7 +231,7 @@ function EventDetails() {
                     />
                   </DetailCardSection>
                 </View>
-              </Shadow>
+              </CustomShadow>
             </View>
 
             {/* ABOUT SECTION */}
@@ -257,6 +245,7 @@ function EventDetails() {
             </View>
 
             {/* COMMENTS SECTION */}
+
             <CommentSection eventId={oneEvent?.id} />
           </RefreshableScrollView>
           <EventDetailsFooter
@@ -330,7 +319,7 @@ const styles = StyleSheet.create({
   sectionText: {
     fontSize: 14,
     color: Colors.gray.light,
-    fontWeight: 500,
+    fontWeight: 400,
   },
   readMoreButton: {
     color: Colors.accent.secondary,

@@ -1,12 +1,15 @@
 import { View, Image, StyleSheet } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
+import { useNavigation } from "@react-navigation/native";
 
 import AttendeePictures from "../AttendeePictures";
 import EventCardButton from "../EventCardButton";
 import Colors from "../../src/constants/Colors";
 
 function EventImage({ imageSource, shareFunction, edit = true, eventId }) {
-  console.log("eventId dawd", eventId);
+  const navigation = useNavigation();
+  console.log("eventId FFFFF", eventId);
+
   return (
     <View style={styles.imageContainer}>
       <Image
@@ -50,6 +53,11 @@ function EventImage({ imageSource, shareFunction, edit = true, eventId }) {
             icon="create-outline"
             color={Colors.accent.secondary}
             eventId={eventId}
+            onPress={() => {
+              navigation.navigate("Edit", {
+                eventId: eventId,
+              });
+            }}
           />
         )}
       </View>

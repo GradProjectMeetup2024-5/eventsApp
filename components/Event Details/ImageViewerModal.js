@@ -32,9 +32,11 @@ const ImageViewerModal = ({ visible, images, onClose, initialIndex }) => {
               <Pressable style={styles.closeButton} onPress={onClose}>
                 <Ionicons name="close" size={25} color={Colors.gray.white} />
               </Pressable>
-              <Text style={styles.indicatorText}>
-                {currentIndex} / {allSize}
-              </Text>
+              {allSize > 1 && (
+                <Text style={styles.indicatorText}>
+                  {currentIndex} / {allSize}
+                </Text>
+              )}
             </View>
           )}
         />
