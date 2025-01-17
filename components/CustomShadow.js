@@ -1,4 +1,4 @@
-import { View, Shadow } from "react-native-shadow-2";
+import { Shadow } from "react-native-shadow-2";
 
 function CustomShadow({ children }) {
   return (

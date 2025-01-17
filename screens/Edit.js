@@ -358,7 +358,7 @@ const Create = ({ eventID = 3 }) => {
             />
           </View>
 
-          <AuthButton onPress={handleSubmit}>Create Event</AuthButton>
+          <AuthButton onPress={handleSubmit}>Save</AuthButton>
         </View>
       </ScrollView>
     </SafeAreaView>
