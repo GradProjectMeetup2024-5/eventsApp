@@ -1,13 +1,6 @@
 import { useState, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import {
-  View,
-  Image,
-  Text,
-  Pressable,
-  StyleSheet,
-  ActivityIndicator,
-} from "react-native";
+import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
 
 import { Ionicons } from "@expo/vector-icons";
 import CustomShadow from "../components/CustomShadow";

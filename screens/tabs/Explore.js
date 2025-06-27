@@ -9,7 +9,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { showEvents } from "../../API/action/event";
 import * as actionType from "../../API/actionTypes";
 import Header from "../../components/Headers/Header";
-import TabBar from "../../components/ui/TabBar";
 
 export default function Explore() {
   const dispatch = useDispatch();
