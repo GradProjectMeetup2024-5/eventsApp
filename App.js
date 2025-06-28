@@ -1,5 +1,5 @@
-import { StyleSheet, SafeAreaView } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
+import { StyleSheet, View } from "react-native";
+import { DefaultTheme, NavigationContainer } from "@react-navigation/native";
 import { StatusBar } from "expo-status-bar";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -14,6 +14,7 @@ import EventDetails from "./screens/EventDetails";
 import AllEventsPage from "./screens/AllEventsPage";
 import Edit from "./screens/Edit";
 
+import Colors from "./src/constants/Colors";
 import LogIn from "./screens/auth/LogIn";
 import SignUp from "./screens/auth/SignUp";
 import ForgotPass from "./screens/auth/ForgotPass";
@@ -24,6 +25,14 @@ import * as SecureStore from "expo-secure-store";
 import * as actionType from "./API/actionTypes";
 
 const Stack = createNativeStackNavigator();
+
+const MyTheme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    background: Colors.background.base,
+  },
+};
 
 const AppNavigator = () => {
   const dispatch = useDispatch();
@@ -49,10 +58,12 @@ const AppNavigator = () => {
   }, [dispatch]);
 
   return (
-    <NavigationContainer>
+    <NavigationContainer theme={MyTheme}>
       <Stack.Navigator
         screenOptions={{
           headerShown: false,
+          gestureEnabled: false,
+          animation: "none",
         }}
       >
         {!isLoggedIn ? (
@@ -80,7 +91,7 @@ export default function App() {
   return (
     <Provider store={store}>
       <SafeAreaProvider>
-        <StatusBar style="dark" />
+        <StatusBar style="light" />
         <>
           <AppNavigator />
         </>

@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { View, StyleSheet } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
-import { StatusBar } from "expo-status-bar";
 
+import StatusBarComponent from "../../components/ui/StatusBar";
 import Colors from "../../src/constants/Colors";
 import EventCard from "../../components/Cards/EventCard";
 import RefreshableScrollView from "../../components/RefreshableScrollView";
@@ -57,15 +56,7 @@ export default function Explore() {
   const navigation = useNavigation();
 
   return (
-    <>
-      <SafeAreaView
-        edges={["top"]}
-        style={{
-          backgroundColor: Colors.background.elevated,
-        }}
-      >
-        <StatusBar style="dark" />
-      </SafeAreaView>
+    <StatusBarComponent>
       <View style={styles.container}>
         <Header
           searchText={searchText}
@@ -100,7 +91,7 @@ export default function Explore() {
           ))}
         </RefreshableScrollView>
       </View>
-    </>
+    </StatusBarComponent>
   );
 }
 

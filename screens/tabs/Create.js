@@ -10,9 +10,8 @@ import {
   Alert,
   Image,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { StatusBar } from "expo-status-bar";
 
+import StatusBarComponent from "../../components/ui/StatusBar";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { storage } from "../../firebaseConfig";
 import * as ImagePicker from "expo-image-picker";
@@ -193,15 +192,7 @@ const Create = () => {
   };
 
   return (
-    <>
-      <SafeAreaView
-        edges={["top"]}
-        style={{
-          backgroundColor: Colors.background.elevated,
-        }}
-      >
-        <StatusBar style="dark" />
-      </SafeAreaView>
+    <StatusBarComponent>
       <View style={{ flex: 1, backgroundColor: Colors.background.base }}>
         <SubSectionHeader title="Create" subPageButtons={false} />
         <ScrollView
@@ -381,7 +372,7 @@ const Create = () => {
           </View>
         </ScrollView>
       </View>
-    </>
+    </StatusBarComponent>
   );
 };
 

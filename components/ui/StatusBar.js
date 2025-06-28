@@ -11,7 +11,7 @@ function StatusBarComponent({ children }) {
           backgroundColor: Colors.background.elevated,
         }}
       >
-        <StatusBar style="dark" />
+        {/* <StatusBar style="light" /> */}
       </SafeAreaView>
       {children}
     </>
