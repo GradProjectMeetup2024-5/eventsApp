@@ -46,7 +46,6 @@ function PosterDetails({
           <JoinClubButton />
         </View>
       )}
-      ;
     </View>
   );
 }

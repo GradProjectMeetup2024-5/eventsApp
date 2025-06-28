@@ -42,7 +42,6 @@ export default function Profile({ navigation }) {
     console.log("delete");
     await SecureStore.deleteItemAsync("profile");
     dispatch({ type: actionType.LOGOUT });
-    navigation.navigate("LogIn");
   }
 
   return (
