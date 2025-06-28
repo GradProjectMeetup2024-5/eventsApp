@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, View, Text, Modal, Button } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import StatusBarComponent from "../../components/ui/StatusBar";
 import MapView, { Marker } from "react-native-maps";
 import Colors from "../../src/constants/Colors";
 import Header from "../../components/Headers/Header";
@@ -26,66 +26,68 @@ const App = () => {
   }, []);
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <Header noTabBar />
-      <View style={styles.container}>
-        <MapView
-          style={styles.mapStyle}
-          initialRegion={{
-            latitude: 32.0401803456018,
-            longitude: 35.900398904295194,
-            latitudeDelta: 0.009,
-            longitudeDelta: 0.009,
-          }}
-        >
-          {allEvents?.map((marker) => (
-            <Marker
-              key={marker.id}
-              coordinate={{
-                latitude: marker?.latitude || 32.0401803456018,
-                longitude: marker?.longitude || 35.900398904295194,
-              }}
-              onPress={() => setSelectedEvent(marker)}
-            />
-          ))}
-        </MapView>
-
-        {/* Modal for displaying selected event details */}
-        {selectedEvent && (
-          <Modal
-            animationType="slide"
-            transparent={true}
-            visible={!!selectedEvent}
-            onRequestClose={() => setSelectedEvent(null)}
+    <StatusBarComponent>
+      <View style={styles.safeArea}>
+        <Header noTabBar />
+        <View style={styles.container}>
+          <MapView
+            style={styles.mapStyle}
+            initialRegion={{
+              latitude: 32.0401803456018,
+              longitude: 35.900398904295194,
+              latitudeDelta: 0.009,
+              longitudeDelta: 0.009,
+            }}
           >
-            <View style={styles.modalContainer}>
-              <View style={styles.modalContent}>
-                <Text style={styles.modalTitle}>
-                  {selectedEvent.event_name || "Event Name"}
-                </Text>
-                <Text style={styles.modalDescription}>
-                  {selectedEvent.event_desc || "No Description Available"}
-                </Text>
-                <Button
-                  title="Event Details"
-                  onPress={() =>
-                    navigation.navigate("EventDetails", {
-                      eventId: selectedEvent?.id,
-                    })
-                  }
-                  color={Colors.primary}
-                />
-                <Button
-                  title="Close"
-                  onPress={() => setSelectedEvent(null)}
-                  color={Colors.primary}
-                />
+            {allEvents?.map((marker) => (
+              <Marker
+                key={marker.id}
+                coordinate={{
+                  latitude: marker?.latitude || 32.0401803456018,
+                  longitude: marker?.longitude || 35.900398904295194,
+                }}
+                onPress={() => setSelectedEvent(marker)}
+              />
+            ))}
+          </MapView>
+
+          {/* Modal for displaying selected event details */}
+          {selectedEvent && (
+            <Modal
+              animationType="slide"
+              transparent={true}
+              visible={!!selectedEvent}
+              onRequestClose={() => setSelectedEvent(null)}
+            >
+              <View style={styles.modalContainer}>
+                <View style={styles.modalContent}>
+                  <Text style={styles.modalTitle}>
+                    {selectedEvent.event_name || "Event Name"}
+                  </Text>
+                  <Text style={styles.modalDescription}>
+                    {selectedEvent.event_desc || "No Description Available"}
+                  </Text>
+                  <Button
+                    title="Event Details"
+                    onPress={() =>
+                      navigation.navigate("EventDetails", {
+                        eventId: selectedEvent?.id,
+                      })
+                    }
+                    color={Colors.primary}
+                  />
+                  <Button
+                    title="Close"
+                    onPress={() => setSelectedEvent(null)}
+                    color={Colors.primary}
+                  />
+                </View>
               </View>
-            </View>
-          </Modal>
-        )}
+            </Modal>
+          )}
+        </View>
       </View>
-    </SafeAreaView>
+    </StatusBarComponent>
   );
 };
 

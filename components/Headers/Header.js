@@ -4,7 +4,6 @@ import { Ionicons } from "@expo/vector-icons";
 import Colors from "../../src/constants/Colors";
 import { useNavigation } from "@react-navigation/native";
 
-import BottomNavigation from "../ui/BottomNavigation";
 import TabBar from "../ui/TabBar";
 
 const Header = ({
@@ -41,7 +40,6 @@ const Header = ({
       {!noTabBar && (
         <TabBar activeTab={activeTab} setActiveTab={setActiveTab} />
       )}
-      ;
     </View>
   );
 };

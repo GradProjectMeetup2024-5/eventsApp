@@ -1,5 +1,7 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Text, View, Platform } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+
+import { Text, View, Pressable } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
 import Explore from "../screens/tabs/Explore";
@@ -8,14 +10,13 @@ import MapPage from "../screens/tabs/MapPage";
 import AttendingPage from "../screens/tabs/AttendingPage";
 import Create from "../screens/tabs/Create";
 
-import Icons from "../src/constants/Icons";
 import Colors from "../src/constants/Colors";
 
 const Tab = createBottomTabNavigator();
 
 const TabIcon = ({ icon, focused, name }) => {
   return (
-    <View style={{ alignItems: "center", justifyContent: "center" }}>
+    <View style={{ alignItems: "center", justifyContent: "center", width: 60 }}>
       <Ionicons
         size={34}
         name={icon}
@@ -34,19 +35,22 @@ const TabIcon = ({ icon, focused, name }) => {
 };
 
 const Tabs = () => {
+  const insets = useSafeAreaInsets();
+
   return (
     <Tab.Navigator
       screenOptions={{
-        tabBarHideOnKeyboard: true,
+        // tabBarHideOnKeyboard: true,
         headerShown: false,
         tabBarShowLabel: false,
         tabBarStyle: {
           backgroundColor: Colors.background.elevated,
-          height: 70,
+          height: 70 + insets.bottom,
           borderTopWidth: 1,
-          borderTopColor: Colors.gray.darkest,
-          paddingTop: Platform.OS === "ios" ? 25 : 0,
+          borderColor: Colors.gray.darkest,
+          paddingTop: 15,
         },
+        tabBarButton: (props) => <Pressable android_ripple={null} {...props} />,
       }}
     >
       <Tab.Screen

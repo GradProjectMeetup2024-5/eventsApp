@@ -10,7 +10,8 @@ import {
   Alert,
   Image,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+
+import StatusBarComponent from "../../components/ui/StatusBar";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { storage } from "../../firebaseConfig";
 import * as ImagePicker from "expo-image-picker";
@@ -191,183 +192,187 @@ const Create = () => {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <SubSectionHeader title="Create" subPageButtons={false} />
-      <ScrollView
-        contentContainerStyle={styles.scrollViewContent}
-        overScrollMode="never"
-      >
-        <View style={styles.container}>
-          <View style={styles.inputContainer}>
-            <Text style={styles.label}>Event Name</Text>
-
-            <AuthTextInput
-              placeholder="Event Name"
-              value={eventName}
-              onChangeText={setEventName}
-            />
-          </View>
-
-          <Text style={[styles.label, { alignSelf: "flex-start" }]}>
-            Date & Time
-          </Text>
-
-          <View style={styles.inputContainerRow}>
+    <StatusBarComponent>
+      <View style={{ flex: 1, backgroundColor: Colors.background.base }}>
+        <SubSectionHeader title="Create" subPageButtons={false} />
+        <ScrollView
+          contentContainerStyle={styles.scrollViewContent}
+          overScrollMode="never"
+        >
+          <View style={styles.container}>
             <View style={styles.inputContainer}>
-              <Pressable
-                style={styles.dateButton}
-                onPress={() => setShowDatePicker(true)}
-              >
-                <Text style={styles.text}>
-                  {eventDate.toLocaleDateString()}
-                </Text>
-              </Pressable>
-              {showDatePicker && (
-                <DateTimePicker
-                  value={eventDate}
-                  mode="date"
-                  display="calendar"
-                  onChange={handleDateChange}
-                />
-              )}
-            </View>
+              <Text style={styles.label}>Event Name</Text>
 
-            <View style={styles.inputContainer}>
-              <Pressable
-                style={styles.timeButton}
-                onPress={() => setShowTimePicker(true)}
-              >
-                <Text style={styles.text}>
-                  {eventTime.toLocaleTimeString([], {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                    hour12: true,
-                  })}
-                </Text>
-              </Pressable>
-              {showTimePicker && (
-                <DateTimePicker
-                  value={eventTime}
-                  mode="time"
-                  display="default"
-                  onChange={handleTimeChange}
-                />
-              )}
-            </View>
-          </View>
-          <View style={{ alignSelf: "flex-start" }}>
-            <Text style={styles.label}>Faculty</Text>
-          </View>
-          <View
-            style={[
-              styles.inputContainer,
-              { borderRadius: 50, overflow: "hidden" },
-            ]}
-          >
-            <Picker
-              selectedValue={eventFaculty}
-              onValueChange={handleFacultyChange}
-              style={styles.picker}
-              dropdownIconColor={Colors.accent.secondary}
-            >
-              <Picker.Item
-                label="Select a faculty"
-                value=""
-                color={eventFaculty === "" ? Colors.gray.dark : "#000"}
-              />
-              {Object.keys(faculties).map((faculty) => (
-                <Picker.Item
-                  key={faculty}
-                  label={faculty}
-                  value={faculty}
-                  color={faculty === eventFaculty ? Colors.gray.light : "black"}
-                />
-              ))}
-            </Picker>
-          </View>
-
-          <Text style={styles.label}>Floor & Room</Text>
-
-          <View style={styles.inputContainerRow}>
-            <View style={styles.inputContainer}>
-              <TextInput
-                style={[styles.input, { textAlign: "center" }]}
-                value={eventFloor}
-                onChangeText={setEventFloor}
-                placeholder="Enter Floor"
-                placeholderTextColor={Colors.gray.dark}
+              <AuthTextInput
+                placeholder="Event Name"
+                value={eventName}
+                onChangeText={setEventName}
               />
             </View>
 
-            <View style={styles.inputContainer}>
-              <TextInput
-                style={[styles.input, { textAlign: "center" }]}
-                value={eventRoom}
-                onChangeText={setEventRoom}
-                placeholder="Enter Room"
-                placeholderTextColor={Colors.gray.dark}
-              />
+            <Text style={[styles.label, { alignSelf: "flex-start" }]}>
+              Date & Time
+            </Text>
+
+            <View style={styles.inputContainerRow}>
+              <View style={styles.inputContainer}>
+                <Pressable
+                  style={styles.dateButton}
+                  onPress={() => setShowDatePicker(true)}
+                >
+                  <Text style={styles.text}>
+                    {eventDate.toLocaleDateString()}
+                  </Text>
+                </Pressable>
+                {showDatePicker && (
+                  <DateTimePicker
+                    value={eventDate}
+                    mode="date"
+                    display="calendar"
+                    onChange={handleDateChange}
+                  />
+                )}
+              </View>
+
+              <View style={styles.inputContainer}>
+                <Pressable
+                  style={styles.timeButton}
+                  onPress={() => setShowTimePicker(true)}
+                >
+                  <Text style={styles.text}>
+                    {eventTime.toLocaleTimeString([], {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                      hour12: true,
+                    })}
+                  </Text>
+                </Pressable>
+                {showTimePicker && (
+                  <DateTimePicker
+                    value={eventTime}
+                    mode="time"
+                    display="default"
+                    onChange={handleTimeChange}
+                  />
+                )}
+              </View>
             </View>
-          </View>
-
-          <Text style={styles.label}>Image</Text>
-
-          <View style={styles.uploadImagesContainer}>
-            <View style={[styles.uploadButtonRow]}>
-              <Pressable onPress={pickImages} style={styles.button}>
-                <Text style={styles.buttonText}>Upload Image</Text>
-              </Pressable>
-
-              <Text style={[styles.text, { marginLeft: 10 }]}>
-                {images.length} {images.length === 1 ? "Image" : "Images"}{" "}
-                selected
-              </Text>
+            <View style={{ alignSelf: "flex-start" }}>
+              <Text style={styles.label}>Faculty</Text>
             </View>
-
-            {images.length > 0 && (
-              <ScrollView
-                horizontal
-                overScrollMode="never"
-                contentContainerStyle={{
-                  // flexDirection: "row",
-                  marginTop: 2,
-                  marginBottom: 0,
-                }}
-              >
-                {images.map((image, index) => (
-                  <Pressable onPress={() => handleImagePress(index)}>
-                    <View key={index}>
-                      <Image
-                        source={{ uri: image.uri }}
-                        style={{ width: 100, height: 100, margin: 5 }}
-                      />
-                    </View>
-                  </Pressable>
-                ))}
-              </ScrollView>
-            )}
-          </View>
-
-          <View style={styles.inputContainer}>
-            <Text style={styles.label}>Description</Text>
-            <TextInput
+            <View
               style={[
-                styles.input,
-                styles.descriptionInput,
-                { borderRadius: 18 },
+                styles.inputContainer,
+                { borderRadius: 50, overflow: "hidden" },
               ]}
-              value={eventDescription}
-              onChangeText={setEventDescription}
-              placeholder="Event description"
-              placeholderTextColor={Colors.gray.dark}
-              multiline
-            />
-          </View>
+            >
+              <Picker
+                selectedValue={eventFaculty}
+                onValueChange={handleFacultyChange}
+                style={styles.picker}
+                dropdownIconColor={Colors.accent.secondary}
+              >
+                <Picker.Item
+                  label="Select a faculty"
+                  value=""
+                  color={eventFaculty === "" ? Colors.gray.dark : "#000"}
+                />
+                {Object.keys(faculties).map((faculty) => (
+                  <Picker.Item
+                    key={faculty}
+                    label={faculty}
+                    value={faculty}
+                    color={
+                      faculty === eventFaculty ? Colors.gray.light : "black"
+                    }
+                  />
+                ))}
+              </Picker>
+            </View>
 
-          <AuthButton onPress={handleSubmit}>Create Event</AuthButton>
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+            <Text style={styles.label}>Floor & Room</Text>
+
+            <View style={styles.inputContainerRow}>
+              <View style={styles.inputContainer}>
+                <TextInput
+                  style={[styles.input, { textAlign: "center" }]}
+                  value={eventFloor}
+                  onChangeText={setEventFloor}
+                  placeholder="Enter Floor"
+                  placeholderTextColor={Colors.gray.dark}
+                />
+              </View>
+
+              <View style={styles.inputContainer}>
+                <TextInput
+                  style={[styles.input, { textAlign: "center" }]}
+                  value={eventRoom}
+                  onChangeText={setEventRoom}
+                  placeholder="Enter Room"
+                  placeholderTextColor={Colors.gray.dark}
+                />
+              </View>
+            </View>
+
+            <Text style={styles.label}>Image</Text>
+
+            <View style={styles.uploadImagesContainer}>
+              <View style={[styles.uploadButtonRow]}>
+                <Pressable onPress={pickImages} style={styles.button}>
+                  <Text style={styles.buttonText}>Upload Image</Text>
+                </Pressable>
+
+                <Text style={[styles.text, { marginLeft: 10 }]}>
+                  {images.length} {images.length === 1 ? "Image" : "Images"}{" "}
+                  selected
+                </Text>
+              </View>
+
+              {images.length > 0 && (
+                <ScrollView
+                  horizontal
+                  overScrollMode="never"
+                  contentContainerStyle={{
+                    // flexDirection: "row",
+                    marginTop: 2,
+                    marginBottom: 0,
+                  }}
+                >
+                  {images.map((image, index) => (
+                    <Pressable onPress={() => handleImagePress(index)}>
+                      <View key={index}>
+                        <Image
+                          source={{ uri: image.uri }}
+                          style={{ width: 100, height: 100, margin: 5 }}
+                        />
+                      </View>
+                    </Pressable>
+                  ))}
+                </ScrollView>
+              )}
+            </View>
+
+            <View style={styles.inputContainer}>
+              <Text style={styles.label}>Description</Text>
+              <TextInput
+                style={[
+                  styles.input,
+                  styles.descriptionInput,
+                  { borderRadius: 18 },
+                ]}
+                value={eventDescription}
+                onChangeText={setEventDescription}
+                placeholder="Event description"
+                placeholderTextColor={Colors.gray.dark}
+                multiline
+              />
+            </View>
+
+            <AuthButton onPress={handleSubmit}>Create Event</AuthButton>
+          </View>
+        </ScrollView>
+      </View>
+    </StatusBarComponent>
   );
 };
 

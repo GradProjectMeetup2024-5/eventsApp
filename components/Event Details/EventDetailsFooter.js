@@ -1,7 +1,7 @@
-import React, { useState } from "react";
 import { View, Text, Pressable, StyleSheet } from "react-native";
 
 import SwipeButton from "./SwipeButton";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { Ionicons } from "@expo/vector-icons";
 import Colors from "../../src/constants/Colors";
@@ -15,9 +15,12 @@ function EventDetailsFooter({ isAttending, onJoinLeave }) {
   // const handleCancelAttend = () => {
   //   setIsAttending(false);
   // };
+  const insets = useSafeAreaInsets();
 
   return (
-    <View style={styles.footer}>
+    <View
+      style={[styles.footer, { height: 90, paddingBottom: insets.bottom - 10 }]}
+    >
       {isAttending ? (
         <View style={styles.attendingContainer}>
           <View style={styles.cancelContainer}>
@@ -56,8 +59,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     width: "100%",
-    height: 72,
-    paddingBottom: 3,
+    paddingBottom: 0,
     backgroundColor: Colors.background.elevated,
     borderTopColor: Colors.gray.darkest,
     borderTopWidth: 1,

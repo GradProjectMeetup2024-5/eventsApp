@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
 
 import { Ionicons } from "@expo/vector-icons";
@@ -11,6 +10,7 @@ import { useRoute } from "@react-navigation/native";
 import Colors from "../src/constants/Colors";
 import EventDetailsHeader from "../components/Headers/EventDetailsHeader";
 
+import StatusBarComponent from "../components/ui/StatusBar";
 import RefreshableScrollView from "../components/RefreshableScrollView";
 import TextDetails from "../components/TextDetails";
 import DetailCardSeparator from "../components/Event Details/DetailCardSeparator";
@@ -129,126 +129,128 @@ function EventDetails() {
   const isClub = oneEvent?.clubId ? true : false;
 
   return (
-    <SafeAreaView style={styles.container}>
-      <EventDetailsHeader />
-      {loading ? (
-        <ActivityIndicator
-          size="large"
-          color={Colors.accent.secondary}
-          style={{ marginTop: 15 }}
-        />
-      ) : (
-        <>
-          <RefreshableScrollView
-            style={[{ paddingBottom: 60, alignItems: "center" }]}
-            onRefresh={fetchStatus}
-          >
-            <View style={styles.imagesContainer}>
-              <ImageSlider images={oneEvent?.posters} />
-            </View>
-
-            <View style={styles.titleContainer}>
-              <Text style={styles.titleText}>{oneEvent?.event_name}</Text>
-            </View>
-
-            {isClub ? (
-              <PosterDetails
-                isApproved={isApproved}
-                creatorImage="https://d1csarkz8obe9u.cloudfront.net/posterpreviews/art-club-logo-design-template-7363f499d408b8d5aa636f25e135ce56_screen.jpg?ts=1688208799"
-                creatorName={oneEvent?.club?.name}
-                inEventDetails={true}
-                club={true}
-              />
-            ) : (
-              <PosterDetails
-                isApproved={isApproved}
-                creatorImage="https://d1csarkz8obe9u.cloudfront.net/posterpreviews/art-club-logo-design-template-7363f499d408b8d5aa636f25e135ce56_screen.jpg?ts=1688208799"
-                creatorName={oneEvent?.user?.name}
-                inEventDetails={true}
-                club={false}
-              />
-            )}
-
-            {/* DETAILS SECTION */}
-            <View style={styles.detailsContainer}>
-              <CustomShadow>
-                <View style={styles.detailsCard}>
-                  {/* DATE AND TIME SUB-SECTION*/}
-                  <DetailCardSection
-                    iconName="calendar-clear-outline"
-                    primary={formatDate(oneEvent?.event_date)}
-                    secondary={formatTime(oneEvent?.event_date)}
-                  >
-                    <Ionicons
-                      name="chevron-forward"
-                      size={30}
-                      color={Colors.gray.light}
-                    />
-                  </DetailCardSection>
-
-                  {/* SEPARATOR */}
-                  <DetailCardSeparator />
-
-                  {/* LOCATION SUB-SECTION*/}
-                  <DetailCardSection
-                    iconName="location-outline"
-                    primary={oneEvent?.faculty}
-                    secondary={oneEvent?.room + ", " + oneEvent?.floor}
-                  >
-                    <Ionicons
-                      name="chevron-forward"
-                      size={30}
-                      color={Colors.gray.light}
-                    />
-                  </DetailCardSection>
-
-                  {/* SEPARATOR */}
-                  <DetailCardSeparator />
-
-                  {/* ATTENDEES SUB-SECTION*/}
-                  <DetailCardSection
-                    iconName="checkmark-circle-outline"
-                    primary="Attendees"
-                    secondary={
-                      oneEvent?.joined_users?.length == 0
-                        ? "No Attendees"
-                        : oneEvent?.joined_users?.length
-                    }
-                  >
-                    <AttendeePictures
-                      attendees={[
-                        "https://picsum.photos/100/300",
-                        "https://picsum.photos/200/100",
-                        "https://picsum.photos/100/100",
-                        "https://picsum.photos/300/100",
-                      ]}
-                    />
-                  </DetailCardSection>
-                </View>
-              </CustomShadow>
-            </View>
-
-            {/* ABOUT SECTION */}
-            <View style={styles.aboutContainer}>
-              <Text style={styles.aboutTitle}>About</Text>
-              <TextDetails
-                description={oneEvent?.event_desc}
-                textStyle={styles.sectionText}
-                maxLines={5}
-              />
-            </View>
-
-            {/* COMMENTS SECTION */}
-
-            <CommentSection eventId={oneEvent?.id} />
-          </RefreshableScrollView>
-          <EventDetailsFooter
-            isAttending={joinState}
-            onJoinLeave={joinHandler}
+    <StatusBarComponent>
+      <View style={styles.container}>
+        <EventDetailsHeader />
+        {loading ? (
+          <ActivityIndicator
+            size="large"
+            color={Colors.accent.secondary}
+            style={{ marginTop: 15 }}
           />
-        </>
-      )}
-    </SafeAreaView>
+        ) : (
+          <>
+            <RefreshableScrollView
+              style={[{ paddingBottom: 60, alignItems: "center" }]}
+              onRefresh={fetchStatus}
+            >
+              <View style={styles.imagesContainer}>
+                <ImageSlider images={oneEvent?.posters} />
+              </View>
+
+              <View style={styles.titleContainer}>
+                <Text style={styles.titleText}>{oneEvent?.event_name}</Text>
+              </View>
+
+              {isClub ? (
+                <PosterDetails
+                  isApproved={isApproved}
+                  creatorImage="https://d1csarkz8obe9u.cloudfront.net/posterpreviews/art-club-logo-design-template-7363f499d408b8d5aa636f25e135ce56_screen.jpg?ts=1688208799"
+                  creatorName={oneEvent?.club?.name}
+                  inEventDetails={true}
+                  club={true}
+                />
+              ) : (
+                <PosterDetails
+                  isApproved={isApproved}
+                  creatorImage="https://d1csarkz8obe9u.cloudfront.net/posterpreviews/art-club-logo-design-template-7363f499d408b8d5aa636f25e135ce56_screen.jpg?ts=1688208799"
+                  creatorName={oneEvent?.user?.name}
+                  inEventDetails={true}
+                  club={false}
+                />
+              )}
+
+              {/* DETAILS SECTION */}
+              <View style={styles.detailsContainer}>
+                <CustomShadow>
+                  <View style={styles.detailsCard}>
+                    {/* DATE AND TIME SUB-SECTION*/}
+                    <DetailCardSection
+                      iconName="calendar-clear-outline"
+                      primary={formatDate(oneEvent?.event_date)}
+                      secondary={formatTime(oneEvent?.event_date)}
+                    >
+                      <Ionicons
+                        name="chevron-forward"
+                        size={30}
+                        color={Colors.gray.light}
+                      />
+                    </DetailCardSection>
+
+                    {/* SEPARATOR */}
+                    <DetailCardSeparator />
+
+                    {/* LOCATION SUB-SECTION*/}
+                    <DetailCardSection
+                      iconName="location-outline"
+                      primary={oneEvent?.faculty}
+                      secondary={oneEvent?.room + ", " + oneEvent?.floor}
+                    >
+                      <Ionicons
+                        name="chevron-forward"
+                        size={30}
+                        color={Colors.gray.light}
+                      />
+                    </DetailCardSection>
+
+                    {/* SEPARATOR */}
+                    <DetailCardSeparator />
+
+                    {/* ATTENDEES SUB-SECTION*/}
+                    <DetailCardSection
+                      iconName="checkmark-circle-outline"
+                      primary="Attendees"
+                      secondary={
+                        oneEvent?.joined_users?.length == 0
+                          ? "No Attendees"
+                          : oneEvent?.joined_users?.length
+                      }
+                    >
+                      <AttendeePictures
+                        attendees={[
+                          "https://picsum.photos/100/300",
+                          "https://picsum.photos/200/100",
+                          "https://picsum.photos/100/100",
+                          "https://picsum.photos/300/100",
+                        ]}
+                      />
+                    </DetailCardSection>
+                  </View>
+                </CustomShadow>
+              </View>
+
+              {/* ABOUT SECTION */}
+              <View style={styles.aboutContainer}>
+                <Text style={styles.aboutTitle}>About</Text>
+                <TextDetails
+                  description={oneEvent?.event_desc}
+                  textStyle={styles.sectionText}
+                  maxLines={5}
+                />
+              </View>
+
+              {/* COMMENTS SECTION */}
+
+              <CommentSection eventId={oneEvent?.id} />
+            </RefreshableScrollView>
+            <EventDetailsFooter
+              isAttending={joinState}
+              onJoinLeave={joinHandler}
+            />
+          </>
+        )}
+      </View>
+    </StatusBarComponent>
   );
 }
 

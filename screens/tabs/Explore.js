@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { View, StyleSheet } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
+
+import StatusBarComponent from "../../components/ui/StatusBar";
 import Colors from "../../src/constants/Colors";
 import EventCard from "../../components/Cards/EventCard";
 import RefreshableScrollView from "../../components/RefreshableScrollView";
@@ -55,40 +56,42 @@ export default function Explore() {
   const navigation = useNavigation();
 
   return (
-    <SafeAreaView style={styles.container}>
-      <Header
-        searchText={searchText}
-        onSearchChange={setSearchText}
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
-      />
-      <RefreshableScrollView
-        onRefresh={fetchEvents}
-        style={styles.bodyContainer}
-      >
-        {filteredEvents?.map((event, index) => (
-          <View key={event.id}>
-            <EventCard
-              eventName={event?.event_name}
-              eventDate={event?.event_date}
-              eventLocation={event?.event_desc}
-              logo={event?.user?.image}
-              eventOrganizer={event?.user?.name}
-              eventImage={event?.posters[0]}
-              faculty={event?.faculty}
-              onPress={() =>
-                navigation.navigate("EventDetails", {
-                  eventId: event?.id,
-                })
-              }
-            />
-            {index < filteredEvents.length - 1 && (
-              <View style={styles.separator} />
-            )}
-          </View>
-        ))}
-      </RefreshableScrollView>
-    </SafeAreaView>
+    <StatusBarComponent>
+      <View style={styles.container}>
+        <Header
+          searchText={searchText}
+          onSearchChange={setSearchText}
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
+        />
+        <RefreshableScrollView
+          onRefresh={fetchEvents}
+          style={styles.bodyContainer}
+        >
+          {filteredEvents?.map((event, index) => (
+            <View key={event.id}>
+              <EventCard
+                eventName={event?.event_name}
+                eventDate={event?.event_date}
+                eventLocation={event?.event_desc}
+                logo={event?.user?.image}
+                eventOrganizer={event?.user?.name}
+                eventImage={event?.posters[0]}
+                faculty={event?.faculty}
+                onPress={() =>
+                  navigation.navigate("EventDetails", {
+                    eventId: event?.id,
+                  })
+                }
+              />
+              {index < filteredEvents.length - 1 && (
+                <View style={styles.separator} />
+              )}
+            </View>
+          ))}
+        </RefreshableScrollView>
+      </View>
+    </StatusBarComponent>
   );
 }
 
