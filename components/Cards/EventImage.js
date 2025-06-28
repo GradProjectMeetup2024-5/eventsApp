@@ -17,7 +17,7 @@ function EventImage({ imageSource, shareFunction, edit = true, eventId }) {
           uri: imageSource,
         }}
         style={styles.image}
-        defaultSource={require("../../assets/icon.png")}
+        defaultSource={require("../../assets/logo.png")}
       />
       <LinearGradient
         colors={[

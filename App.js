@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, SafeAreaView } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { StatusBar } from "expo-status-bar";
 import { SafeAreaProvider } from "react-native-safe-area-context";
@@ -6,8 +6,6 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Provider, useSelector, useDispatch } from "react-redux";
 
 import store from "./Configure";
-
-import Colors from "./src/constants/Colors";
 
 import Tabs from "./navigators/Tabs";
 import Profile from "./screens/Profile";
@@ -82,7 +80,7 @@ export default function App() {
   return (
     <Provider store={store}>
       <SafeAreaProvider>
-        <StatusBar style="auto" backgroundColor={Colors.background.elevated} />
+        <StatusBar style="dark" />
         <>
           <AppNavigator />
         </>

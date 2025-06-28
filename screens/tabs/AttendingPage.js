@@ -7,7 +7,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 
-import { SafeAreaView } from "react-native-safe-area-context";
+import StatusBarComponent from "../../components/ui/StatusBar";
 import { useNavigation } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -66,96 +66,100 @@ const AttendingPage = () => {
   const noEventsIcon = selector === "Attending" ? "rocket" : "footsteps";
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <SubSectionHeader
-        selected={selector}
-        handlePressOne={() => setSelector("Attending")}
-        handlePressTwo={() => setSelector("My Events")}
-        one="Attending"
-        two="My Events"
-        title="Attending"
-      />
-
-      {loading ? (
-        <ActivityIndicator
-          size="large"
-          style={{ marginTop: 15 }}
-          color={Colors.accent.secondary}
+    <StatusBarComponent>
+      <View style={styles.safeArea}>
+        <SubSectionHeader
+          selected={selector}
+          handlePressOne={() => setSelector("Attending")}
+          handlePressTwo={() => setSelector("My Events")}
+          one="Attending"
+          two="My Events"
+          title="Attending"
         />
-      ) : selector === "Attending" ? (
-        Object.keys(groupedEvents).length === 0 ? (
-          <NoEvents icon={noEventsIcon} message={noEventsMessage} />
+
+        {loading ? (
+          <ActivityIndicator
+            size="large"
+            style={{ marginTop: 15 }}
+            color={Colors.accent.secondary}
+          />
+        ) : selector === "Attending" ? (
+          Object.keys(groupedEvents).length === 0 ? (
+            <NoEvents icon={noEventsIcon} message={noEventsMessage} />
+          ) : (
+            <ScrollView
+              contentContainerStyle={styles.container}
+              overScrollMode="never"
+            >
+              {Object.keys(groupedEvents).map((month) => (
+                <View key={month}>
+                  <View style={styles.dateContainer}>
+                    <Text style={styles.date}>{month}</Text>
+                  </View>
+                  {groupedEvents[month].map((event) => (
+                    <AltEventCard
+                      key={event?.id}
+                      eventName={event?.event_name}
+                      faculty={event?.faculty}
+                      floor={event?.floor}
+                      room={event?.room}
+                      image={event?.image}
+                      eventDate={event?.event_date}
+                      eventId={event?.id}
+                      onPress={() =>
+                        navigation.navigate("EventDetails", {
+                          eventId: event?.id,
+                        })
+                      }
+                      style={{ marginBottom: 12 }}
+                      pageType={selector}
+                    />
+                  ))}
+                </View>
+              ))}
+            </ScrollView>
+          )
         ) : (
           <ScrollView
-            contentContainerStyle={styles.container}
+            contentContainerStyle={[styles.container, { marginTop: 20 }]}
             overScrollMode="never"
           >
-            {Object.keys(groupedEvents).map((month) => (
-              <View key={month}>
-                <View style={styles.dateContainer}>
-                  <Text style={styles.date}>{month}</Text>
-                </View>
-                {groupedEvents[month].map((event) => (
-                  <AltEventCard
-                    key={event?.id}
-                    eventName={event?.event_name}
-                    faculty={event?.faculty}
-                    floor={event?.floor}
-                    room={event?.room}
-                    image={event?.image}
-                    eventDate={event?.event_date}
+            {events.length > 0 ? (
+              events.map((event, index) => (
+                <View key={event.id} style={styles.eventContainer}>
+                  <EventCard
+                    edit={true}
                     eventId={event?.id}
+                    eventName={event?.event_name}
+                    eventDate={event?.event_date}
+                    eventLocation={event?.event_desc}
+                    logo={event?.user?.image}
+                    eventOrganizer={event?.user?.name}
+                    eventImage={event?.posters[0]}
+                    faculty={event?.faculty}
                     onPress={() =>
                       navigation.navigate("EventDetails", {
                         eventId: event?.id,
                       })
                     }
-                    style={{ marginBottom: 12 }}
-                    pageType={selector}
                   />
-                ))}
-              </View>
-            ))}
+                  {index < events.length - 1 && (
+                    <View style={styles.separator} />
+                  )}
+                </View>
+              ))
+            ) : (
+              <NoEvents
+                icon={noEventsIcon}
+                message={noEventsMessage}
+                location="Create"
+                buttonText="Create Event"
+              />
+            )}
           </ScrollView>
-        )
-      ) : (
-        <ScrollView
-          contentContainerStyle={[styles.container, { marginTop: 20 }]}
-          overScrollMode="never"
-        >
-          {events.length > 0 ? (
-            events.map((event, index) => (
-              <View key={event.id} style={styles.eventContainer}>
-                <EventCard
-                  edit={true}
-                  eventId={event?.id}
-                  eventName={event?.event_name}
-                  eventDate={event?.event_date}
-                  eventLocation={event?.event_desc}
-                  logo={event?.user?.image}
-                  eventOrganizer={event?.user?.name}
-                  eventImage={event?.posters[0]}
-                  faculty={event?.faculty}
-                  onPress={() =>
-                    navigation.navigate("EventDetails", {
-                      eventId: event?.id,
-                    })
-                  }
-                />
-                {index < events.length - 1 && <View style={styles.separator} />}
-              </View>
-            ))
-          ) : (
-            <NoEvents
-              icon={noEventsIcon}
-              message={noEventsMessage}
-              location="Create"
-              buttonText="Create Event"
-            />
-          )}
-        </ScrollView>
-      )}
-    </SafeAreaView>
+        )}
+      </View>
+    </StatusBarComponent>
   );
 };
 

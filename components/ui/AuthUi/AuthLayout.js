@@ -7,7 +7,7 @@ function AuthLayout({ children, message }) {
     <View style={styles.contentContainer}>
       <View style={styles.appLogo}>
         <Image
-          source={require("../../../assets/icon.png")}
+          source={require("../../../assets/logo.png")}
           style={styles.logo}
           resizeMode="contain"
         />

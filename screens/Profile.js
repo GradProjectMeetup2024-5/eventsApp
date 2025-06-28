@@ -1,5 +1,4 @@
 import React, { useContext, useState, useEffect } from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { View, Text, ScrollView, StyleSheet, Pressable } from "react-native";
 
 import UserDetails from "../components/ui/ProfileUi/UserDetails";
@@ -12,6 +11,7 @@ import * as SecureStore from "expo-secure-store";
 import Friends from "../components/ui/ProfileUi/Friend";
 import Colors from "../src/constants/Colors";
 import SubSectionHeader from "../components/Headers/SubSectionHeader";
+import StatusBarComponent from "../components/ui/StatusBar";
 import DetailCardSection from "../components/Event Details/DetailCardSection";
 import DetailCardSeparator from "../components/Event Details/DetailCardSeparator";
 import { Ionicons } from "@expo/vector-icons";
@@ -45,53 +45,55 @@ export default function Profile({ navigation }) {
   }
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <View style={styles.container}>
-        <SubSectionHeader backButton subPageButtons={false} title="Profile" />
-        <ScrollView
-          contentContainerStyle={styles.scrollViewContent}
-          overScrollMode="never"
-        >
-          <UserDetails
-            image={user?.user?.user?.image}
-            name={user?.user?.user?.name}
-            email={user?.user?.user?.email}
-            studentId={user?.user?.user?.studentId}
-            major={user?.user?.user?.major}
-          />
-
-          <Text style={styles.sectionTitle}>Friends</Text>
-
-          <View>
-            <Friends />
-          </View>
-
-          <Text style={styles.sectionTitle}>App Settings</Text>
-
-          <View style={styles.settingsSection}>
-            <DetailCardSection
-              iconName="notifications-outline"
-              settingText="Notifications"
-              profilePage
-            >
-              <Ionicons
-                name="chevron-forward"
-                size={30}
-                color={Colors.gray.light}
-              />
-            </DetailCardSection>
-            <DetailCardSeparator />
-            <DetailCardSection
-              onPress={handleLogOut}
-              iconName="log-out-outline"
-              iconSize={32}
-              settingText="Log Out"
-              profilePage
+    <StatusBarComponent>
+      <View style={styles.safeArea}>
+        <View style={styles.container}>
+          <SubSectionHeader backButton subPageButtons={false} title="Profile" />
+          <ScrollView
+            contentContainerStyle={styles.scrollViewContent}
+            overScrollMode="never"
+          >
+            <UserDetails
+              image={user?.user?.user?.image}
+              name={user?.user?.user?.name}
+              email={user?.user?.user?.email}
+              studentId={user?.user?.user?.studentId}
+              major={user?.user?.user?.major}
             />
-          </View>
-        </ScrollView>
+
+            <Text style={styles.sectionTitle}>Friends</Text>
+
+            <View>
+              <Friends />
+            </View>
+
+            <Text style={styles.sectionTitle}>App Settings</Text>
+
+            <View style={styles.settingsSection}>
+              <DetailCardSection
+                iconName="notifications-outline"
+                settingText="Notifications"
+                profilePage
+              >
+                <Ionicons
+                  name="chevron-forward"
+                  size={30}
+                  color={Colors.gray.light}
+                />
+              </DetailCardSection>
+              <DetailCardSeparator />
+              <DetailCardSection
+                onPress={handleLogOut}
+                iconName="log-out-outline"
+                iconSize={32}
+                settingText="Log Out"
+                profilePage
+              />
+            </View>
+          </ScrollView>
+        </View>
       </View>
-    </SafeAreaView>
+    </StatusBarComponent>
   );
 }
 

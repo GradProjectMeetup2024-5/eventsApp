@@ -13,6 +13,7 @@ import Colors from "../src/constants/Colors";
 import SubSectionHeader from "../components/Headers/SubSectionHeader";
 import AltEventCard from "../components/Cards/AltEventCard";
 import NoEvents from "../components/NoEvents";
+import StatusBarComponent from "../components/ui/StatusBar";
 
 import { groupEventsByMonth } from "../utils/groupEventsByMonth";
 import moment from "moment";
@@ -132,65 +133,67 @@ function AllEventsPage() {
   }
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <SubSectionHeader
-        selected={selector}
-        handlePressOne={handlePressOne}
-        handlePressTwo={handlePressTwo}
-        one={one}
-        two={two}
-        title="All Events"
-        backButton={true}
-      />
-      {loading ? (
-        <SafeAreaView style={styles.safeArea}>
-          <ActivityIndicator size="large" color={Colors.accent.secondary} />
-        </SafeAreaView>
-      ) : Object.keys(groupedEvents).length === 0 ? (
-        <NoEvents icon={noEventsIcon} message={noEventsMessage} />
-      ) : (
-        // turn this into a flatlist
-        <ScrollView
-          contentContainerStyle={styles.container}
-          overScrollMode="never"
-        >
-          {Object.keys(groupedEvents).map((month) => (
-            <View key={month}>
-              <View style={styles.dateContainer}>
-                <Text
-                  style={[
-                    styles.date,
-                    {
-                      color:
-                        selector === one
-                          ? Colors.accent.secondary
-                          : Colors.gray.light,
-                    },
-                  ]}
-                >
-                  {month}
-                </Text>
+    <StatusBarComponent>
+      <View style={styles.safeArea}>
+        <SubSectionHeader
+          selected={selector}
+          handlePressOne={handlePressOne}
+          handlePressTwo={handlePressTwo}
+          one={one}
+          two={two}
+          title="All Events"
+          backButton={true}
+        />
+        {loading ? (
+          <SafeAreaView style={styles.safeArea}>
+            <ActivityIndicator size="large" color={Colors.accent.secondary} />
+          </SafeAreaView>
+        ) : Object.keys(groupedEvents).length === 0 ? (
+          <NoEvents icon={noEventsIcon} message={noEventsMessage} />
+        ) : (
+          // turn this into a flatlist
+          <ScrollView
+            contentContainerStyle={styles.container}
+            overScrollMode="never"
+          >
+            {Object.keys(groupedEvents).map((month) => (
+              <View key={month}>
+                <View style={styles.dateContainer}>
+                  <Text
+                    style={[
+                      styles.date,
+                      {
+                        color:
+                          selector === one
+                            ? Colors.accent.secondary
+                            : Colors.gray.light,
+                      },
+                    ]}
+                  >
+                    {month}
+                  </Text>
+                </View>
+                {groupedEvents[month].map((event) => (
+                  <AltEventCard
+                    key={event.id}
+                    eventName={event.event_name}
+                    faculty={event.faculty}
+                    floor={event.floor}
+                    room={event.room}
+                    image={event.image}
+                    eventDate={event.event_date}
+                    eventId={event.id}
+                    onPress={() => console.log(`Event ${event.id} pressed`)}
+                    style={{ marginBottom: 12 }}
+                    pageType={selector}
+                  />
+                ))}
               </View>
-              {groupedEvents[month].map((event) => (
-                <AltEventCard
-                  key={event.id}
-                  eventName={event.event_name}
-                  faculty={event.faculty}
-                  floor={event.floor}
-                  room={event.room}
-                  image={event.image}
-                  eventDate={event.event_date}
-                  eventId={event.id}
-                  onPress={() => console.log(`Event ${event.id} pressed`)}
-                  style={{ marginBottom: 12 }}
-                  pageType={selector}
-                />
-              ))}
-            </View>
-          ))}
-        </ScrollView>
-      )}
-    </SafeAreaView>
+            ))}
+          </ScrollView>
+        )}
+      </View>
+    </StatusBarComponent>
   );
 }
 

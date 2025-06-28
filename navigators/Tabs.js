@@ -8,7 +8,6 @@ import MapPage from "../screens/tabs/MapPage";
 import AttendingPage from "../screens/tabs/AttendingPage";
 import Create from "../screens/tabs/Create";
 
-import Icons from "../src/constants/Icons";
 import Colors from "../src/constants/Colors";
 
 const Tab = createBottomTabNavigator();
@@ -37,7 +36,7 @@ const Tabs = () => {
   return (
     <Tab.Navigator
       screenOptions={{
-        tabBarHideOnKeyboard: true,
+        // tabBarHideOnKeyboard: true,
         headerShown: false,
         tabBarShowLabel: false,
         tabBarStyle: {

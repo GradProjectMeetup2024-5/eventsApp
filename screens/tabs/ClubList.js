@@ -1,4 +1,3 @@
-import { SafeAreaView } from "react-native-safe-area-context";
 import {
   View,
   StyleSheet,
@@ -6,6 +5,8 @@ import {
   Text,
   ActivityIndicator,
 } from "react-native";
+
+import StatusBarComponent from "../../components/ui/StatusBar";
 import { useNavigation } from "@react-navigation/native";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
@@ -40,37 +41,39 @@ function ClubList() {
   }, [dispatch]);
 
   return (
-    <SafeAreaView style={styles.container}>
-      <Header noTabBar={true} />
-      <RefreshableScrollView
-        onRefresh={fetchClubs}
-        style={styles.clubListContainer}
-      >
-        {loading ? (
-          <ActivityIndicator
-            size="large"
-            style={{ marginTop: 15 }}
-            color={Colors.accent.secondary}
-          />
-        ) : clubs?.length > 0 ? (
-          clubs?.map((club, index) => (
-            <View key={club.id}>
-              <ClubCard
-                image={club.posters[0]}
-                title={club.name}
-                description={club.desc}
-                onPress={() =>
-                  navigation.navigate("ClubDetails", { clubId: club.id })
-                }
-              />
-              {index < clubs?.length - 1 && <View style={styles.separator} />}
-            </View>
-          ))
-        ) : (
-          <Text>No clubs were found</Text>
-        )}
-      </RefreshableScrollView>
-    </SafeAreaView>
+    <StatusBarComponent>
+      <View style={styles.container}>
+        <Header noTabBar={true} />
+        <RefreshableScrollView
+          onRefresh={fetchClubs}
+          style={styles.clubListContainer}
+        >
+          {loading ? (
+            <ActivityIndicator
+              size="large"
+              style={{ marginTop: 15 }}
+              color={Colors.accent.secondary}
+            />
+          ) : clubs?.length > 0 ? (
+            clubs?.map((club, index) => (
+              <View key={club.id}>
+                <ClubCard
+                  image={club.posters[0]}
+                  title={club.name}
+                  description={club.desc}
+                  onPress={() =>
+                    navigation.navigate("ClubDetails", { clubId: club.id })
+                  }
+                />
+                {index < clubs?.length - 1 && <View style={styles.separator} />}
+              </View>
+            ))
+          ) : (
+            <Text>No clubs were found</Text>
+          )}
+        </RefreshableScrollView>
+      </View>
+    </StatusBarComponent>
   );
 }
 
