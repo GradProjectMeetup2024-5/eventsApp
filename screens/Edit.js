@@ -190,7 +190,11 @@ const Create = ({ eventID = 3 }) => {
   return (
     <StatusBarComponent>
       <View style={{ flex: 1, backgroundColor: Colors.background.base }}>
-        <SubSectionHeader title="Edit" subPageButtons={false} />
+        <SubSectionHeader
+          title="Edit"
+          subPageButtons={false}
+          backButton={true}
+        />
         <ScrollView
           contentContainerStyle={styles.scrollViewContent}
           overScrollMode="never"

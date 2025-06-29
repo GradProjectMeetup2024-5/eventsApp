@@ -57,7 +57,7 @@ const Friends = () => {
   const handleSendRequest = () => {
     if (receiverId) {
       dispatch(sendFriendRequest(receiverId));
-      setReceiverId(""); // Clear input after sending request
+      setReceiverId("");
     } else {
       Alert.alert("Please enter a receiver ID");
     }
@@ -164,8 +164,8 @@ const styles = StyleSheet.create({
     borderRadius: 12,
   },
   heading: {
-    fontSize: 20,
-    fontWeight: 800,
+    fontSize: 18,
+    fontWeight: 600,
     marginBottom: 10,
     marginTop: 5,
     color: Colors.gray.muted,

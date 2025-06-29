@@ -74,7 +74,7 @@ const AttendingPage = () => {
           handlePressTwo={() => setSelector("My Events")}
           one="Attending"
           two="My Events"
-          title="Attending"
+          title="Calendar"
         />
 
         {loading ? (

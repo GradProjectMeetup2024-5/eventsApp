@@ -21,7 +21,6 @@ function ClubDetailsHeader({ title }) {
       </Pressable>
 
       <Text style={styles.title}>{title}</Text>
-
       <Pressable>
         <Ionicons
           name="share-outline"
@@ -43,7 +42,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: Colors.background.elevated,
     paddingHorizontal: 15,
-    height: 60,
+    minHeight: 60,
     borderBottomWidth: 1,
     borderColor: Colors.gray.darkest,
   },
@@ -51,6 +50,8 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 24,
     fontWeight: "600",
+    maxWidth: 268,
+    paddingVertical: 8,
     color: Colors.accent.primary,
   },
   icons: {

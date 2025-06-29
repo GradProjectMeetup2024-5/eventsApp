@@ -7,7 +7,7 @@ import { Ionicons } from "@expo/vector-icons";
 import Explore from "../screens/tabs/Explore";
 import ClubList from "../screens/tabs/ClubList";
 import MapPage from "../screens/tabs/MapPage";
-import AttendingPage from "../screens/tabs/AttendingPage";
+import Calendar from "../screens/tabs/Calendar";
 import Create from "../screens/tabs/Create";
 
 import Colors from "../src/constants/Colors";
@@ -63,12 +63,12 @@ const Tabs = () => {
         }}
       />
       <Tab.Screen
-        name="Attending"
-        component={AttendingPage}
+        name="Calendar"
+        component={Calendar}
         options={{
           tabBarIcon: ({ focused }) => (
             <TabIcon
-              name="Attending"
+              name="Calendar"
               icon="calendar-outline"
               focused={focused}
             />

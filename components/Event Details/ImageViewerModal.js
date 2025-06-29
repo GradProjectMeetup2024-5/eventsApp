@@ -1,9 +1,34 @@
 import React, { useState } from "react";
-import { Modal, Text, View, Pressable, StyleSheet } from "react-native";
+import {
+  Modal,
+  Text,
+  View,
+  Pressable,
+  StyleSheet,
+  Platform,
+} from "react-native";
 import ImageViewer from "react-native-image-zoom-viewer";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 import Colors from "../../src/constants/Colors";
 import Ionicons from "react-native-vector-icons/Ionicons";
+
+const Indicators = ({ currentIndex, allSize, onClose }) => {
+  return (
+    <SafeAreaView edges={["top"]} style={styles.indicatorContainer}>
+      <View style={styles.indicatorContainer}>
+        <Pressable style={styles.closeButton} onPress={onClose}>
+          <Ionicons name="close" size={25} color={Colors.gray.white} />
+        </Pressable>
+        {allSize > 1 && (
+          <Text style={styles.indicatorText}>
+            {currentIndex} / {allSize}
+          </Text>
+        )}
+      </View>
+    </SafeAreaView>
+  );
+};
 
 const ImageViewerModal = ({ visible, images, onClose, initialIndex }) => {
   const [currentIndex, setCurrentIndex] = useState(initialIndex);
@@ -28,16 +53,21 @@ const ImageViewerModal = ({ visible, images, onClose, initialIndex }) => {
           enableSwipeDown={true}
           backgroundColor={Colors.background.elevated}
           renderIndicator={(currentIndex, allSize) => (
-            <View style={styles.indicatorContainer}>
-              <Pressable style={styles.closeButton} onPress={onClose}>
-                <Ionicons name="close" size={25} color={Colors.gray.white} />
-              </Pressable>
-              {allSize > 1 && (
-                <Text style={styles.indicatorText}>
-                  {currentIndex} / {allSize}
-                </Text>
-              )}
-            </View>
+            // <View style={styles.indicatorContainer}>
+            //   <Pressable style={styles.closeButton} onPress={onClose}>
+            //     <Ionicons name="close" size={25} color={Colors.gray.white} />
+            //   </Pressable>
+            //   {allSize > 1 && (
+            //     <Text style={styles.indicatorText}>
+            //       {currentIndex} / {allSize}
+            //     </Text>
+            //   )}
+            // </View>
+            <Indicators
+              currentIndex={currentIndex}
+              allSize={allSize}
+              onClose={onClose}
+            />
           )}
         />
       </View>
@@ -52,7 +82,7 @@ const styles = StyleSheet.create({
   indicatorContainer: {
     flexDirection: "row",
     position: "absolute",
-    top: 20,
+    top: Platform.OS === "ios" ? 30 : 10,
     left: 0,
     right: 0,
     alignItems: "center",

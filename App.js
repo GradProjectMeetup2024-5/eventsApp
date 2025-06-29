@@ -62,7 +62,7 @@ const AppNavigator = () => {
       <Stack.Navigator
         screenOptions={{
           headerShown: false,
-          gestureEnabled: false,
+          // gestureEnabled: false,
           animation: "none",
         }}
       >
