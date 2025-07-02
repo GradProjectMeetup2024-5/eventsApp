@@ -1,21 +1,32 @@
-import React from "react";
-import { View, Text, Pressable, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  Pressable,
+  StyleSheet,
+  useWindowDimensions,
+} from "react-native";
 import Colors from "../../src/constants/Colors";
 
 const tabs = ["Upcoming", "Today", "Tomorrow", "Weekend"];
 
 export default function TabBar({ activeTab, setActiveTab }) {
-  // Accept props
+  const { width } = useWindowDimensions();
+  const fontSize = width < 361 ? 11 : width < 411 ? 12 : 14;
+
   return (
     <View style={styles.container}>
       {tabs.map((tab) => (
         <Pressable
           key={tab}
           style={[styles.tab, activeTab === tab && styles.activeTab]}
-          onPress={() => setActiveTab(tab)} // Use the passed function
+          onPress={() => setActiveTab(tab)}
         >
           <Text
-            style={[styles.tabText, activeTab === tab && styles.activeTabText]}
+            style={[
+              styles.tabText,
+              { fontSize },
+              activeTab === tab && styles.activeTabText,
+            ]}
           >
             {tab}
           </Text>
@@ -43,7 +54,6 @@ const styles = StyleSheet.create({
   },
   tabText: {
     color: Colors.gray.white,
-    fontSize: 14,
     fontWeight: "500",
   },
   activeTabText: {

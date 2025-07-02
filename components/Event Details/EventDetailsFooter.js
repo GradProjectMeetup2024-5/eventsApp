@@ -1,4 +1,4 @@
-import { View, Text, Pressable, StyleSheet } from "react-native";
+import { View, Text, Pressable, StyleSheet, Platform } from "react-native";
 
 import SwipeButton from "./SwipeButton";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -7,19 +7,17 @@ import { Ionicons } from "@expo/vector-icons";
 import Colors from "../../src/constants/Colors";
 
 function EventDetailsFooter({ isAttending, onJoinLeave }) {
-  // const [isAttending, setIsAttending] = useState(false);
-
-  // const handleSwipeComplete = () => {
-  //   setIsAttending(true);
-  // };
-  // const handleCancelAttend = () => {
-  //   setIsAttending(false);
-  // };
   const insets = useSafeAreaInsets();
 
   return (
     <View
-      style={[styles.footer, { height: 90, paddingBottom: insets.bottom - 10 }]}
+      style={[
+        styles.footer,
+        {
+          height: Platform.ios ? 90 : 95,
+          paddingBottom: insets.bottom - (Platform.ios ? 10 : 15),
+        },
+      ]}
     >
       {isAttending ? (
         <View style={styles.attendingContainer}>
