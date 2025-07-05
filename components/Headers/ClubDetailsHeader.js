@@ -1,10 +1,20 @@
-import { View, Pressable, Text, StyleSheet } from "react-native";
+import {
+  View,
+  Pressable,
+  Text,
+  StyleSheet,
+  useWindowDimensions,
+} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 import Colors from "../../src/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 
 function ClubDetailsHeader({ title }) {
+  const { width } = useWindowDimensions();
+  const titleMaxWidth = width < 361 ? 238 : 268;
+  const fontSize = width < 361 ? 21 : width < 411 ? 23 : 24;
+
   const navigation = useNavigation();
   const goBack = () => {
     navigation.goBack();
@@ -20,7 +30,9 @@ function ClubDetailsHeader({ title }) {
         />
       </Pressable>
 
-      <Text style={styles.title}>{title}</Text>
+      <View style={[styles.titleContainer, { maxWidth: titleMaxWidth }]}>
+        <Text style={[styles.title, { fontSize: fontSize }]}>{title}</Text>
+      </View>
       <Pressable>
         <Ionicons
           name="share-outline"
@@ -46,11 +58,13 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderColor: Colors.gray.darkest,
   },
+  titleContainer: {
+    alignItems: "center",
+  },
   title: {
     textAlign: "center",
     fontSize: 24,
     fontWeight: "600",
-    maxWidth: 268,
     paddingVertical: 8,
     color: Colors.accent.primary,
   },

@@ -28,7 +28,7 @@ const App = () => {
   return (
     <StatusBarComponent>
       <View style={styles.safeArea}>
-        <Header noTabBar />
+        <Header noFilter />
         <View style={styles.container}>
           <MapView
             style={styles.mapStyle}

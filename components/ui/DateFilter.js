@@ -9,7 +9,7 @@ import Colors from "../../src/constants/Colors";
 
 const tabs = ["Upcoming", "Today", "Tomorrow", "Weekend"];
 
-export default function TabBar({ activeTab, setActiveTab }) {
+export default function DateFilter({ activeTab, setActiveTab }) {
   const { width } = useWindowDimensions();
   const fontSize = width < 361 ? 11 : width < 411 ? 12 : 14;
 
