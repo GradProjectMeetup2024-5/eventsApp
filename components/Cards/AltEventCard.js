@@ -17,6 +17,7 @@ function AltEventCard({
   style,
   pageType = null,
   noEvents = false,
+  attendeeCount = 0,
 }) {
   function formatTime(dateString) {
     const date = new Date(dateString);
@@ -119,14 +120,7 @@ function AltEventCard({
               </View>
               <View style={styles.attendeeContainer}>
                 <AttendeePictures
-                  attendees={[
-                    "https://picsum.photos/100/100",
-                    "https://picsum.photos/200/100",
-                    "https://picsum.photos/400/300",
-                    "https://picsum.photos/100/100",
-                    "https://picsum.photos/100/100",
-                    "https://picsum.photos/100/100",
-                  ]}
+                  attendees={attendeeCount}
                   enableAttendeeCount={true}
                   pageType={pageType}
                 />

@@ -17,6 +17,7 @@ export default function EventCard({
   logo,
   edit = false,
   eventId,
+  attendeeCount = 0,
 }) {
   function formatTime(dateString) {
     const date = new Date(dateString);
@@ -87,6 +88,7 @@ export default function EventCard({
             shareFunction={shareFunction}
             edit={edit}
             eventId={eventId}
+            attendeeCount={attendeeCount}
           />
 
           <View style={styles.detailsContainer}>

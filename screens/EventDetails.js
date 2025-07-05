@@ -217,12 +217,7 @@ function EventDetails() {
                       }
                     >
                       <AttendeePictures
-                        attendees={[
-                          "https://picsum.photos/100/300",
-                          "https://picsum.photos/200/100",
-                          "https://picsum.photos/100/100",
-                          "https://picsum.photos/300/100",
-                        ]}
+                        attendees={oneEvent?.joined_users?.length}
                       />
                     </DetailCardSection>
                   </View>

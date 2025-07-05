@@ -22,7 +22,7 @@ import AltEventCard from "../../components/Cards/AltEventCard";
 import EventCard from "../../components/Cards/EventCard";
 import NoEvents from "../../components/NoEvents";
 
-const AttendingPage = () => {
+const Calendar = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
@@ -111,6 +111,7 @@ const AttendingPage = () => {
                           eventId: event?.id,
                         })
                       }
+                      attendeeCount={event?.joined_users?.length || 0}
                       style={{ marginBottom: 12 }}
                       pageType={selector}
                     />
@@ -142,6 +143,7 @@ const AttendingPage = () => {
                         eventId: event?.id,
                       })
                     }
+                    attendeeCount={event?.joined_users?.length || 0}
                   />
                   {index < events.length - 1 && (
                     <View style={styles.separator} />
@@ -163,7 +165,7 @@ const AttendingPage = () => {
   );
 };
 
-export default AttendingPage;
+export default Calendar;
 
 const styles = StyleSheet.create({
   safeArea: {

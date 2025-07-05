@@ -130,6 +130,7 @@ function ClubDetails() {
                         floor={event?.floor}
                         room={event?.room}
                         image={event?.image}
+                        attendeeCount={event?.joined_users?.length || 0}
                         onPress={() =>
                           navigation.navigate("EventDetails", {
                             eventId: event?.id,

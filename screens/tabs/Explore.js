@@ -83,6 +83,7 @@ export default function Explore() {
                     eventId: event?.id,
                   })
                 }
+                attendeeCount={event?.joined_users?.length || 0}
               />
               {index < filteredEvents.length - 1 && (
                 <View style={styles.separator} />
