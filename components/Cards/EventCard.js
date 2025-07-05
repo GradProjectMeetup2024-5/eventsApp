@@ -10,8 +10,6 @@ import CustomShadow from "../CustomShadow";
 export default function EventCard({
   eventName,
   eventDate,
-  eventTime,
-  eventLocation,
   eventOrganizer,
   eventImage,
   onPress,
@@ -107,8 +105,12 @@ export default function EventCard({
             <View
               style={[styles.posterContainer, { transform: [{ scale: 0.8 }] }]}
             >
-              <PosterDetails creatorName={eventOrganizer} creatorImage={logo} />
-              {/* <Text style={styles.eventOrganizer}>{eventOrganizer}</Text> */}
+              {!edit && (
+                <PosterDetails
+                  creatorName={eventOrganizer}
+                  creatorImage={logo}
+                />
+              )}
             </View>
           </View>
         </Pressable>

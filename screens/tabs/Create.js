@@ -151,6 +151,11 @@ const Create = () => {
   };
 
   const handleSubmit = async () => {
+    const eventName = eventName.trim();
+    const eventFloor = eventFloor.trim();
+    const eventRoom = eventRoom.trim();
+    const eventDescription = eventDescription.trim();
+
     if (
       !eventName ||
       !eventFaculty ||

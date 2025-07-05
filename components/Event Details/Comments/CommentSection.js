@@ -123,6 +123,7 @@ export default CommentSection;
 const styles = StyleSheet.create({
   commentsContainer: {
     marginVertical: 24,
+    marginBottom: 54, // Adjusted to avoid overlap with the footer
   },
   commentsCard: {
     alignItems: "center",
