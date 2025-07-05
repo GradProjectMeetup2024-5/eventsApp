@@ -103,7 +103,7 @@ function ClubDetails() {
               {/* EVENT CARDS SECTION */}
               <View style={styles.sectionRow}>
                 <Text style={styles.sectionTitle}>Events</Text>
-                <Pressable onPress={() => pressHandler("AllEvents")}>
+                <Pressable onPress={() => pressHandler("ClubEvents")}>
                   <Text
                     style={[
                       styles.sectionTitle,
