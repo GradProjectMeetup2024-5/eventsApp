@@ -243,7 +243,7 @@ const Create = () => {
                     <DateTimePicker
                       value={eventDateTime}
                       mode="date"
-                      display="spinner"
+                      // display="spinner"
                       onChange={handleDateChange}
                     />
                   )}
@@ -266,7 +266,7 @@ const Create = () => {
                     <DateTimePicker
                       value={eventDateTime}
                       mode="time"
-                      display="spinner"
+                      // display="spinner"
                       onChange={handleTimeChange}
                     />
                   )}
