@@ -31,11 +31,23 @@ function AttendeePictures({
     );
   }
 
-  const showImages = Math.min(attendees, 4);
+  let showImages = attendees;
+  let showCircle = false;
+
+  if (attendees > 4) {
+    showImages = 3;
+    showCircle = true;
+  } else {
+    showImages = attendees;
+    showCircle = false;
+  }
+
   const totalWidth =
-    showImages <= 3
-      ? imageWidth + (showImages - 1) * (imageWidth - overlap)
-      : imageWidth + 2 * (imageWidth - overlap) + (imageWidth - overlap);
+    showImages === 1
+      ? imageWidth
+      : imageWidth +
+        (showImages - 1) * (imageWidth - overlap) +
+        (showCircle ? imageWidth - overlap : 0);
 
   // Generate random images for display
   const images = Array.from({ length: showImages }, getRandomPic);
@@ -67,11 +79,11 @@ function AttendeePictures({
           />
         ))}
 
-        {attendees > 4 && (
+        {showCircle && (
           <View
             style={[
               styles.circle,
-              { left: 3 * (imageWidth - overlap), zIndex: 0 },
+              { left: showImages * (imageWidth - overlap), zIndex: 0 },
             ]}
           >
             <Text

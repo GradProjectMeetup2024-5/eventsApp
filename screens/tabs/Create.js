@@ -58,7 +58,7 @@ const Create = () => {
 
   const pickImages = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      mediaTypes: ["images"],
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
@@ -151,11 +151,6 @@ const Create = () => {
   };
 
   const handleSubmit = async () => {
-    const eventName = eventName.trim();
-    const eventFloor = eventFloor.trim();
-    const eventRoom = eventRoom.trim();
-    const eventDescription = eventDescription.trim();
-
     if (
       !eventName ||
       !eventFaculty ||

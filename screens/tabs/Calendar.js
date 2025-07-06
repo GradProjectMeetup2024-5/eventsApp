@@ -1,3 +1,4 @@
+import moment from "moment";
 import React, { useEffect, useMemo, useState } from "react";
 import {
   View,
@@ -54,6 +55,9 @@ const Calendar = () => {
 
   const groupedEvents = useMemo(() => {
     if (myJoinedEvent.length > 0) {
+      const sorted = [...myJoinedEvent].sort(
+        (a, b) => moment(a.event_date) - moment(b.event_date)
+      );
       return groupEventsByMonth(myJoinedEvent);
     }
     return {};
@@ -91,33 +95,35 @@ const Calendar = () => {
               contentContainerStyle={styles.container}
               overScrollMode="never"
             >
-              {Object.keys(groupedEvents).map((month) => (
-                <View key={month}>
-                  <View style={styles.dateContainer}>
-                    <Text style={styles.date}>{month}</Text>
+              {Object.keys(groupedEvents)
+                .sort((a, b) => moment(a, "MMMM YYYY") - moment(b, "MMMM YYYY")) // <-- sort months
+                .map((month) => (
+                  <View key={month}>
+                    <View style={styles.dateContainer}>
+                      <Text style={styles.date}>{month}</Text>
+                    </View>
+                    {groupedEvents[month].map((event) => (
+                      <AltEventCard
+                        key={event?.id}
+                        eventName={event?.event_name}
+                        faculty={event?.faculty}
+                        floor={event?.floor}
+                        room={event?.room}
+                        image={event?.image}
+                        eventDate={event?.event_date}
+                        eventId={event?.id}
+                        onPress={() =>
+                          navigation.navigate("EventDetails", {
+                            eventId: event?.id,
+                          })
+                        }
+                        attendeeCount={event?.joined_users?.length || 0}
+                        style={{ marginBottom: 12 }}
+                        pageType={selector}
+                      />
+                    ))}
                   </View>
-                  {groupedEvents[month].map((event) => (
-                    <AltEventCard
-                      key={event?.id}
-                      eventName={event?.event_name}
-                      faculty={event?.faculty}
-                      floor={event?.floor}
-                      room={event?.room}
-                      image={event?.image}
-                      eventDate={event?.event_date}
-                      eventId={event?.id}
-                      onPress={() =>
-                        navigation.navigate("EventDetails", {
-                          eventId: event?.id,
-                        })
-                      }
-                      attendeeCount={event?.joined_users?.length || 0}
-                      style={{ marginBottom: 12 }}
-                      pageType={selector}
-                    />
-                  ))}
-                </View>
-              ))}
+                ))}
             </ScrollView>
           )
         ) : (
@@ -126,30 +132,32 @@ const Calendar = () => {
             overScrollMode="never"
           >
             {events.length > 0 ? (
-              events.map((event, index) => (
-                <View key={event.id} style={styles.eventContainer}>
-                  <EventCard
-                    edit={true}
-                    eventId={event?.id}
-                    eventName={event?.event_name}
-                    eventDate={event?.event_date}
-                    eventLocation={event?.event_desc}
-                    logo={event?.user?.image}
-                    eventOrganizer={event?.user?.name}
-                    eventImage={event?.posters[0]}
-                    faculty={event?.faculty}
-                    onPress={() =>
-                      navigation.navigate("EventDetails", {
-                        eventId: event?.id,
-                      })
-                    }
-                    attendeeCount={event?.joined_users?.length || 0}
-                  />
-                  {index < events.length - 1 && (
-                    <View style={styles.separator} />
-                  )}
-                </View>
-              ))
+              [...events]
+                .sort((a, b) => moment(b.event_date) - moment(a.event_date)) // <-- sort by date ascending
+                .map((event, index) => (
+                  <View key={event.id} style={styles.eventContainer}>
+                    <EventCard
+                      edit={true}
+                      eventId={event?.id}
+                      eventName={event?.event_name}
+                      eventDate={event?.event_date}
+                      eventLocation={event?.event_desc}
+                      logo={event?.user?.image}
+                      eventOrganizer={event?.user?.name}
+                      eventImage={event?.posters[0]}
+                      faculty={event?.faculty}
+                      onPress={() =>
+                        navigation.navigate("EventDetails", {
+                          eventId: event?.id,
+                        })
+                      }
+                      attendeeCount={event?.joined_users?.length || 0}
+                    />
+                    {index < events.length - 1 && (
+                      <View style={styles.separator} />
+                    )}
+                  </View>
+                ))
             ) : (
               <NoEvents
                 icon={noEventsIcon}
