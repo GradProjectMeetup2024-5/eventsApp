@@ -42,6 +42,8 @@ export default function Explore() {
       dateMatches = eventDate.toDateString() === tomorrow.toDateString();
     } else if (activeTab === "Weekend") {
       dateMatches = eventDate.toDateString() === weekend.toDateString();
+    } else if (activeTab === "Upcoming") {
+      dateMatches = true; // Show all events
     } else {
       dateMatches = eventDate > today;
     }

@@ -1,5 +1,6 @@
 import { View, Image, Text, StyleSheet } from "react-native";
 import Colors from "../src/constants/Colors";
+import { Ionicons } from "@expo/vector-icons";
 
 // Helper to generate a random picsum URL
 const getRandomPic = () => {
@@ -19,23 +20,26 @@ function AttendeePictures({
   const imageWidth = 34;
   const overlap = 12;
 
-  if (attendees === 0) {
-    // Placeholder view
-    return (
-      <View
-        style={[
-          styles.container,
-          { width: enableAttendeeCount ? 105 : null, height: 34 },
-        ]}
-      />
-    );
-  }
+  // if (attendees === 0) {
+  //   // Placeholder view
+  //   return (
+  //     <View
+  //       style={[
+  //         styles.container,
+  //         { width: enableAttendeeCount ? 105 : null, height: 34 },
+  //       ]}
+  //     />
+  //   );
+  // }
 
   let showImages = attendees;
   let showCircle = false;
 
   if (attendees > 4) {
     showImages = 3;
+    showCircle = true;
+  } else if (attendees === 0) {
+    showImages = 0;
     showCircle = true;
   } else {
     showImages = attendees;
@@ -86,23 +90,36 @@ function AttendeePictures({
               { left: showImages * (imageWidth - overlap), zIndex: 0 },
             ]}
           >
-            <Text
-              style={[
-                styles.circlePlus,
-                {
+            {attendees > 0 ? (
+              <Text
+                style={[
+                  styles.circlePlus,
+                  {
+                    color:
+                      pageType === "History"
+                        ? Colors.gray.medium
+                        : Colors.accent.secondary,
+                  },
+                ]}
+              >
+                +
+              </Text>
+            ) : (
+              <Ionicons
+                size={17}
+                name="close-outline"
+                style={{
                   color:
                     pageType === "History"
                       ? Colors.gray.medium
                       : Colors.accent.secondary,
-                },
-              ]}
-            >
-              +
-            </Text>
+                }}
+              />
+            )}
           </View>
         )}
       </View>
-      {enableAttendeeCount && attendees > 0 && (
+      {enableAttendeeCount && (
         <Text style={styles.attendeeCount}>{attendees} att.</Text>
       )}
     </View>

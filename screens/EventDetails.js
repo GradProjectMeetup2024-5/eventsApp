@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 import { Ionicons } from "@expo/vector-icons";
 import CustomShadow from "../components/CustomShadow";
@@ -36,6 +37,7 @@ function EventDetails() {
   const [isApproved, setIsApproved] = useState(false);
   const [loading, setLoading] = useState(true);
 
+  const navigation = useNavigation();
   const route = useRoute();
 
   const { eventId } = route.params;
@@ -61,7 +63,7 @@ function EventDetails() {
   useEffect(() => {
     fetchStatus();
     setJoinState(checkIfUserJoined);
-    console.log(oneEvent?.Date);
+    // console.log(oneEvent?.Date);
   }, [dispatch, oneEvent?.id, checkIfUserJoined]);
 
   function joinHandler() {
@@ -155,15 +157,21 @@ function EventDetails() {
               {isClub ? (
                 <PosterDetails
                   isApproved={isApproved}
-                  creatorImage="https://d1csarkz8obe9u.cloudfront.net/posterpreviews/art-club-logo-design-template-7363f499d408b8d5aa636f25e135ce56_screen.jpg?ts=1688208799"
+                  creatorImage={oneEvent?.club?.posters[0]}
                   creatorName={oneEvent?.club?.name}
                   inEventDetails={true}
                   club={true}
+                  onPress={() =>
+                    navigation.navigate("ClubDetails", {
+                      screen: "ClubDetails",
+                      clubId: oneEvent?.club.id,
+                    })
+                  }
                 />
               ) : (
                 <PosterDetails
                   isApproved={isApproved}
-                  creatorImage="https://d1csarkz8obe9u.cloudfront.net/posterpreviews/art-club-logo-design-template-7363f499d408b8d5aa636f25e135ce56_screen.jpg?ts=1688208799"
+                  creatorImage={oneEvent?.user?.image}
                   creatorName={oneEvent?.user?.name}
                   inEventDetails={true}
                   club={false}
