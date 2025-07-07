@@ -35,6 +35,11 @@ const Calendar = () => {
     (state) => state.eventUser.myJoinedEvents || []
   );
 
+  const allEvents = useSelector((state) => state.event.events || []);
+  const eventMap = useMemo(() => {
+    return Object.fromEntries(allEvents.map((e) => [e.id, e]));
+  }, [allEvents]);
+
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
@@ -52,6 +57,12 @@ const Calendar = () => {
     };
     fetchData();
   }, [selector, dispatch]);
+
+  const attendeeCountFilter = allEvents?.filter((event) => {
+    const attendeeCount = event?.joined_users;
+
+    return attendeeCount;
+  });
 
   const groupedEvents = useMemo(() => {
     if (myJoinedEvent.length > 0) {
@@ -117,7 +128,9 @@ const Calendar = () => {
                             eventId: event?.id,
                           })
                         }
-                        attendeeCount={event?.joined_users?.length || 0}
+                        attendeeCount={
+                          eventMap[event?.id]?.joined_users?.length || 0
+                        }
                         style={{ marginBottom: 12 }}
                         pageType={selector}
                       />
@@ -151,7 +164,9 @@ const Calendar = () => {
                           eventId: event?.id,
                         })
                       }
-                      attendeeCount={event?.joined_users?.length || 0}
+                      attendeeCount={
+                        eventMap[event?.id]?.joined_users?.length || 0
+                      }
                     />
                     {index < events.length - 1 && (
                       <View style={styles.separator} />

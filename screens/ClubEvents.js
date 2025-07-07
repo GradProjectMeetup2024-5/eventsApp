@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
   View,
@@ -7,6 +7,7 @@ import {
   StyleSheet,
   ActivityIndicator,
 } from "react-native";
+import { useSelector } from "react-redux";
 
 import Colors from "../src/constants/Colors";
 import SubSectionHeader from "../components/Headers/SubSectionHeader";
@@ -65,7 +66,7 @@ const dummyEvents = [
     floor: "Floor 2",
     room: "Room 2",
     image: "https://via.placeholder.com/150",
-    event_date: "2024-9-20",
+    event_date: "2025-10-20",
     attendeeCount: 17, // Example attendee count
   },
   {
@@ -75,7 +76,7 @@ const dummyEvents = [
     floor: "Floor 3",
     room: "Room 3",
     image: "https://via.placeholder.com/150",
-    event_date: "2024-09-10",
+    event_date: "2025-08-10",
     attendeeCount: 3, // Example attendee count
   },
   {
@@ -85,7 +86,7 @@ const dummyEvents = [
     floor: "Floor 4",
     room: "Room 4",
     image: "https://via.placeholder.com/150",
-    event_date: "2024-09-12",
+    event_date: "2025-07-12",
     attendeeCount: 9, // Example attendee count
   },
   {
@@ -95,7 +96,7 @@ const dummyEvents = [
     floor: "Floor 5",
     room: "Room 5",
     image: "https://via.placeholder.com/150",
-    event_date: "2024-09-01",
+    event_date: "2025-09-01",
     attendeeCount: 2, // Example attendee count
   },
 ];
@@ -115,6 +116,11 @@ function ClubEvents() {
       : "No past events here, \nthis club's story is just getting started!";
 
   const noEventsIcon = selector === one ? "flask" : "sparkles";
+
+  const allEvents = useSelector((state) => state.event.events || []);
+  const eventMap = useMemo(() => {
+    return Object.fromEntries(allEvents.map((e) => [e.id, e]));
+  }, [allEvents]);
 
   useEffect(() => {
     setLoading(true);
@@ -193,6 +199,9 @@ function ClubEvents() {
                     onPress={() => console.log(`Event ${event.id} pressed`)}
                     style={{ marginBottom: 12 }}
                     pageType={selector}
+                    // attendeeCount={
+                    //   eventMap[event?.id]?.joined_users?.length || 0
+                    // }
                     attendeeCount={event.attendeeCount}
                   />
                 ))}
