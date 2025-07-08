@@ -13,15 +13,14 @@ function PosterDetails({
   club = false,
   inEventDetails = false,
 }) {
+  // Only pressable if inEventDetails and club
+  const Container = inEventDetails && club ? Pressable : View;
+
   return (
     <View style={styles.posterContainer}>
-      <Pressable
+      <Container
         style={styles.navigationContainer}
-        onPress={() => {
-          if (club && inEventDetails && onPress) {
-            onPress();
-          }
-        }}
+        {...(inEventDetails && club && onPress ? { onPress } : {})}
       >
         <Image
           style={styles.posterImage}
@@ -40,7 +39,7 @@ function PosterDetails({
         ) : (
           <View style={{ width: 24, height: 24 }} />
         )}
-      </Pressable>
+      </Container>
       {club && (
         <View style={styles.joinButtonContaienr}>
           <JoinClubButton />

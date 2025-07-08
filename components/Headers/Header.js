@@ -4,14 +4,14 @@ import { Ionicons } from "@expo/vector-icons";
 import Colors from "../../src/constants/Colors";
 import { useNavigation } from "@react-navigation/native";
 
-import TabBar from "../ui/TabBar";
+import DateFilter from "../ui/DateFilter";
 
 const Header = ({
   searchText,
   onSearchChange,
   activeTab,
   setActiveTab,
-  noTabBar = false,
+  noFilter = false,
 }) => {
   const navigation = useNavigation();
 
@@ -37,8 +37,8 @@ const Header = ({
           />
         </Pressable>
       </View>
-      {!noTabBar && (
-        <TabBar activeTab={activeTab} setActiveTab={setActiveTab} />
+      {!noFilter && (
+        <DateFilter activeTab={activeTab} setActiveTab={setActiveTab} />
       )}
     </View>
   );

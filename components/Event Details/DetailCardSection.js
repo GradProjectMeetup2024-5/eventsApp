@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
   primary: {
     marginHorizontal: 10,
     color: Colors.gray.light,
-    fontSize: 17,
+    fontSize: 16,
     fontWeight: 600,
   },
   secondary: {
@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
   settingText: {
     marginHorizontal: 10,
     color: Colors.gray.light,
-    fontSize: 18,
+    fontSize: 17,
     fontWeight: 600,
   },
 });

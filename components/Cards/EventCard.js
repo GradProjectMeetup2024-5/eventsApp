@@ -10,8 +10,6 @@ import CustomShadow from "../CustomShadow";
 export default function EventCard({
   eventName,
   eventDate,
-  eventTime,
-  eventLocation,
   eventOrganizer,
   eventImage,
   onPress,
@@ -19,6 +17,8 @@ export default function EventCard({
   logo,
   edit = false,
   eventId,
+  attendeeCount = 0,
+  joined_users,
 }) {
   function formatTime(dateString) {
     const date = new Date(dateString);
@@ -89,6 +89,8 @@ export default function EventCard({
             shareFunction={shareFunction}
             edit={edit}
             eventId={eventId}
+            attendeeCount={attendeeCount}
+            joined_users={joined_users}
           />
 
           <View style={styles.detailsContainer}>
@@ -107,8 +109,12 @@ export default function EventCard({
             <View
               style={[styles.posterContainer, { transform: [{ scale: 0.8 }] }]}
             >
-              <PosterDetails creatorName={eventOrganizer} creatorImage={logo} />
-              {/* <Text style={styles.eventOrganizer}>{eventOrganizer}</Text> */}
+              {!edit && (
+                <PosterDetails
+                  creatorName={eventOrganizer}
+                  creatorImage={logo}
+                />
+              )}
             </View>
           </View>
         </Pressable>
@@ -120,7 +126,7 @@ export default function EventCard({
 const styles = StyleSheet.create({
   container: {
     width: 380,
-    minHeight: 280,
+    minHeight: 255,
     borderRadius: 12,
     backgroundColor: Colors.background.surface,
     overflow: "hidden",
@@ -192,7 +198,7 @@ const styles = StyleSheet.create({
     lineHeight: 20,
     flexWrap: "wrap",
     maxWidth: 160,
-    textAlign: "center",
+    // textAlign: "center",
   },
   posterContainer: {
     flexDirection: "row",

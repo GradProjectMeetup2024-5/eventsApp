@@ -1,13 +1,13 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
   View,
   Text,
-  Pressable,
   ScrollView,
   StyleSheet,
   ActivityIndicator,
 } from "react-native";
+import { useSelector } from "react-redux";
 
 import Colors from "../src/constants/Colors";
 import SubSectionHeader from "../components/Headers/SubSectionHeader";
@@ -27,6 +27,7 @@ const dummyEvents = [
     room: "Room 1",
     image: "https://via.placeholder.com/150",
     event_date: "2023-01-15",
+    attendeeCount: 26, // Example attendee count
   },
   {
     id: 2,
@@ -36,6 +37,7 @@ const dummyEvents = [
     room: "Room 2",
     image: "https://via.placeholder.com/150",
     event_date: "2023-01-20",
+    attendeeCount: 23, // Example attendee count
   },
   {
     id: 3,
@@ -44,7 +46,8 @@ const dummyEvents = [
     floor: "Floor 3",
     room: "Room 3",
     image: "https://via.placeholder.com/150",
-    event_date: "2023-02-10",
+    event_date: "2023-09-10",
+    attendeeCount: 0, // Example attendee count
   },
   {
     id: 4,
@@ -54,6 +57,7 @@ const dummyEvents = [
     room: "Room 1",
     image: "https://via.placeholder.com/150",
     event_date: "2024-11-15",
+    attendeeCount: 12, // Example attendee count
   },
   {
     id: 5,
@@ -62,7 +66,8 @@ const dummyEvents = [
     floor: "Floor 2",
     room: "Room 2",
     image: "https://via.placeholder.com/150",
-    event_date: "2024-12-20",
+    event_date: "2025-10-20",
+    attendeeCount: 17, // Example attendee count
   },
   {
     id: 6,
@@ -71,7 +76,8 @@ const dummyEvents = [
     floor: "Floor 3",
     room: "Room 3",
     image: "https://via.placeholder.com/150",
-    event_date: "2025-01-10",
+    event_date: "2025-08-10",
+    attendeeCount: 3, // Example attendee count
   },
   {
     id: 7,
@@ -80,7 +86,8 @@ const dummyEvents = [
     floor: "Floor 4",
     room: "Room 4",
     image: "https://via.placeholder.com/150",
-    event_date: "2025-01-12",
+    event_date: "2025-07-12",
+    attendeeCount: 9, // Example attendee count
   },
   {
     id: 8,
@@ -89,11 +96,12 @@ const dummyEvents = [
     floor: "Floor 5",
     room: "Room 5",
     image: "https://via.placeholder.com/150",
-    event_date: "2025-02-01",
+    event_date: "2025-09-01",
+    attendeeCount: 2, // Example attendee count
   },
 ];
 
-function AllEventsPage() {
+function ClubEvents() {
   const one = "Upcoming";
   const two = "History";
   const [selector, setSelector] = useState(one);
@@ -109,13 +117,18 @@ function AllEventsPage() {
 
   const noEventsIcon = selector === one ? "flask" : "sparkles";
 
+  const allEvents = useSelector((state) => state.event.events || []);
+  const eventMap = useMemo(() => {
+    return Object.fromEntries(allEvents.map((e) => [e.id, e]));
+  }, [allEvents]);
+
   useEffect(() => {
     setLoading(true);
     const now = moment();
 
-    const upcomingFilteredEvents = dummyEvents.filter((event) =>
-      moment(event.event_date).isAfter(now)
-    );
+    const upcomingFilteredEvents = dummyEvents
+      .filter((event) => moment(event.event_date).isAfter(now))
+      .sort((a, b) => moment(a.event_date) - moment(b.event_date));
     const historyFilteredEvents = dummyEvents
       .filter((event) => moment(event.event_date).isBefore(now))
       .sort((a, b) => moment(b.event_date) - moment(a.event_date));
@@ -186,6 +199,10 @@ function AllEventsPage() {
                     onPress={() => console.log(`Event ${event.id} pressed`)}
                     style={{ marginBottom: 12 }}
                     pageType={selector}
+                    // attendeeCount={
+                    //   eventMap[event?.id]?.joined_users?.length || 0
+                    // }
+                    attendeeCount={event.attendeeCount}
                   />
                 ))}
               </View>
@@ -197,7 +214,7 @@ function AllEventsPage() {
   );
 }
 
-export default AllEventsPage;
+export default ClubEvents;
 
 const styles = StyleSheet.create({
   safeArea: {

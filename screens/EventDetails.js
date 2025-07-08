@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 import { Ionicons } from "@expo/vector-icons";
 import CustomShadow from "../components/CustomShadow";
@@ -30,12 +31,15 @@ import CommentSection from "../components/Event Details/Comments/CommentSection"
 import EventDetailsFooter from "../components/Event Details/EventDetailsFooter";
 import ImageSlider from "../components/Event Details/ImageSlider";
 import PosterDetails from "../components/PosterDetails";
+import * as SecureStore from "expo-secure-store";
 
 function EventDetails() {
+  const [user, setUser] = useState(SecureStore.getItemAsync("profile"));
   const [joinState, setJoinState] = useState(false);
   const [isApproved, setIsApproved] = useState(false);
   const [loading, setLoading] = useState(true);
 
+  const navigation = useNavigation();
   const route = useRoute();
 
   const { eventId } = route.params;
@@ -59,9 +63,24 @@ function EventDetails() {
   };
 
   useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const storedUser = await SecureStore.getItemAsync("profile");
+        if (storedUser) {
+          const userObject = JSON.parse(storedUser);
+          setUser(userObject);
+        } else {
+          console.log("No user data found in SecureStore.");
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    fetchUserData();
     fetchStatus();
     setJoinState(checkIfUserJoined);
-    console.log(oneEvent?.Date);
+    // console.log(oneEvent?.Date);
   }, [dispatch, oneEvent?.id, checkIfUserJoined]);
 
   function joinHandler() {
@@ -155,15 +174,21 @@ function EventDetails() {
               {isClub ? (
                 <PosterDetails
                   isApproved={isApproved}
-                  creatorImage="https://d1csarkz8obe9u.cloudfront.net/posterpreviews/art-club-logo-design-template-7363f499d408b8d5aa636f25e135ce56_screen.jpg?ts=1688208799"
+                  creatorImage={oneEvent?.club?.posters[0]}
                   creatorName={oneEvent?.club?.name}
                   inEventDetails={true}
                   club={true}
+                  onPress={() =>
+                    navigation.navigate("ClubDetails", {
+                      screen: "ClubDetails",
+                      clubId: oneEvent?.club.id,
+                    })
+                  }
                 />
               ) : (
                 <PosterDetails
                   isApproved={isApproved}
-                  creatorImage="https://d1csarkz8obe9u.cloudfront.net/posterpreviews/art-club-logo-design-template-7363f499d408b8d5aa636f25e135ce56_screen.jpg?ts=1688208799"
+                  creatorImage={oneEvent?.user?.image}
                   creatorName={oneEvent?.user?.name}
                   inEventDetails={true}
                   club={false}
@@ -217,12 +242,7 @@ function EventDetails() {
                       }
                     >
                       <AttendeePictures
-                        attendees={[
-                          "https://picsum.photos/100/300",
-                          "https://picsum.photos/200/100",
-                          "https://picsum.photos/100/100",
-                          "https://picsum.photos/300/100",
-                        ]}
+                        attendees={oneEvent?.joined_users?.length}
                       />
                     </DetailCardSection>
                   </View>
@@ -241,7 +261,10 @@ function EventDetails() {
 
               {/* COMMENTS SECTION */}
 
-              <CommentSection eventId={oneEvent?.id} />
+              <CommentSection
+                eventId={oneEvent?.id}
+                userImage={user?.user?.user?.image}
+              />
             </RefreshableScrollView>
             <EventDetailsFooter
               isAttending={joinState}

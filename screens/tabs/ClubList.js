@@ -43,7 +43,7 @@ function ClubList() {
   return (
     <StatusBarComponent>
       <View style={styles.container}>
-        <Header noTabBar={true} />
+        <Header noFilter />
         <RefreshableScrollView
           onRefresh={fetchClubs}
           style={styles.clubListContainer}

@@ -6,7 +6,14 @@ import AttendeePictures from "../AttendeePictures";
 import EventCardButton from "../EventCardButton";
 import Colors from "../../src/constants/Colors";
 
-function EventImage({ imageSource, shareFunction, edit = true, eventId }) {
+function EventImage({
+  imageSource,
+  shareFunction,
+  edit = true,
+  eventId,
+  attendeeCount = 0,
+  joined_users,
+}) {
   const navigation = useNavigation();
   console.log("eventId FFFFF", eventId);
 
@@ -33,13 +40,8 @@ function EventImage({ imageSource, shareFunction, edit = true, eventId }) {
       <View style={[styles.attendeeContainer, { transform: [{ scale: 0.9 }] }]}>
         <AttendeePictures
           enableAttendeeCount={true}
-          attendees={[
-            "https://picsum.photos/100/300",
-            "https://picsum.photos/200/100",
-            "https://picsum.photos/100/100",
-            "https://picsum.photos/300/100",
-            "https://picsum.photos/300/150",
-          ]}
+          attendees={attendeeCount}
+          joined_users={joined_users}
         />
       </View>
       <View style={styles.buttonsContainer}>

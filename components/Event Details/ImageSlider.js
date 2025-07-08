@@ -65,6 +65,7 @@ function ImageSlider({ images }) {
               />
             </View>
           )}
+
           <ImageViewerModal
             visible={isModalVisible}
             images={images.map((url) => ({ url }))}

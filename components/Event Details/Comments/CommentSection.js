@@ -1,6 +1,13 @@
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { View, Text, StyleSheet, Pressable, TextInput } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Pressable,
+  TextInput,
+  Image,
+} from "react-native";
 
 import Colors from "../../../src/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
@@ -9,16 +16,18 @@ import CustomShadow from "../../CustomShadow";
 import Comment from "./Comment";
 import { showComments, createComment } from "../../../API/action/comment";
 
-function CommentSection({ eventId }) {
+function CommentSection({ eventId, userImage = null }) {
   const dispatch = useDispatch();
   const comments = useSelector((state) => state.commentReducer || []);
+  console.log("comments:", comments);
 
   const [inputCommentText, setInputCommentText] = useState("");
   const [visibleComments, setVisibleComments] = useState(3);
 
   useEffect(() => {
     dispatch(showComments(eventId));
-  }, [dispatch, eventId, comments]);
+    console.log(eventId);
+  }, [dispatch, eventId]);
 
   const data = {
     text: inputCommentText,
@@ -51,7 +60,13 @@ function CommentSection({ eventId }) {
           </View>
           <View style={styles.commentInputContainer}>
             <View style={styles.placeholderPFP}>
-              {/*Profile picture goes here*/}
+              <Image
+                style={styles.userImageStyle}
+                // source={userImage}
+                source={{
+                  uri: userImage || null,
+                }}
+              />
             </View>
             <TextInput
               style={styles.commentInput}
@@ -73,7 +88,17 @@ function CommentSection({ eventId }) {
                   },
                 ]}
               >
-                <Text style={styles.sendButtonText}>Send</Text>
+                <Text
+                  style={[
+                    styles.sendButtonText,
+                    inputCommentText.trim() && {
+                      color: Colors.background.surface,
+                      fontWeight: 700,
+                    },
+                  ]}
+                >
+                  Send
+                </Text>
               </View>
             </Pressable>
           </View>
@@ -85,9 +110,11 @@ function CommentSection({ eventId }) {
                 .map((comment, index) => (
                   <Comment
                     key={index}
+                    userId={comment?.userId}
+                    commentData={comment}
                     text={comment?.text}
                     creatorName={comment?.creatorName}
-                    createdAt={comment?.createdAt}
+                    createdAt={comment?.created_time}
                   />
                 ))
             ) : (
@@ -123,6 +150,7 @@ export default CommentSection;
 const styles = StyleSheet.create({
   commentsContainer: {
     marginVertical: 24,
+    marginBottom: 54, // Adjusted to avoid overlap with the footer
   },
   commentsCard: {
     alignItems: "center",
@@ -205,7 +233,12 @@ const styles = StyleSheet.create({
     height: 32,
     borderRadius: 16,
     backgroundColor: "gray",
-    justifyContent: "flex-start",
+    // justifyContent: "flex-start",
+  },
+  userImageStyle: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
   },
   seeMoreButton: {
     marginVertical: 2,

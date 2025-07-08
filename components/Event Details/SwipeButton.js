@@ -1,15 +1,31 @@
 import React, { useRef } from "react";
-import { Animated, PanResponder, StyleSheet, View } from "react-native";
-
-import Colors from "../../src/constants/Colors";
+import {
+  Animated,
+  PanResponder,
+  StyleSheet,
+  View,
+  useWindowDimensions,
+} from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import Colors from "../../src/constants/Colors";
+import { min } from "moment";
 
 const SwipeButton = ({ onSwipeComplete }) => {
   const slideBarWidth = useRef(new Animated.Value(100)).current;
   const textOpacity = useRef(new Animated.Value(1)).current;
+  const { width: screenWidth } = useWindowDimensions();
+
+  // Width of the full swipe container (responsive)
+  const containerWidth = Math.min(screenWidth * 0.9, 400);
+  const sliderHandleWidth = 46;
+  const sliderHandleMarginLeft = 2;
+  const minSlideBarWidth = sliderHandleWidth + sliderHandleMarginLeft * 2;
+
+  const minWidthPercent = (minSlideBarWidth / containerWidth) * 100;
 
   const panResponder = PanResponder.create({
     onStartShouldSetPanResponder: () => true,
+
     onPanResponderGrant: () => {
       Animated.timing(textOpacity, {
         toValue: 0,
@@ -17,15 +33,18 @@ const SwipeButton = ({ onSwipeComplete }) => {
         useNativeDriver: true,
       }).start();
     },
+
     onPanResponderMove: (_, { dx }) => {
-      const progress = Math.max(0, Math.min(dx / 300, 1));
-      const width = 100 - progress * 87;
+      const progress = Math.max(0, Math.min(dx / containerWidth, 1));
+      const width = 100 - progress * (100 - minWidthPercent); // animate from 100% to 13%
       slideBarWidth.setValue(width);
     },
+
     onPanResponderRelease: (_, { dx }) => {
-      if (dx > 160) {
+      const releaseThreshold = containerWidth * 0.42;
+      if (dx > releaseThreshold) {
         Animated.timing(slideBarWidth, {
-          toValue: 13,
+          toValue: minWidthPercent,
           duration: 200,
           useNativeDriver: false,
         }).start(() => onSwipeComplete?.());
@@ -46,14 +65,14 @@ const SwipeButton = ({ onSwipeComplete }) => {
   });
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { width: containerWidth }]}>
       <Animated.View
         style={[
           styles.slideBar,
           {
             width: slideBarWidth.interpolate({
               inputRange: [13, 100],
-              outputRange: ["13%", "100%"],
+              outputRange: [containerWidth * 0.13, containerWidth * 1.0],
             }),
           },
         ]}
@@ -61,13 +80,14 @@ const SwipeButton = ({ onSwipeComplete }) => {
         <Animated.Text style={[styles.text, { opacity: textOpacity }]}>
           Swipe to Attend
         </Animated.Text>
-        <View {...panResponder.panHandlers} style={styles.slider}>
-          <Ionicons
-            name="arrow-forward-outline"
-            color={Colors.gray.light}
-            size={28}
-            style={styles.icon}
-          />
+        <View {...panResponder.panHandlers} style={styles.sliderTouchArea}>
+          <View style={styles.slider}>
+            <Ionicons
+              name="arrow-forward-outline"
+              color={Colors.gray.light}
+              size={28}
+            />
+          </View>
         </View>
       </Animated.View>
     </View>
@@ -76,7 +96,6 @@ const SwipeButton = ({ onSwipeComplete }) => {
 
 const styles = StyleSheet.create({
   container: {
-    width: 385,
     height: 50,
     alignItems: "flex-end",
   },
@@ -102,6 +121,15 @@ const styles = StyleSheet.create({
     borderRadius: 23,
     justifyContent: "center",
     alignItems: "center",
+  },
+  sliderTouchArea: {
+    // position: "absolute",
+    // marginLeft: 0, // align to left edge
+    width: 80, // bigger width for touch (can tweak)
+    height: 80, // bigger height for touch area
+    justifyContent: "center",
+    // alignItems: "center",
+    // Optional: backgroundColor: 'rgba(255,0,0,0.1)', // for debugging touch area
   },
 });
 

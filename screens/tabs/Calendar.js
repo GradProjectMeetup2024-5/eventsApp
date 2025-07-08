@@ -1,3 +1,4 @@
+import moment from "moment";
 import React, { useEffect, useMemo, useState } from "react";
 import {
   View,
@@ -22,7 +23,7 @@ import AltEventCard from "../../components/Cards/AltEventCard";
 import EventCard from "../../components/Cards/EventCard";
 import NoEvents from "../../components/NoEvents";
 
-const AttendingPage = () => {
+const Calendar = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
@@ -33,6 +34,11 @@ const AttendingPage = () => {
   const myJoinedEvent = useSelector(
     (state) => state.eventUser.myJoinedEvents || []
   );
+
+  const allEvents = useSelector((state) => state.event.events || []);
+  const eventMap = useMemo(() => {
+    return Object.fromEntries(allEvents.map((e) => [e.id, e]));
+  }, [allEvents]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -52,8 +58,17 @@ const AttendingPage = () => {
     fetchData();
   }, [selector, dispatch]);
 
+  const attendeeCountFilter = allEvents?.filter((event) => {
+    const attendeeCount = event?.joined_users;
+
+    return attendeeCount;
+  });
+
   const groupedEvents = useMemo(() => {
     if (myJoinedEvent.length > 0) {
+      const sorted = [...myJoinedEvent].sort(
+        (a, b) => moment(a.event_date) - moment(b.event_date)
+      );
       return groupEventsByMonth(myJoinedEvent);
     }
     return {};
@@ -74,7 +89,7 @@ const AttendingPage = () => {
           handlePressTwo={() => setSelector("My Events")}
           one="Attending"
           two="My Events"
-          title="Attending"
+          title="Calendar"
         />
 
         {loading ? (
@@ -91,32 +106,38 @@ const AttendingPage = () => {
               contentContainerStyle={styles.container}
               overScrollMode="never"
             >
-              {Object.keys(groupedEvents).map((month) => (
-                <View key={month}>
-                  <View style={styles.dateContainer}>
-                    <Text style={styles.date}>{month}</Text>
+              {Object.keys(groupedEvents)
+                .sort((a, b) => moment(a, "MMMM YYYY") - moment(b, "MMMM YYYY")) // <-- sort months
+                .map((month) => (
+                  <View key={month}>
+                    <View style={styles.dateContainer}>
+                      <Text style={styles.date}>{month}</Text>
+                    </View>
+                    {groupedEvents[month].map((event) => (
+                      <AltEventCard
+                        key={event?.id}
+                        eventName={event?.event_name}
+                        faculty={event?.faculty}
+                        floor={event?.floor}
+                        room={event?.room}
+                        image={event?.image}
+                        eventDate={event?.event_date}
+                        eventId={event?.id}
+                        onPress={() =>
+                          navigation.navigate("EventDetails", {
+                            eventId: event?.id,
+                          })
+                        }
+                        attendeeCount={
+                          eventMap[event?.id]?.joined_users?.length || 0
+                        }
+                        joined_users={eventMap[event?.id]?.joined_users || []}
+                        style={{ marginBottom: 12 }}
+                        pageType={selector}
+                      />
+                    ))}
                   </View>
-                  {groupedEvents[month].map((event) => (
-                    <AltEventCard
-                      key={event?.id}
-                      eventName={event?.event_name}
-                      faculty={event?.faculty}
-                      floor={event?.floor}
-                      room={event?.room}
-                      image={event?.image}
-                      eventDate={event?.event_date}
-                      eventId={event?.id}
-                      onPress={() =>
-                        navigation.navigate("EventDetails", {
-                          eventId: event?.id,
-                        })
-                      }
-                      style={{ marginBottom: 12 }}
-                      pageType={selector}
-                    />
-                  ))}
-                </View>
-              ))}
+                ))}
             </ScrollView>
           )
         ) : (
@@ -125,29 +146,35 @@ const AttendingPage = () => {
             overScrollMode="never"
           >
             {events.length > 0 ? (
-              events.map((event, index) => (
-                <View key={event.id} style={styles.eventContainer}>
-                  <EventCard
-                    edit={true}
-                    eventId={event?.id}
-                    eventName={event?.event_name}
-                    eventDate={event?.event_date}
-                    eventLocation={event?.event_desc}
-                    logo={event?.user?.image}
-                    eventOrganizer={event?.user?.name}
-                    eventImage={event?.posters[0]}
-                    faculty={event?.faculty}
-                    onPress={() =>
-                      navigation.navigate("EventDetails", {
-                        eventId: event?.id,
-                      })
-                    }
-                  />
-                  {index < events.length - 1 && (
-                    <View style={styles.separator} />
-                  )}
-                </View>
-              ))
+              [...events]
+                .sort((a, b) => moment(b.event_date) - moment(a.event_date)) // <-- sort by date ascending
+                .map((event, index) => (
+                  <View key={event.id} style={styles.eventContainer}>
+                    <EventCard
+                      edit={true}
+                      eventId={event?.id}
+                      eventName={event?.event_name}
+                      eventDate={event?.event_date}
+                      eventLocation={event?.event_desc}
+                      logo={event?.user?.image}
+                      eventOrganizer={event?.user?.name}
+                      eventImage={event?.posters[0]}
+                      faculty={event?.faculty}
+                      onPress={() =>
+                        navigation.navigate("EventDetails", {
+                          eventId: event?.id,
+                        })
+                      }
+                      attendeeCount={
+                        eventMap[event?.id]?.joined_users?.length || 0
+                      }
+                      joined_users={eventMap[event?.id]?.joined_users || []}
+                    />
+                    {index < events.length - 1 && (
+                      <View style={styles.separator} />
+                    )}
+                  </View>
+                ))
             ) : (
               <NoEvents
                 icon={noEventsIcon}
@@ -163,7 +190,7 @@ const AttendingPage = () => {
   );
 };
 
-export default AttendingPage;
+export default Calendar;
 
 const styles = StyleSheet.create({
   safeArea: {

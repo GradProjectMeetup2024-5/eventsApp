@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import {
   View,
   Pressable,
@@ -22,8 +23,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { findOneClub } from "../API/action/club";
 import { showClubEvents } from "../API/action/clubEvent";
 
-import * as actionType from "../API/actionTypes";
-
 import { useRoute } from "@react-navigation/native";
 import TextDetails from "../components/TextDetails";
 import JoinClubButton from "../components/JoinClubButton";
@@ -39,6 +38,11 @@ function ClubDetails() {
   const clubEvent = useSelector((state) => state.clubEventsReducer.clubEvent);
 
   const dispatch = useDispatch();
+
+  const allEvents = useSelector((state) => state.event.events || []);
+  const eventMap = useMemo(() => {
+    return Object.fromEntries(allEvents.map((e) => [e.id, e]));
+  }, [allEvents]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -103,7 +107,7 @@ function ClubDetails() {
               {/* EVENT CARDS SECTION */}
               <View style={styles.sectionRow}>
                 <Text style={styles.sectionTitle}>Events</Text>
-                <Pressable onPress={() => pressHandler("AllEvents")}>
+                <Pressable onPress={() => pressHandler("ClubEvents")}>
                   <Text
                     style={[
                       styles.sectionTitle,
@@ -130,17 +134,13 @@ function ClubDetails() {
                         floor={event?.floor}
                         room={event?.room}
                         image={event?.image}
+                        attendeeCount={
+                          eventMap[event?.id]?.joined_users?.length || 0
+                        }
+                        joined_users={eventMap[event?.id]?.joined_users || []}
                         onPress={() =>
                           navigation.navigate("EventDetails", {
                             eventId: event?.id,
-                            // clubName: club?.name,
-                            // eventName: event?.event_name,
-                            // eventDate: event?.event_date,
-                            // floor: event?.floor,
-                            // room: event?.room,
-                            // about: event?.event_desc,
-                            // image: event?.image,
-                            // faculty: event?.faculty,
                           })
                         }
                       />

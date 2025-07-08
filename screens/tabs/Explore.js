@@ -42,6 +42,8 @@ export default function Explore() {
       dateMatches = eventDate.toDateString() === tomorrow.toDateString();
     } else if (activeTab === "Weekend") {
       dateMatches = eventDate.toDateString() === weekend.toDateString();
+    } else if (activeTab === "Upcoming") {
+      dateMatches = true; // Show all events
     } else {
       dateMatches = eventDate > today;
     }
@@ -83,6 +85,8 @@ export default function Explore() {
                     eventId: event?.id,
                   })
                 }
+                attendeeCount={event?.joined_users?.length || 0}
+                joined_users={event?.joined_users || []}
               />
               {index < filteredEvents.length - 1 && (
                 <View style={styles.separator} />

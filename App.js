@@ -11,7 +11,7 @@ import Tabs from "./navigators/Tabs";
 import Profile from "./screens/Profile";
 import ClubDetails from "./screens/ClubDetails";
 import EventDetails from "./screens/EventDetails";
-import AllEventsPage from "./screens/AllEventsPage";
+import ClubEvents from "./screens/ClubEvents";
 import Edit from "./screens/Edit";
 
 import Colors from "./src/constants/Colors";
@@ -62,7 +62,7 @@ const AppNavigator = () => {
       <Stack.Navigator
         screenOptions={{
           headerShown: false,
-          gestureEnabled: false,
+          // gestureEnabled: false,
           animation: "none",
         }}
       >
@@ -77,7 +77,7 @@ const AppNavigator = () => {
             <Stack.Screen name="Tabs" component={Tabs} />
             <Stack.Screen name="Profile" component={Profile} />
             <Stack.Screen name="ClubDetails" component={ClubDetails} />
-            <Stack.Screen name="AllEvents" component={AllEventsPage} />
+            <Stack.Screen name="ClubEvents" component={ClubEvents} />
             <Stack.Screen name="EventDetails" component={EventDetails} />
             <Stack.Screen name="Edit" component={Edit} />
           </>

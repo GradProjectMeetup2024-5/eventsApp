@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Text, Pressable, StyleSheet, View } from "react-native";
+import { Text, Pressable, StyleSheet, View, Platform } from "react-native";
 
 import Colors from "../src/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
@@ -11,19 +11,19 @@ function TextDetails({
   clubCard = false,
 }) {
   const [isExpanded, setIsExpanded] = useState(false);
-  const [shouldShowButton, setShouldShowButton] = useState(false);
+  const [textOverflow, setTextOverflow] = useState(false);
 
   function toggleExpanded() {
-    setIsExpanded(!isExpanded);
+    setIsExpanded((prev) => !prev);
   }
 
   function handleTextLayout(event) {
-    if (event.nativeEvent.lines.length > maxLines) {
-      setShouldShowButton(true);
-    } else {
-      setShouldShowButton(false);
+    if (!isExpanded) {
+      setTextOverflow(event.nativeEvent.lines.length > maxLines);
     }
   }
+
+  const showButton = Platform.OS === "android" ? textOverflow : !textOverflow;
 
   return (
     <View>
@@ -35,7 +35,7 @@ function TextDetails({
         {description}
       </Text>
       <View style={styles.rowEnd}>
-        {shouldShowButton ? (
+        {showButton ? (
           <View style={styles.buttonContainer}>
             <Pressable onPress={toggleExpanded} hitSlop={10}>
               <Text
