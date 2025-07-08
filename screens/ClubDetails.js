@@ -137,6 +137,7 @@ function ClubDetails() {
                         attendeeCount={
                           eventMap[event?.id]?.joined_users?.length || 0
                         }
+                        joined_users={eventMap[event?.id]?.joined_users || []}
                         onPress={() =>
                           navigation.navigate("EventDetails", {
                             eventId: event?.id,

@@ -86,6 +86,7 @@ export default function Explore() {
                   })
                 }
                 attendeeCount={event?.joined_users?.length || 0}
+                joined_users={event?.joined_users || []}
               />
               {index < filteredEvents.length - 1 && (
                 <View style={styles.separator} />

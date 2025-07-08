@@ -18,6 +18,7 @@ export default function EventCard({
   edit = false,
   eventId,
   attendeeCount = 0,
+  joined_users,
 }) {
   function formatTime(dateString) {
     const date = new Date(dateString);
@@ -89,6 +90,7 @@ export default function EventCard({
             edit={edit}
             eventId={eventId}
             attendeeCount={attendeeCount}
+            joined_users={joined_users}
           />
 
           <View style={styles.detailsContainer}>
@@ -124,7 +126,7 @@ export default function EventCard({
 const styles = StyleSheet.create({
   container: {
     width: 380,
-    minHeight: 280,
+    minHeight: 255,
     borderRadius: 12,
     backgroundColor: Colors.background.surface,
     overflow: "hidden",

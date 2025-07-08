@@ -25,14 +25,13 @@ import { Picker } from "@react-native-picker/picker";
 import AuthTextInput from "../../components/ui/AuthUi/AuthTextInput";
 import AuthButton from "../../components/ui/AuthUi/AuthButton";
 import Colors from "../../src/constants/Colors";
+import Dropdown from "react-native-input-select";
 
 const { width } = Dimensions.get("window");
 
 const Create = () => {
   const dispatch = useDispatch();
   const [eventName, setEventName] = useState("");
-  // const [eventDate, setEventDate] = useState(new Date());
-  // const [eventTime, setEventTime] = useState(new Date());
   const [eventDateTime, setEventDateTime] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showTimePicker, setShowTimePicker] = useState(false);
@@ -161,6 +160,13 @@ const Create = () => {
 
   const handleFacultyChange = (faculty) => {
     setEventFaculty(faculty);
+
+    if (!faculties[faculty]) {
+      setLatitude(null);
+      setLongitude(null);
+      return;
+    }
+
     const coords = faculties[faculty].split(", ");
     setLatitude(parseFloat(coords[0]));
     setLongitude(parseFloat(coords[1]));
@@ -390,13 +396,19 @@ const Create = () => {
               <Picker
                 selectedValue={eventFaculty}
                 onValueChange={handleFacultyChange}
-                style={styles.picker}
+                style={[
+                  styles.picker,
+                  { backgroundColor: Colors.background.surface },
+                ]}
                 dropdownIconColor={Colors.accent.secondary}
               >
                 <Picker.Item
                   label="Select a faculty"
                   value=""
-                  color={eventFaculty === "" ? Colors.gray.dark : "#000"}
+                  color={
+                    eventFaculty === "" ? Colors.gray.dark : Colors.gray.dark
+                  }
+                  style={{ backgroundColor: Colors.background.surface }}
                 />
                 {Object.keys(faculties).map((faculty) => (
                   <Picker.Item
@@ -404,11 +416,15 @@ const Create = () => {
                     label={faculty}
                     value={faculty}
                     color={
-                      faculty === eventFaculty ? Colors.gray.light : "black"
+                      faculty === eventFaculty
+                        ? Colors.gray.light
+                        : Colors.gray.medium
                     }
+                    style={{ backgroundColor: Colors.background.surface }}
                   />
                 ))}
               </Picker>
+              {/* <Dropdown label="Select a faculty" /> */}
             </View>
 
             <Text style={styles.label}>Floor & Room</Text>

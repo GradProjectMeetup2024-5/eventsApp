@@ -131,6 +131,7 @@ const Calendar = () => {
                         attendeeCount={
                           eventMap[event?.id]?.joined_users?.length || 0
                         }
+                        joined_users={eventMap[event?.id]?.joined_users || []}
                         style={{ marginBottom: 12 }}
                         pageType={selector}
                       />
@@ -167,6 +168,7 @@ const Calendar = () => {
                       attendeeCount={
                         eventMap[event?.id]?.joined_users?.length || 0
                       }
+                      joined_users={eventMap[event?.id]?.joined_users || []}
                     />
                     {index < events.length - 1 && (
                       <View style={styles.separator} />

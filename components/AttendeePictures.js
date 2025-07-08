@@ -16,10 +16,12 @@ function AttendeePictures({
   attendees = 0,
   enableAttendeeCount = false,
   pageType = null,
+  joined_users,
 }) {
   const imageWidth = 34;
   const overlap = 12;
 
+  console.log("joined_users ", joined_users);
   // if (attendees === 0) {
   //   // Placeholder view
   //   return (
@@ -105,16 +107,29 @@ function AttendeePictures({
                 +
               </Text>
             ) : (
-              <Ionicons
-                size={17}
-                name="close-outline"
-                style={{
-                  color:
-                    pageType === "History"
-                      ? Colors.gray.medium
-                      : Colors.accent.secondary,
-                }}
-              />
+              // <Ionicons
+              //   size={17}
+              //   name="close-outline"
+              //   style={{
+              //     color:
+              //       pageType === "History"
+              //         ? Colors.gray.medium
+              //         : Colors.accent.secondary,
+              //   }}
+              // />
+              <Text
+                style={[
+                  styles.circlePlus,
+                  {
+                    color:
+                      pageType === "History"
+                        ? Colors.gray.medium
+                        : Colors.accent.secondary,
+                  },
+                ]}
+              >
+                0
+              </Text>
             )}
           </View>
         )}

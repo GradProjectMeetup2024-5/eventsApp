@@ -12,6 +12,7 @@ function EventImage({
   edit = true,
   eventId,
   attendeeCount = 0,
+  joined_users,
 }) {
   const navigation = useNavigation();
   console.log("eventId FFFFF", eventId);
@@ -40,6 +41,7 @@ function EventImage({
         <AttendeePictures
           enableAttendeeCount={true}
           attendees={attendeeCount}
+          joined_users={joined_users}
         />
       </View>
       <View style={styles.buttonsContainer}>

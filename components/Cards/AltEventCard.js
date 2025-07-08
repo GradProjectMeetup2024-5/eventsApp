@@ -18,6 +18,7 @@ function AltEventCard({
   pageType = null,
   noEvents = false,
   attendeeCount = 0,
+  joined_users,
 }) {
   function formatTime(dateString) {
     const date = new Date(dateString);
@@ -123,6 +124,7 @@ function AltEventCard({
                   attendees={attendeeCount}
                   enableAttendeeCount={true}
                   pageType={pageType}
+                  joined_users={joined_users}
                 />
               </View>
             </>
