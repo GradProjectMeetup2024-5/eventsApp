@@ -196,7 +196,7 @@ const styles = StyleSheet.create({
     lineHeight: 20,
     flexWrap: "wrap",
     maxWidth: 160,
-    textAlign: "center",
+    // textAlign: "center",
   },
   posterContainer: {
     flexDirection: "row",

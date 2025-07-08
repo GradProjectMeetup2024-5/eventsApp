@@ -174,7 +174,7 @@ const styles = StyleSheet.create({
   eventDetailsText: {
     fontSize: 18,
     color: Colors.gray.light,
-    maxWidth: 150,
+    maxWidth: 160,
   },
   title: {
     fontSize: 24,

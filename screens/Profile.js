@@ -1,5 +1,5 @@
-import React, { useContext, useState, useEffect } from "react";
-import { View, Text, ScrollView, StyleSheet, Pressable } from "react-native";
+import { useState, useEffect } from "react";
+import { View, Text, ScrollView, StyleSheet } from "react-native";
 
 import UserDetails from "../components/ui/ProfileUi/UserDetails";
 
@@ -16,7 +16,7 @@ import DetailCardSection from "../components/Event Details/DetailCardSection";
 import DetailCardSeparator from "../components/Event Details/DetailCardSeparator";
 import { Ionicons } from "@expo/vector-icons";
 
-export default function Profile({ navigation }) {
+export default function Profile() {
   const dispatch = useDispatch();
   const [user, setUser] = useState(SecureStore.getItemAsync("profile"));
 

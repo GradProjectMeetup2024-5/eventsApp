@@ -46,7 +46,7 @@ const dummyEvents = [
     floor: "Floor 3",
     room: "Room 3",
     image: "https://via.placeholder.com/150",
-    event_date: "2023-02-10",
+    event_date: "2023-09-10",
     attendeeCount: 0, // Example attendee count
   },
   {

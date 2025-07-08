@@ -31,8 +31,10 @@ import CommentSection from "../components/Event Details/Comments/CommentSection"
 import EventDetailsFooter from "../components/Event Details/EventDetailsFooter";
 import ImageSlider from "../components/Event Details/ImageSlider";
 import PosterDetails from "../components/PosterDetails";
+import * as SecureStore from "expo-secure-store";
 
 function EventDetails() {
+  const [user, setUser] = useState(SecureStore.getItemAsync("profile"));
   const [joinState, setJoinState] = useState(false);
   const [isApproved, setIsApproved] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -61,6 +63,21 @@ function EventDetails() {
   };
 
   useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const storedUser = await SecureStore.getItemAsync("profile");
+        if (storedUser) {
+          const userObject = JSON.parse(storedUser);
+          setUser(userObject);
+        } else {
+          console.log("No user data found in SecureStore.");
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    fetchUserData();
     fetchStatus();
     setJoinState(checkIfUserJoined);
     // console.log(oneEvent?.Date);
@@ -244,7 +261,10 @@ function EventDetails() {
 
               {/* COMMENTS SECTION */}
 
-              <CommentSection eventId={oneEvent?.id} />
+              <CommentSection
+                eventId={oneEvent?.id}
+                userImage={user?.user?.user?.image}
+              />
             </RefreshableScrollView>
             <EventDetailsFooter
               isAttending={joinState}
