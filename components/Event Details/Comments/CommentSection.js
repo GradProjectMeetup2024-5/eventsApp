@@ -92,8 +92,8 @@ function CommentSection({ eventId, userImage = null }) {
                   style={[
                     styles.sendButtonText,
                     inputCommentText.trim() && {
-                      color: Colors.background.base,
-                      fontWeight: 600,
+                      color: Colors.background.surface,
+                      fontWeight: 700,
                     },
                   ]}
                 >

@@ -189,7 +189,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   sendButtonText: {
-    color: Colors.gray.white,
+    color: Colors.background.surface,
     fontWeight: "bold",
   },
   requestItem: {
@@ -241,7 +241,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   viewAllButtonText: {
-    color: "#FFFFFF",
+    color: Colors.gray.light,
     textAlign: "center",
   },
   profileItem: {

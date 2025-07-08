@@ -111,12 +111,6 @@ const styles = StyleSheet.create({
     padding: 16,
     marginBottom: 16,
   },
-  backButtonText: {
-    color: "#FFFFFF",
-    fontSize: 18,
-    fontWeight: "600",
-    marginLeft: 8,
-  },
   scrollViewContent: {
     paddingHorizontal: 16,
   },
@@ -133,9 +127,5 @@ const styles = StyleSheet.create({
     color: Colors.accent.primary,
     marginTop: 24,
     marginBottom: 16,
-  },
-  buttonItem: {
-    borderBottomWidth: 1,
-    borderBottomColor: "#E2E8F0",
   },
 });
