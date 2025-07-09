@@ -1,4 +1,11 @@
-import { View, Pressable, Text, Image, StyleSheet } from "react-native";
+import {
+  View,
+  Pressable,
+  Text,
+  Image,
+  StyleSheet,
+  useWindowDimensions,
+} from "react-native";
 
 import JoinClubButton from "./JoinClubButton";
 
@@ -13,14 +20,23 @@ function PosterDetails({
   club = false,
   inEventDetails = false,
 }) {
+  const { width } = useWindowDimensions();
+  const containerWidth = width < 411 ? 350 : 380;
+
   // Only pressable if inEventDetails and club
   const Container = inEventDetails && club ? Pressable : View;
 
   return (
-    <View style={styles.posterContainer}>
+    <View
+      style={[
+        styles.posterContainer,
+        { width: containerWidth },
+        !inEventDetails && { paddingHorizontal: 10 },
+      ]}
+    >
       <Container
         style={styles.navigationContainer}
-        {...(inEventDetails && club && onPress ? { onPress } : {})}
+        {...(inEventDetails && club && onPress && { onPress })}
       >
         <Image
           style={styles.posterImage}
@@ -56,12 +72,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    maxWidth: 400,
+    // paddingHorizontal: 10,
   },
   navigationContainer: {
     flexDirection: "row",
     alignItems: "center",
-    marginRight: 90,
+    // marginRight: 90,
   },
   posterImage: {
     height: 50,
@@ -74,11 +90,10 @@ const styles = StyleSheet.create({
     marginHorizontal: 8,
     marginRight: 0,
     color: Colors.gray.light,
-    width: 200,
+    width: 180,
   },
   joinButtonContaienr: {
-    position: "absolute",
-    left: 282,
+    justifyContent: "center",
     width: 90,
   },
 });

@@ -1,5 +1,11 @@
 import { useState, useEffect } from "react";
-import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ActivityIndicator,
+  useWindowDimensions,
+} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 import { Ionicons } from "@expo/vector-icons";
@@ -34,6 +40,10 @@ import PosterDetails from "../components/PosterDetails";
 import * as SecureStore from "expo-secure-store";
 
 function EventDetails() {
+  const { width } = useWindowDimensions();
+  const cardWidth = width < 411 ? 370 : 380;
+  const aboutWidth = width < 411 ? 360 : 370;
+
   const [user, setUser] = useState(SecureStore.getItemAsync("profile"));
   const [joinState, setJoinState] = useState(false);
   const [isApproved, setIsApproved] = useState(false);
@@ -198,7 +208,7 @@ function EventDetails() {
               {/* DETAILS SECTION */}
               <View style={styles.detailsContainer}>
                 <CustomShadow>
-                  <View style={styles.detailsCard}>
+                  <View style={[styles.detailsCard, { width: cardWidth }]}>
                     {/* DATE AND TIME SUB-SECTION*/}
                     <DetailCardSection
                       iconName="calendar-clear-outline"
@@ -250,7 +260,7 @@ function EventDetails() {
               </View>
 
               {/* ABOUT SECTION */}
-              <View style={styles.aboutContainer}>
+              <View style={[styles.aboutContainer, { width: aboutWidth }]}>
                 <Text style={styles.aboutTitle}>About</Text>
                 <TextDetails
                   description={oneEvent?.event_desc}
@@ -323,7 +333,7 @@ const styles = StyleSheet.create({
   },
   detailsCard: {
     backgroundColor: Colors.background.surface,
-    width: 384,
+    // width: 380,
     borderRadius: 16,
   },
   aboutContainer: {

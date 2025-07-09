@@ -1,4 +1,11 @@
-import { View, Pressable, Text, Image, StyleSheet } from "react-native";
+import {
+  View,
+  Pressable,
+  Text,
+  Image,
+  StyleSheet,
+  useWindowDimensions,
+} from "react-native";
 
 import TextDetails from "../TextDetails";
 
@@ -6,10 +13,16 @@ import Colors from "../../src/constants/Colors";
 import CustomShadow from "../CustomShadow";
 
 function ClubCard({ image, title, description, onPress, clubId }) {
+  const { width } = useWindowDimensions();
+  const cardWidth = width < 411 ? 360 : 380;
+
   return (
     <View style={styles.container}>
       <CustomShadow>
-        <Pressable style={styles.cardInfo} onPress={onPress}>
+        <Pressable
+          style={[styles.cardInfo, { width: cardWidth }]}
+          onPress={onPress}
+        >
           <Image
             style={styles.clubImg}
             source={{
@@ -40,7 +53,6 @@ const styles = StyleSheet.create({
   },
   cardInfo: {
     flexDirection: "row",
-    width: 370,
     backgroundColor: Colors.background.surface,
     borderRadius: 8,
     padding: 12,

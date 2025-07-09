@@ -1,5 +1,13 @@
 import React, { useState } from "react";
-import { View, Image, Pressable, StyleSheet, Dimensions } from "react-native";
+import {
+  View,
+  Image,
+  Pressable,
+  StyleSheet,
+  Dimensions,
+  useWindowDimensions,
+  Platform,
+} from "react-native";
 
 import Carousel, { Pagination } from "react-native-snap-carousel";
 
@@ -10,6 +18,10 @@ import ImageViewerModal from "./ImageViewerModal";
 const { width } = Dimensions.get("window");
 
 function ImageSlider({ images }) {
+  const { width: Width } = useWindowDimensions();
+  const imageWidth = Width < 411 ? 360 : 380;
+  const imageHeight = Width < 411 ? 260 : 280;
+
   const [activeIndex, setActiveIndex] = useState(0);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [shouldAnimatePagination, setShouldAnimatePagination] = useState(true);
@@ -25,7 +37,10 @@ function ImageSlider({ images }) {
               console.log(index);
             }}
           >
-            <Image source={{ uri: item }} style={styles.image} />
+            <Image
+              source={{ uri: item }}
+              style={[styles.image, { width: imageWidth, height: imageHeight }]}
+            />
           </Pressable>
         </View>
       </CustomShadow>
@@ -96,11 +111,11 @@ const styles = StyleSheet.create({
   image: {
     resizeMode: "cover",
     height: 280,
-    width: 380,
+    // width: 380,
   },
   paginationContainer: {
     position: "absolute",
-    bottom: -20,
+    bottom: Platform.OS === "ios" ? -10 : -20,
     alignSelf: "center",
   },
   dotStyle: {

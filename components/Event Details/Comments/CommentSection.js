@@ -7,6 +7,9 @@ import {
   Pressable,
   TextInput,
   Image,
+  Platform,
+  useWindowDimensions,
+  KeyboardAvoidingView,
 } from "react-native";
 
 import Colors from "../../../src/constants/Colors";
@@ -17,6 +20,11 @@ import Comment from "./Comment";
 import { showComments, createComment } from "../../../API/action/comment";
 
 function CommentSection({ eventId, userImage = null }) {
+  const { width } = useWindowDimensions();
+  const cardWidth = width < 411 ? 364 : 384;
+  const titleWidth = width < 411 ? 350 : 370;
+  const inputWidth = width < 411 ? 335 : 355;
+
   const dispatch = useDispatch();
   const comments = useSelector((state) => state.commentReducer || []);
   console.log("comments:", comments);
@@ -27,13 +35,21 @@ function CommentSection({ eventId, userImage = null }) {
   useEffect(() => {
     dispatch(showComments(eventId));
     console.log(eventId);
-  }, [dispatch, eventId]);
+  }, [dispatch, eventId, comments]);
 
   const data = {
     text: inputCommentText,
     // createdAt: new Date().toISOString(),
   };
+
   const handleSend = () => {
+    const trimmedText = inputCommentText.trim();
+    if (!trimmedText) return;
+
+    const data = {
+      text: trimmedText,
+    };
+
     dispatch(createComment(eventId, data));
     setInputCommentText("");
   };
@@ -45,9 +61,9 @@ function CommentSection({ eventId, userImage = null }) {
   return (
     <View style={styles.commentsContainer}>
       <CustomShadow>
-        <View style={styles.commentsCard}>
+        <View style={[styles.commentsCard, { width: cardWidth }]}>
           <View style={styles.commentsTitleContainer}>
-            <View style={styles.commentsTitle}>
+            <View style={[styles.commentsTitle, { width: titleWidth }]}>
               <View style={styles.commentsIconContainer}>
                 <Ionicons
                   name="chatbubble"
@@ -58,11 +74,10 @@ function CommentSection({ eventId, userImage = null }) {
               <Text style={styles.commentsTitleText}>Comments</Text>
             </View>
           </View>
-          <View style={styles.commentInputContainer}>
+          <View style={[styles.commentInputContainer, { width: inputWidth }]}>
             <View style={styles.placeholderPFP}>
               <Image
                 style={styles.userImageStyle}
-                // source={userImage}
                 source={{
                   uri: userImage || null,
                 }}
@@ -151,10 +166,11 @@ const styles = StyleSheet.create({
   commentsContainer: {
     marginVertical: 24,
     marginBottom: 54, // Adjusted to avoid overlap with the footer
+    alignItems: "center",
   },
   commentsCard: {
     alignItems: "center",
-    width: 384,
+    // width: 384,
     backgroundColor: Colors.background.surface,
     borderRadius: 26,
     paddingBottom: 10,
@@ -165,7 +181,7 @@ const styles = StyleSheet.create({
   commentsTitle: {
     flexDirection: "row",
     backgroundColor: Colors.background.elevated,
-    width: 370,
+    // width: 370,
     height: 38,
     borderRadius: 19,
     justifyContent: "flex-start",
@@ -192,7 +208,7 @@ const styles = StyleSheet.create({
   noCommentsText: {
     fontSize: 14,
     color: Colors.gray.muted,
-    width: 350,
+    width: 300,
     textAlign: "center",
     lineHeight: 20,
     marginBottom: 5,
@@ -200,7 +216,7 @@ const styles = StyleSheet.create({
   commentInputContainer: {
     marginVertical: 3,
     backgroundColor: Colors.background.elevated,
-    width: 355,
+    // width: 355,
     borderRadius: 19,
     flexDirection: "row",
     paddingVertical: 5,
@@ -209,9 +225,8 @@ const styles = StyleSheet.create({
     flex: 1,
     color: Colors.gray.light,
     marginLeft: 6,
-    textAlignVertical: "center",
     lineHeight: 20,
-    padding: 0,
+    padding: Platform.OS === "ios" ? null : 0,
   },
   sendButton: {
     backgroundColor: Colors.background.surface,
