@@ -1,8 +1,11 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, useWindowDimensions } from "react-native";
 
 import Colors from "../../../src/constants/Colors";
 
 function Comment({ text, creatorName, createdAt, userId }) {
+  const { width } = useWindowDimensions();
+  const containerWidth = width < 411 ? 325 : 346;
+
   const formatDate = (eventDate) => {
     const event = new Date(eventDate);
     const now = new Date();
@@ -32,7 +35,7 @@ function Comment({ text, creatorName, createdAt, userId }) {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { width: containerWidth }]}>
       <View style={styles.commentInfo}>
         <View style={styles.userContainer}>
           <View style={styles.placeholderPFP} />
@@ -52,7 +55,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "column",
     marginVertical: 8,
-    width: 346,
+    // width: 346,
   },
   commentInfo: {
     flexDirection: "row",

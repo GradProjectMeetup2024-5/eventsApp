@@ -1,5 +1,11 @@
 import React from "react";
-import { View, Text, Pressable, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  Pressable,
+  StyleSheet,
+  useWindowDimensions,
+} from "react-native";
 
 import Colors from "../../src/constants/Colors";
 
@@ -20,6 +26,10 @@ export default function EventCard({
   attendeeCount = 0,
   joined_users,
 }) {
+  const { width } = useWindowDimensions();
+  const cardWidth = width < 411 ? 360 : 380;
+  const fontSize = width < 411 ? 15 : 16;
+
   function formatTime(dateString) {
     const date = new Date(dateString);
     let hours = date.getHours();
@@ -82,7 +92,7 @@ export default function EventCard({
 
   return (
     <CustomShadow>
-      <View style={styles.container}>
+      <View style={[styles.container, { width: cardWidth }]}>
         <Pressable onPress={onPress}>
           <EventImage
             imageSource={eventImage}
@@ -96,15 +106,17 @@ export default function EventCard({
           <View style={styles.detailsContainer}>
             <Text style={styles.eventTitle}>{eventName}</Text>
             <View style={styles.eventDetailsContainer}>
-              <Text style={styles.eventDetailsText}>
+              <Text style={[styles.eventDetailsText, { fontSize }]}>
                 {formatDate(eventDate)}
               </Text>
-              <Text style={styles.eventDetailsText}> · </Text>
-              <Text style={styles.eventDetailsText}>
+              <Text style={[styles.eventDetailsText, { fontSize }]}> · </Text>
+              <Text style={[styles.eventDetailsText, { fontSize }]}>
                 {formatTime(eventDate)}
               </Text>
-              <Text style={styles.eventDetailsText}> · </Text>
-              <Text style={styles.eventDetailsText}>{faculty}</Text>
+              <Text style={[styles.eventDetailsText, { fontSize }]}> · </Text>
+              <Text style={[styles.eventDetailsText, { fontSize }]}>
+                {faculty}
+              </Text>
             </View>
             <View
               style={[styles.posterContainer, { transform: [{ scale: 0.8 }] }]}
@@ -125,14 +137,12 @@ export default function EventCard({
 
 const styles = StyleSheet.create({
   container: {
-    width: 380,
     minHeight: 255,
     borderRadius: 12,
     backgroundColor: Colors.background.surface,
     overflow: "hidden",
     marginBottom: 8,
     zIndex: 0,
-    // marginHorizontal: 16,
   },
   imageContainer: {
     width: "100%",
@@ -177,6 +187,7 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
     marginVertical: 10,
     marginHorizontal: 16,
+    // borderWidth: 1,
   },
   eventTitle: {
     color: Colors.accent.primary,
@@ -193,7 +204,7 @@ const styles = StyleSheet.create({
   },
   eventDetailsText: {
     color: Colors.gray.light,
-    fontSize: 16,
+    // fontSize: 14,
     fontWeight: 500,
     lineHeight: 20,
     flexWrap: "wrap",

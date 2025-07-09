@@ -244,7 +244,7 @@ const styles = StyleSheet.create({
   dateContainer: {
     marginBottom: 12,
     marginTop: 14,
-    marginLeft: 15,
+    marginHorizontal: 17,
   },
   date: {
     fontSize: 21,

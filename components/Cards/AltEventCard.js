@@ -1,4 +1,11 @@
-import { View, Pressable, Text, Image, StyleSheet } from "react-native";
+import {
+  View,
+  Pressable,
+  Text,
+  Image,
+  StyleSheet,
+  useWindowDimensions,
+} from "react-native";
 
 import Colors from "../../src/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
@@ -20,6 +27,10 @@ function AltEventCard({
   attendeeCount = 0,
   joined_users,
 }) {
+  const { width } = useWindowDimensions();
+  const cardWidth = width < 411 ? 360 : 380;
+  const maxWidth = width < 411 ? 205 : 228;
+
   function formatTime(dateString) {
     const date = new Date(dateString);
     let hours = date.getHours();
@@ -81,7 +92,10 @@ function AltEventCard({
   return (
     <View style={[styles.container, style]}>
       <CustomShadow>
-        <Pressable style={styles.card} onPress={onPress}>
+        <Pressable
+          style={[styles.card, { width: cardWidth }]}
+          onPress={onPress}
+        >
           {!noEvents ? (
             <>
               <View style={styles.cardInfo}>
@@ -114,7 +128,7 @@ function AltEventCard({
                     size={20}
                     color={Colors.gray.dark}
                   />
-                  <Text style={styles.locationText}>
+                  <Text style={[styles.locationText, { maxWidth }]}>
                     {faculty + "-" + floor + "-" + room}
                   </Text>
                 </View>
@@ -151,7 +165,7 @@ const styles = StyleSheet.create({
   card: {
     flexDirection: "row",
     minHeight: 136,
-    width: 380,
+    // width: 380,
     borderRadius: 8,
     justifyContent: "space-between",
     backgroundColor: Colors.background.surface,
@@ -192,7 +206,6 @@ const styles = StyleSheet.create({
     margin: 0,
     marginLeft: 4,
     lineHeight: 20,
-    maxWidth: 228,
   },
   attendeeContainer: {
     position: "absolute",
